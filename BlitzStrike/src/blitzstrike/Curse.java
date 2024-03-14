@@ -9,5 +9,6 @@ package blitzstrike;
  * @author aliia
  */
 public class Curse {
+    //hello
     
 }
