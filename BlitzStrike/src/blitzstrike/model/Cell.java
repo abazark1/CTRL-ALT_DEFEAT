@@ -22,4 +22,8 @@ public class Cell {
         this.walkable = true;
         this.position = position;
     }
+    
+    public boolean isWalkable(){
+        return walkable;
+    }
 }
