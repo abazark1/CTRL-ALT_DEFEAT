@@ -13,7 +13,12 @@ import java.time.LocalTime;
 public class Bomb {
     private LocalTime startingTime;
     private Position position;
-    // private Player owner;
+//     private Player owner;
+    
+    public Bomb(Position position){
+        this.startingTime = LocalTime.now();
+        this.position = position;
+    }
     
     public void explode(){
         System.out.println("I exploded");
