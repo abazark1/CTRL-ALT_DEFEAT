@@ -31,6 +31,10 @@ public class View extends JPanel {
         scaled_size = (int)(scale * tile_size);
         player1 = ResourceLoader.loadImage("res/player1.png");
         player2 = ResourceLoader.loadImage("res/player2.png");
+        monster1 = ResourceLoader.loadImage("res/monster1.png");
+        monster2 = ResourceLoader.loadImage("res/monster2.png");
+        monster3 = ResourceLoader.loadImage("res/monster3.png");
+        monster4 = ResourceLoader.loadImage("res/monster4.png");
         bomb = ResourceLoader.loadImage("res/bomb.png");
         powerUp = ResourceLoader.loadImage("res/powerup.png");
         curse = ResourceLoader.loadImage("res/curse.png");
