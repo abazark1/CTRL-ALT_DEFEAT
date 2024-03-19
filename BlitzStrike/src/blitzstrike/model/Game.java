@@ -5,13 +5,18 @@
 package blitzstrike.model;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Timer;
+
+
 
 /**
  *
  * @author aselh
  */
 public class Game {
+    
+    public static final int MAP_SIZE = 9;
     
     private int roundsToWin;
     private LocalTime startingTime;
@@ -21,8 +26,14 @@ public class Game {
     private int player1Score;
     private int player2Score;
     
+    Cell[][] space = new Cell[MAP_SIZE][MAP_SIZE];
     
-    public void loadMap(){}
+    ArrayList<Monster> monsters = new ArrayList<>();
+    
+    
+    public void loadMap(){
+    
+    }
     public void loadNextGame(){}
     public void endGame(){}
     public void restartgame(){}
