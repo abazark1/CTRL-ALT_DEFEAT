@@ -15,10 +15,6 @@ class Curse extends Effect{
         this.duration = duration;
     }
     
-    public void applyEffect(Player p){
-        
-    }
-    
     public void removeEffect(Player p){
         
     }

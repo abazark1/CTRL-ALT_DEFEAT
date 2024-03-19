@@ -10,10 +10,6 @@ package blitzstrike.model;
  */
 class PowerUp extends Effect{
     
-    public void applyEffect(Player player){
-        
-    }
-    
     public void removeEffect(Player player){
         
     }

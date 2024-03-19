@@ -12,6 +12,10 @@ public class Effect {
     public boolean isEmpty(){
         return false;
     }
+    
+    public void applyEffect(Player player){
+        
+    }
 }
 
 class Empty extends Effect {
