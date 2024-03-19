@@ -82,7 +82,6 @@ public class Player {
     }
 
     public void activateEffect(Effect effect) {
-        // TO BE CHANGED
         effect.applyEffect(this);
     }
 
