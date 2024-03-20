@@ -35,9 +35,12 @@ public class Player {
     private LocalTime noBombCurseTimer;
     private boolean placeBombImmediatelyCurse;
     private LocalTime immediateBombCurseTimer;
+    
+    private Cell[][] space;
 
-    public Player(String name) {
+    public Player(String name, Cell[][] space) {
         this.name = name;
+        this.space = space;
         // TO BE CHANGED
         this.position = new Position(0, 0);
         this.bombs = new ArrayList<>();
@@ -75,10 +78,8 @@ public class Player {
     }
 
     public boolean isValidPosition(Direction direction) {
-        // TO BE CHANGED
-        // we need to check if the cell on this position is walkable or not
-//        return this.position.translate(direction);
-        return true;
+        Position newPosition = this.position.translate(direction);
+        return this.space[newPosition.getY()][newPosition.getX()].isWalkable();
     }
 
     public void activateEffect(Effect effect) {

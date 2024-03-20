@@ -43,6 +43,9 @@ class Box extends Cell {
     
     public void getDestroyed(){
         this.destroyed = true;
+        this.walkable = true;
+        this.destroyable = false;
+        this.mineable = true;
         System.out.println("I'm destroyed");
     }
 }
