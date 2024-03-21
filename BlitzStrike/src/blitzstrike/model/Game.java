@@ -26,9 +26,16 @@ public class Game {
     private int player1Score;
     private int player2Score;
     
-    Cell[][] space = new Cell[MAP_SIZE][MAP_SIZE];
+    private Cell[][] space = new Cell[MAP_SIZE][MAP_SIZE];
     
-    ArrayList<Monster> monsters = new ArrayList<>();
+    private ArrayList<Monster> monsters = new ArrayList<>();
+
+    public Game(Player player1, Player player2, LocalTime startingTime, int roundsToWin) {
+        this.roundsToWin = roundsToWin;
+        this.player1 = player1;
+        this.player2 = player2;
+        this.startingTime = startingTime;
+    }
     
     
     public void loadMap(){
