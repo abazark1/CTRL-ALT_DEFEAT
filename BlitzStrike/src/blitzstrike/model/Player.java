@@ -86,4 +86,67 @@ public class Player {
         effect.applyEffect(this);
     }
 
+    public void setImmediateBombCurse(boolean value){
+        this.placeBombImmediatelyCurse = value;
+    }
+    
+    public LocalTime getImmediateBombCurseTimer(){
+        return this.immediateBombCurseTimer;
+    }
+    
+    public void setImmediateBombCurseTimer(LocalTime time) {
+        if (time != null){
+            this.immediateBombCurseTimer = time;
+        } else {
+            this.immediateBombCurseTimer = null;
+        }
+    }
+    
+    public void setNoBombCurse(boolean value){
+        this.noBombCurse = value;
+    }
+    
+    public LocalTime getNoBombCurseTimer(){
+        return this.noBombCurseTimer;
+    }
+    
+    public void setNoBombCurseTimer(LocalTime time){
+        if (time != null){
+            this.immediateBombCurseTimer = time;
+        } else {
+            this.immediateBombCurseTimer = null;
+        }
+    }
+    
+    public void setBombRangeCurse(int value){
+        this.blastRange = value;
+    }
+    
+    public LocalTime getBombRangeCurseTimer(){
+        return this.blastRangeDecreaseTimer;
+    }
+    
+    public void setBombRangeCurseTimer(LocalTime time){
+        if (time != null){
+            this.immediateBombCurseTimer = time;
+        } else {
+            this.immediateBombCurseTimer = null;
+        }
+    }
+    
+    public void setSpeedCurse(double value){
+        this.speed = value;
+    }
+    
+    public LocalTime getSpeedCurseTimer(){
+        return this.speedDecreaseTimer;
+    }
+    
+    public void setSpeedCurseTimer(LocalTime time){
+        if (time != null){
+            this.immediateBombCurseTimer = time;
+        } else {
+            this.immediateBombCurseTimer = null;
+        }
+    }
 }
