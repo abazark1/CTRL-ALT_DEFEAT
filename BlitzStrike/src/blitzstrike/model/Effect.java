@@ -18,7 +18,7 @@ public class Effect {
     }
 }
 
-class Empty extends Effect {
+class EmptyEffect extends Effect {
     @Override
     public boolean isEmpty(){
         return true;

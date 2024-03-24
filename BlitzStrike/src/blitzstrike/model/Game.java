@@ -50,9 +50,9 @@ public class Game {
     public void movePlayer2(Direction d){}
     public void moveMonsters(Monster m){}
     public boolean isPlayerDead(){ return false;}
-    public Player getWinner(){return;}
-    public boolean gameSuccessfullEnd(){return false;}
-    public Player checkScore(){return ;}
+//    public Player getWinner(){return;}
+//    public boolean gameSuccessfullEnd(){return false;}
+//    public Player checkScore(){return ;}
     public boolean doCollapse(){return false;}
     public void handleCollapse(){}
     public void handleBombExplosion(){}

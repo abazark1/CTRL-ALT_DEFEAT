@@ -25,13 +25,13 @@ public class Monster {
     public void attack(Player p){
         
     }
-    public Position isPlayerClose(Position p){
-        return;
-    }
-    
-    public boolean isValidPosition(Position p){
-        return;
-    }
+//    public Position isPlayerClose(Position p){
+//        return;
+//    }
+//    
+//    public boolean isValidPosition(Position p){
+//        return;
+//    }
 }   
 class BasicMonster extends Monster{
     @Override
@@ -54,10 +54,10 @@ class Monster3 extends Monster{
 
     }
 
-    private Direction checkClosestPlayer(ArrayList<Cell> space){
-
-        return;
-    }
+//    private Direction checkClosestPlayer(ArrayList<Cell> space){
+//
+//        return;
+//    }
 }
 
 class Monster4 extends Monster{
