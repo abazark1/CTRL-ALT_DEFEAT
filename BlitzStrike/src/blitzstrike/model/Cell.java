@@ -49,6 +49,10 @@ class Box extends Cell {
         this.effect = Effect.getRandomEffect();
         System.out.println("I'm destroyed");
     }
+    
+    public Effect getEffect() {
+        return this.effect;
+    }
 }
 
 class Empty extends Cell {

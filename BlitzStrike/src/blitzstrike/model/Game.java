@@ -16,7 +16,7 @@ import java.util.Timer;
  */
 public class Game {
     
-    public static final int MAP_SIZE = 9;
+    public static final int MAP_SIZE = 15;
     
     private int roundsToWin;
     private LocalTime startingTime;
@@ -37,6 +37,47 @@ public class Game {
         this.startingTime = startingTime;
     }
     
+    public Box getBox(int x, int y) {
+        Cell cell = space[y][x];
+        if (cell instanceof Box) {
+            return (Box) cell;
+        }
+        return null;
+    }
+    
+    public Empty getEmpty(int x, int y) {
+        Cell cell = space[y][x];
+        if (cell instanceof Empty) {
+            return (Empty) cell;
+        }
+        return null;
+    }
+    
+    public Wall getWall(int x, int y) {
+        Cell cell = space[y][x];
+        if (cell instanceof Wall) {
+            return (Wall) cell;
+        }
+        return null;
+    }
+    
+    public Player getPlayer(int x, int y) {
+        if (player1.getPosition().getX() == x && player1.getPosition().getY() == y) {
+            return player1;
+        } else if (player2.getPosition().getX() == x && player2.getPosition().getY() == y) {
+            return player2;
+        }
+        return null;
+    }
+    
+    public Monster getMonster(int x, int y) {
+        for (Monster monster : monsters) {
+            if (monster.getPosition().getX() == x && monster.getPosition().getY() == y) {
+                return monster;
+            }
+        }
+        return null;
+    }
     
     public void loadMap(){
     

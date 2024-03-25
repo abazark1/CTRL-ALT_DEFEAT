@@ -12,6 +12,8 @@ import java.time.LocalTime;
  */
 class Curse extends Effect{
     private int duration;
+    private static Curse instance;
+
     
     public Curse(int duration){
         this.duration = duration;
@@ -23,6 +25,13 @@ class Curse extends Effect{
     
     public void removeEffect(Player p){
         
+    }
+    
+    public static Curse getInstance(int duration) {
+        if (instance == null) {
+            instance = new Curse(duration);
+        }
+        return instance;
     }
 }
 

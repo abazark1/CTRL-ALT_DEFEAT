@@ -149,4 +149,8 @@ public class Player {
             this.immediateBombCurseTimer = null;
         }
     }
+    
+    public Position getPosition() {
+        return this.position;
+    }
 }
