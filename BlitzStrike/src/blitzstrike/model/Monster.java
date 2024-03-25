@@ -47,6 +47,12 @@ public class Monster {
     public boolean isValidPosition(Position p) {
         return this.space[p.getY()][p.getY()].isWalkable();
     }
+    
+    public Position getPosition() {
+        return this.position;
+    }
+    
+    //public abstract Monster getType();
 }
 
 class BasicMonster extends Monster {
@@ -134,6 +140,11 @@ class BasicMonster extends Monster {
         int indexOfRandomDirection = rand.nextInt(numberOfPossibleDirections);
         this.currentDirection = possibleDirections.get(indexOfRandomDirection);
     }
+    
+    /*@Override
+    public Monster getType(){
+        return Monseter.BASIC_MONSTER:
+    }*/
 }
 
 class Monster2 extends Monster {

@@ -28,7 +28,7 @@ public class MainWindow extends JFrame{
     private JFrame frame;
     public MainWindow() throws IOException {
         
-        frame = new JFrame("Tron Game");
+        frame = new JFrame("Blitzstrike");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
             final JPanel mMenu = new JPanel(){
