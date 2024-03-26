@@ -9,8 +9,10 @@ import java.awt.event.*;
 import blitzstrike.model.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.IOException;
@@ -26,52 +28,88 @@ public class MainWindow extends JFrame{
     private JLabel timeLabel;
     
     private JFrame frame;
-    public MainWindow() throws IOException {
+    public MainWindow() throws IOException 
+    {
         
-        frame = new JFrame("Blitzstrike");
+        frame = new JFrame("BlitzStrike");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-            final JPanel mMenu = new JPanel(){
+        final JPanel mMenu = new JPanel()
+        {
             @Override
             public void paintComponent(Graphics gc){
                 super.paintComponent(gc);
                 try{
-                    Image mMenuImage = ResourceLoader.loadImage("blitzstrike/res/monster2.png");
-                    gc.drawImage(mMenuImage, 350, 250, null);
+//                    Image mMenuImage = ResourceLoader.loadImage("blitzstrike/res/mainMenu.jpg");
+//                    gc.drawImage(mMenuImage, 150, 150, null);
                     
-//                    Image mMenuImage = ResourceLoader.loadImage("res/wall.png");
-//                    int x = (mMenu.getWidth() - mMenuImage.getWidth(null)) / 2;
-//                    int y = (mMenu.getHeight() - mMenuImage.getHeight(null)) / 2;
-//                    gc.drawImage(mMenuImage, x, y, null);
+                    Image mMenuImage = ResourceLoader.loadImage("blitzstrike/res/mainM.png");
+                    int x = (getWidth() - mMenuImage.getWidth(null)) / 2;
+                    int y = (getHeight() - mMenuImage.getHeight(null)) / 2;
+                    gc.drawImage(mMenuImage, x, y, null);
 
                 }
                 catch (IOException e){
+                    e.printStackTrace();
                 }
             }
    
-            };
-         
-      final JFrame optionMenu =new JFrame();
-      optionMenu.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        };
  
 
-        mMenu.setLayout(new BorderLayout());
+        //mMenu.setLayout(new BorderLayout());
         mMenu.setBackground(Color.BLACK);
-        final JPanel tMenu = new JPanel();
-        tMenu.setLayout(new FlowLayout());
-        tMenu.setBackground(Color.DARK_GRAY);
-        final JButton play = new JButton("PLAY");
-	tMenu.add(play);
-	final JButton scoreBoard = new JButton("ScoreBoard");
-	tMenu.add(scoreBoard);
-        final JButton quit = new JButton("QUIT");
-	mMenu.add(tMenu,BorderLayout.SOUTH);
+        mMenu.setLayout(new BoxLayout(mMenu, BoxLayout.Y_AXIS));
+        mMenu.add(Box.createVerticalGlue());
+        mMenu.add(Box.createVerticalGlue());
+        mMenu.add(Box.createVerticalGlue());
+        mMenu.add(Box.createVerticalGlue());
+        
+   
+        JButton playButton = createButton("PLAY");
+        JButton continueButton = createButton("CONTINUE");
+        JButton quitButton = createButton("QUIT");
+        
+        addButton(mMenu, playButton);
+        mMenu.add(Box.createVerticalStrut(10)); // Add space
+        addButton(mMenu, continueButton);
+        mMenu.add(Box.createVerticalStrut(10)); // Add space
+        addButton(mMenu, quitButton);
+
+	mMenu.add(Box.createVerticalGlue());
+        mMenu.add(Box.createVerticalGlue());
+        mMenu.add(Box.createVerticalGlue());
         frame.add(mMenu);
         frame.setPreferredSize(new Dimension(800, 600));
         frame.setResizable(false);
         frame.pack();      
         frame.setVisible(true);
         setLocationRelativeTo(null);
+        
+        playButton.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+                // Handle play button click
+            }
+        });
+
+        continueButton.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+                // Handle continue button click
+            }
+        });
+
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle quit button click
+            }
+        });
  
          
     /*
@@ -92,5 +130,34 @@ public class MainWindow extends JFrame{
 //        
 //    }
     
-            }
+    }
+    
+    private JButton createButton(String label) 
+    {
+    JButton button = new JButton(label);
+    Dimension buttonSize = new Dimension(180, 60);
+    button.setPreferredSize(buttonSize);
+    button.setMaximumSize(buttonSize);
+    button.setMinimumSize(buttonSize);
+    button.setBackground(Color.BLUE);
+    button.setForeground(Color.WHITE);
+    button.setFont(new Font("SansSerif", Font.BOLD, 17));
+    return button;
+    }
+    
+    // Helper method to create a button and add it to the panel
+    private void addButton(JPanel panel, JButton button) 
+    {
+            
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+            buttonPanel.setOpaque(false);
+            buttonPanel.add(button);
+            panel.add(buttonPanel);
+            
+            
+    }
+    
+    
 }
+

@@ -19,18 +19,18 @@ public class Effect {
         
     }
     
-    static public Effect getRandomEffect(){
-        Random rand = new Random();
-        int randomNumber = rand.nextInt(6);
-        switch (randomNumber){
-            case 0:
-                return new BombIncrease();
-            case 1:
-                return new BlastRange();
-            default:
-                return new Empty();
-        }
-    }
+//    static public Effect getRandomEffect(){
+//        Random rand = new Random();
+//        int randomNumber = rand.nextInt(6);
+//        switch (randomNumber){
+//            case 0:
+//                return new BombIncrease();
+//            case 1:
+//                return new BlastRange();
+//            default:
+//                return new Empty();
+//        }
+//    }
 }
 
 class EmptyEffect extends Effect {
