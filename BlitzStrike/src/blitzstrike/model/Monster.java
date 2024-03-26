@@ -40,9 +40,9 @@ public class Monster {
 
     }
 
-    public Position isPlayerClose(Position p) {
-        return;
-    }
+//    public Position isPlayerClose(Position p) {
+//        return;
+//    }
 
     public boolean isValidPosition(Position p) {
         return this.space[p.getY()][p.getY()].isWalkable();
@@ -147,33 +147,33 @@ class BasicMonster extends Monster {
     }*/
 }
 
-class Monster2 extends Monster {
-
-    @Override
-    public void move(Direction d) {
-
-    }
-
-}
-
-class Monster3 extends Monster {
-
-    @Override
-    public void move(Direction d) {
-
-    }
-
-    private Direction checkClosestPlayer(ArrayList<Cell> space) {
-
-        return;
-    }
-}
-
-class Monster4 extends Monster {
-
-    @Override
-    public void move(Direction d) {
-
-    }
-
-}
+//class Monster2 extends Monster {
+//
+//    @Override
+//    public void move(Direction d) {
+//
+//    }
+//
+//}
+//
+//class Monster3 extends Monster {
+//
+//    @Override
+//    public void move(Direction d) {
+//
+//    }
+//
+//    private Direction checkClosestPlayer(ArrayList<Cell> space) {
+//
+//        return;
+//    }
+//}
+//
+//class Monster4 extends Monster {
+//
+//    @Override
+//    public void move(Direction d) {
+//
+//    }
+//
+//}

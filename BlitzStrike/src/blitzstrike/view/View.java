@@ -20,6 +20,9 @@ import res.ResourceLoader;
 import blitzstrike.model.Cell;
 import blitzstrike.model.Game;
 import blitzstrike.model.Effect;
+import blitzstrike.model.Monster;
+import blitzstrike.model.Player;
+import javax.swing.Box;
 //import blitzstrike.model.Curse;
 
 public class View extends JPanel {
@@ -77,39 +80,39 @@ public class View extends JPanel {
         //Position p2 = game.getPlayer2Pos();
         
 //        // The rest is to be implemented
-        for (int y = 0; y < game.MAP_SIZE; y++) {
-            for (int x = 0; x < game.MAP_SIZE; x++) {
-                Image img = null;
-                Box box = game.getBox(x, y);
-
-                // Check if there's a box at this position
-                if (box != null) {
-                    if (box.getEffect() instanceof PowerUp) {
-                        gr.drawImage(powerUp, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
-                    } else if (box.getEffect() instanceof Curse) {
-                        gr.drawImage(curse, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
-                    } else if (box.getEffect() instanceof EmptyEffect) {
-                        //gr.drawImage(p, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
-                        continue;
-                    }
-                } else {
-                    Monster monster = game.getMonster(x, y);
-                    Player player = game.getPlayer(x, y);
-                    Wall wall = game.getWall(x, y);
-                    Empty empty = game.getEmpty(x, y);
-
-                    if (monster != null) {
-                        gr.drawImage(monster1, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
-                    } else if (player != null) {
-                        gr.drawImage(player, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
-                    } else if (wall != null) {
-                        gr.drawImage(wall, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
-                    } else if (empty != null) {
-                        gr.drawImage(empty, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
-                    }
-                }
-            }
-        }
+//        for (int y = 0; y < game.MAP_SIZE; y++) {
+//            for (int x = 0; x < game.MAP_SIZE; x++) {
+//                Image img = null;
+//                Box box = game.getBox(x, y);
+//
+//                // Check if there's a box at this position
+//                if (box != null) {
+//                    if (box.getEffect() instanceof PowerUp) {
+//                        gr.drawImage(powerUp, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+//                    } else if (box.getEffect() instanceof Curse) {
+//                        gr.drawImage(curse, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+//                    } else if (box.getEffect() instanceof EmptyEffect) {
+//                        //gr.drawImage(p, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+//                        continue;
+//                    }
+//                } else {
+//                    Monster monster = game.getMonster(x, y);
+//                    Player player = game.getPlayer(x, y);
+//                    Wall wall = game.getWall(x, y);
+//                    Empty empty = game.getEmpty(x, y);
+//
+//                    if (monster != null) {
+//                        gr.drawImage(monster1, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+//                    } else if (player != null) {
+//                        gr.drawImage(player, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+//                    } else if (wall != null) {
+//                        gr.drawImage(wall, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+//                    } else if (empty != null) {
+//                        gr.drawImage(empty, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+//                    }
+//                }
+//            }
+//        }
 
     }
 }
