@@ -86,4 +86,19 @@ public class Player {
         effect.applyEffect(this);
     }
 
+    public int getBombNumber(){
+        return maxBombNumber;
+    }
+    
+    public void setBombNumber(int newBombNumber){
+        this.maxBombNumber = newBombNumber;
+    }
+    
+    public int getBlastRange(){
+        return blastRange;
+    }
+    
+    public void setBlastRange(int newBlastRange){
+        this.blastRange = newBlastRange;
+    }
 }
