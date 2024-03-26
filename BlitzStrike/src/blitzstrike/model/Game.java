@@ -4,6 +4,9 @@
  */
 package blitzstrike.model;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -36,6 +39,7 @@ public class Game {
         this.player2 = player2;
         this.startingTime = startingTime;
     }
+    public Game(){}
     
     public Box getBox(int x, int y) {
         Cell cell = space[y][x];
@@ -79,8 +83,9 @@ public class Game {
         return null;
     }
     
-    public void loadMap(){
-    
+    public void loadMap(String filepath){
+        
+        
     }
     public void loadNextGame(){}
     public void endGame(){}
@@ -97,6 +102,25 @@ public class Game {
     public boolean doCollapse(){return false;}
     public void handleCollapse(){}
     public void handleBombExplosion(){}
-    public void saveGame(Player player1name, Player player2name, int player1score, int player2score, int roundsToWin, Timer timer){}   
+    public void saveGame(Player player1name, Player player2name, int player1score, int player2score, int roundsToWin, Timer timer){}
     
+    public String FileReader(String filePath)
+    {
+        StringBuilder sb = new StringBuilder();
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader(filePath));
+            String line;
+            while ((line=br.readLine()) != null){
+                sb.append(line).append('\n');
+            } 
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+        String result = sb.toString();
+        return result;
+        
+    }
 }
+
