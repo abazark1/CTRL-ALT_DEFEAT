@@ -153,4 +153,21 @@ public class Player {
     public Position getPosition() {
         return this.position;
     }
+    
+    public int getBombNumber(){
+        return this.maxBombNumber;
+    }
+    
+    public void setBombNumber(int newBombNumber){
+        this.maxBombNumber = newBombNumber;
+    }
+    
+    public int getBlastRange(){
+        return this.blastRange;
+    }
+    
+    public void setBlastRange(int newBlastRange){
+        this.blastRange = newBlastRange;
+    }
+
 }
