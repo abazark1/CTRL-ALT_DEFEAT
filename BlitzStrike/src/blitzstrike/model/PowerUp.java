@@ -10,6 +10,16 @@ package blitzstrike.model;
  */
 class PowerUp extends Effect{
     
+    protected PowerUp(){}
+    private static PowerUp powerUpInstance = null;
+    
+    public static PowerUp getInstance(){
+        if (powerUpInstance == null){
+            powerUpInstance = new PowerUp();
+        }
+        return powerUpInstance;
+    }
+    
     public void removeEffect(Player player){
         
     }
@@ -25,9 +35,51 @@ class BombIncrease extends PowerUp{
     }
     
     private void increaseBombs(Player player){
+        int bombs =player.getBombNumber();
+        bombs++;
+        player.setBombNumber(bombs);
+    }
+}
+
+class BlastRange extends PowerUp{
+    
+    @Override
+    public void applyEffect(Player player){
+        
+    }
+    
+    @Override
+    public void removeEffect(Player player){
+        
+    }
+    
+    private void increaseRange(Player player){
+        int range =player.getBlastRange();
+        range++;
+        player.setBlastRange(range);
+    }
+}
+
+//advanced power ups
+
+class RollerSkate extends PowerUp{
+    private double bonusToSpeed;
+    
+    public RollerSkate(double bonusToSpeed){
+        this.bonusToSpeed= bonusToSpeed;
+    }
+    
+    @Override
+    public void applyEffect(Player player){
+        
+    }
+    
+    private void increaseSpeed(Player player){
         
     }
 }
+
+
 
 class BlastRange extends PowerUp{
     
