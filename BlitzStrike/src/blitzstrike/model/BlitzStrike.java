@@ -4,6 +4,10 @@
  */
 package blitzstrike.model;
 
+import blitzstrike.view.MainWindow;
+import java.io.IOException;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author aliia
@@ -15,6 +19,13 @@ public class BlitzStrike {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+         SwingUtilities.invokeLater(() -> {
+            try {
+                new MainWindow();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
     
 }

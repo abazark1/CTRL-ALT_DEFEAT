@@ -81,6 +81,24 @@ class RollerSkate extends PowerUp{
 
 
 
+class BlastRange extends PowerUp{
+    
+    @Override
+    public void applyEffect(Player player){
+        
+    }
+    
+    @Override
+    public void removeEffect(Player player){
+        
+    }
+    
+    private void increaseRange(Player player){
+        
+    }
+}
+//advanced power ups
+
 class Invincibility extends PowerUp{
     private int duration;
     
@@ -162,6 +180,23 @@ class Obstacle extends PowerUp{
     }
     
     private void increaseObstacles(Player player){
+        
+    }
+}
+
+class RollerSkate extends PowerUp{
+    private double bonusToSpeed;
+    
+    public RollerSkate(double bonusToSpeed){
+        this.bonusToSpeed= bonusToSpeed;
+    }
+    
+    @Override
+    public void applyEffect(Player player){
+        
+    }
+    
+    private void increaseSpeed(Player player){
         
     }
 }

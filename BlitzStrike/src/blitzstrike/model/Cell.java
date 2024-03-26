@@ -46,7 +46,12 @@ class Box extends Cell {
         this.walkable = true;
         this.destroyable = false;
         this.mineable = true;
+        this.effect = Effect.getRandomEffect();
         System.out.println("I'm destroyed");
+    }
+    
+    public Effect getEffect() {
+        return this.effect;
     }
 }
 

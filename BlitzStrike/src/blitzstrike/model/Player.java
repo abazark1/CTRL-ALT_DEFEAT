@@ -86,19 +86,71 @@ public class Player {
         effect.applyEffect(this);
     }
 
-    public int getBombNumber(){
-        return maxBombNumber;
+    public void setImmediateBombCurse(boolean value){
+        this.placeBombImmediatelyCurse = value;
     }
     
-    public void setBombNumber(int newBombNumber){
-        this.maxBombNumber = newBombNumber;
+    public LocalTime getImmediateBombCurseTimer(){
+        return this.immediateBombCurseTimer;
     }
     
-    public int getBlastRange(){
-        return blastRange;
+    public void setImmediateBombCurseTimer(LocalTime time) {
+        if (time != null){
+            this.immediateBombCurseTimer = time;
+        } else {
+            this.immediateBombCurseTimer = null;
+        }
     }
     
-    public void setBlastRange(int newBlastRange){
-        this.blastRange = newBlastRange;
+    public void setNoBombCurse(boolean value){
+        this.noBombCurse = value;
+    }
+    
+    public LocalTime getNoBombCurseTimer(){
+        return this.noBombCurseTimer;
+    }
+    
+    public void setNoBombCurseTimer(LocalTime time){
+        if (time != null){
+            this.immediateBombCurseTimer = time;
+        } else {
+            this.immediateBombCurseTimer = null;
+        }
+    }
+    
+    public void setBombRangeCurse(int value){
+        this.blastRange = value;
+    }
+    
+    public LocalTime getBombRangeCurseTimer(){
+        return this.blastRangeDecreaseTimer;
+    }
+    
+    public void setBombRangeCurseTimer(LocalTime time){
+        if (time != null){
+            this.immediateBombCurseTimer = time;
+        } else {
+            this.immediateBombCurseTimer = null;
+        }
+    }
+    
+    public void setSpeedCurse(double value){
+        this.speed = value;
+    }
+    
+    public LocalTime getSpeedCurseTimer(){
+        return this.speedDecreaseTimer;
+    }
+    
+    public void setSpeedCurseTimer(LocalTime time){
+        if (time != null){
+            this.immediateBombCurseTimer = time;
+        } else {
+            this.immediateBombCurseTimer = null;
+        }
+    }
+    
+    public Position getPosition() {
+        return this.position;
     }
 }

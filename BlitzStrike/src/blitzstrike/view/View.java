@@ -17,6 +17,10 @@ import java.awt.Image;
 import java.io.IOException;
 import javax.swing.JPanel;
 import res.ResourceLoader;
+import blitzstrike.model.Cell;
+import blitzstrike.model.Game;
+import blitzstrike.model.Effect;
+//import blitzstrike.model.Curse;
 
 public class View extends JPanel {
     private final Game game;
@@ -25,22 +29,22 @@ public class View extends JPanel {
     private int scaled_size;
     private final int tile_size = 48;
     
-    public Board(Game g) throws IOException{
+    public View(Game g) throws IOException{
         game = g;
         scale = 1.0;
         scaled_size = (int)(scale * tile_size);
-        player1 = ResourceLoader.loadImage("res/player1.png");
-        player2 = ResourceLoader.loadImage("res/player2.png");
-        monster1 = ResourceLoader.loadImage("res/monster1.png");
-        monster2 = ResourceLoader.loadImage("res/monster2.png");
-        monster3 = ResourceLoader.loadImage("res/monster3.png");
-        monster4 = ResourceLoader.loadImage("res/monster4.png");
-        bomb = ResourceLoader.loadImage("res/bomb.png");
-        powerUp = ResourceLoader.loadImage("res/powerup.png");
-        curse = ResourceLoader.loadImage("res/curse.png");
-        box = ResourceLoader.loadImage("res/box.png");
-        wall = ResourceLoader.loadImage("res/wall.png");
-        empty = ResourceLoader.loadImage("res/empty.png");
+        player1 = ResourceLoader.loadImage("blitzstrike/res/player1.png");
+        player2 = ResourceLoader.loadImage("blitzstrike/res/player2.png");
+        monster1 = ResourceLoader.loadImage("blitzstrike/res/monster1.png");
+        monster2 = ResourceLoader.loadImage("blitzstrike/res/monster2.png");
+        monster3 = ResourceLoader.loadImage("blitzstrike/res/monster3.png");
+        monster4 = ResourceLoader.loadImage("blitzstrike/res/monster4.png");
+        bomb = ResourceLoader.loadImage("blitzstrike/res/bomb.png");
+        powerUp = ResourceLoader.loadImage("blitzstrike/res/powerup.png");
+        curse = ResourceLoader.loadImage("blitzstrike/res/curse.png");
+        box = ResourceLoader.loadImage("blitzstrike/res/box.png");
+        wall = ResourceLoader.loadImage("blitzstrike/res/wall.png");
+        empty = ResourceLoader.loadImage("blitzstrike/res/empty.png");
     }
     
     /*
@@ -65,15 +69,53 @@ public class View extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         Color semiTransparentBlack = new Color(0, 0, 0);
-        if (!game.isLevelLoaded()) return;
+        //if (!game.isLevelLoaded()) return;
         Graphics2D gr = (Graphics2D) g;
-        int w = game.getLevelCols();
-        int h = game.getLevelRows();
-        Position p1 = game.getPlayer1Pos();
-        Position p2 = game.getPlayer2Pos();
+        //int w = game.getLevelCols();
+        //int h = game.getLevelRows();
+        //Position p1 = game.getPlayer1Pos();
+        //Position p2 = game.getPlayer2Pos();
         
-        // The rest is to be implemented
+//        // The rest is to be implemented
+        for (int y = 0; y < game.MAP_SIZE; y++) {
+            for (int x = 0; x < game.MAP_SIZE; x++) {
+                Image img = null;
+                Box box = game.getBox(x, y);
+
+                // Check if there's a box at this position
+                if (box != null) {
+                    if (box.getEffect() instanceof PowerUp) {
+                        gr.drawImage(powerUp, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+                    } else if (box.getEffect() instanceof Curse) {
+                        gr.drawImage(curse, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+                    } else if (box.getEffect() instanceof EmptyEffect) {
+                        //gr.drawImage(p, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+                        continue;
+                    }
+                } else {
+                    Monster monster = game.getMonster(x, y);
+                    Player player = game.getPlayer(x, y);
+                    Wall wall = game.getWall(x, y);
+                    Empty empty = game.getEmpty(x, y);
+
+                    if (monster != null) {
+                        gr.drawImage(monster1, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+                    } else if (player != null) {
+                        gr.drawImage(player, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+                    } else if (wall != null) {
+                        gr.drawImage(wall, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+                    } else if (empty != null) {
+                        gr.drawImage(empty, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+                    }
+                }
+            }
+        }
+
     }
 }
+
+
+// The problem with monsterType and which player is playing i cannot specify which one
+// Also the inherited classes are not being seen, but strangely power up and curse classes as well
 
 
