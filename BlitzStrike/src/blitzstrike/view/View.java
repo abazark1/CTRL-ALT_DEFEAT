@@ -23,7 +23,7 @@ import blitzstrike.model.Effect;
 import blitzstrike.model.Monster;
 import blitzstrike.model.Player;
 import javax.swing.Box;
-//import blitzstrike.model.Curse;
+import blitzstrike.model.PowerUp;
 
 public class View extends JPanel {
     private final Game game;
