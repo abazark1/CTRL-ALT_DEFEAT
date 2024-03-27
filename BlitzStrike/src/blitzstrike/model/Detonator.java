@@ -8,19 +8,22 @@ package blitzstrike.model;
  *
  * @author medina
  */
-public class PowerUp extends Effect{
+
+//advanced power up
+
+public class Detonator extends PowerUp{
     
-    protected PowerUp(){}
-    private static PowerUp powerUpInstance = null;
-    
-    public static PowerUp getInstance(){
-        if (powerUpInstance == null){
-            powerUpInstance = new PowerUp();
-        }
-        return powerUpInstance;
+    @Override
+    public void applyEffect(Player player){
+        
     }
     
+    @Override
     public void removeEffect(Player player){
+        
+    }
+    
+    private void activateDetonator(Player player){
         
     }
 }

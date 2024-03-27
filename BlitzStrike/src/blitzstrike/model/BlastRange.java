@@ -8,19 +8,24 @@ package blitzstrike.model;
  *
  * @author medina
  */
-public class PowerUp extends Effect{
+
+//basic power up
+
+public class BlastRange extends PowerUp{
     
-    protected PowerUp(){}
-    private static PowerUp powerUpInstance = null;
-    
-    public static PowerUp getInstance(){
-        if (powerUpInstance == null){
-            powerUpInstance = new PowerUp();
-        }
-        return powerUpInstance;
+    @Override
+    public void applyEffect(Player player){
+        
     }
     
+    @Override
     public void removeEffect(Player player){
         
+    }
+    
+    private void increaseRange(Player player){
+        int range =player.getBlastRange();
+        range++;
+        player.setBlastRange(range);
     }
 }
