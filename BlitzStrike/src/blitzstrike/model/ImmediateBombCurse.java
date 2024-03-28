@@ -12,8 +12,9 @@ import java.time.LocalTime;
  */
 public class ImmediateBombCurse extends Curse {
     
-    public ImmediateBombCurse(int duration){
-        super(duration);
+    private ImmediateBombCurse() {
+        super();
+        this.duration = 3;
     }
     
     @Override

@@ -10,16 +10,6 @@ package blitzstrike.model;
  */
 public class PowerUp extends Effect{
     
-    protected PowerUp(){}
-    private static PowerUp powerUpInstance = null;
-    
-    public static PowerUp getInstance(){
-        if (powerUpInstance == null){
-            powerUpInstance = new PowerUp();
-        }
-        return powerUpInstance;
-    }
-    
     public void removeEffect(Player player){
         
     }

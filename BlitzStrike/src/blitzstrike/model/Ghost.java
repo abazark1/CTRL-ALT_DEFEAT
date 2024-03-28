@@ -8,27 +8,27 @@ package blitzstrike.model;
  *
  * @author medina
  */
-
 //advanced power up
+public class Ghost extends PowerUp {
 
-public class Ghost extends PowerUp{
     private int duration;
-    
-    public Ghost(int duration){
-        this.duration= duration;
+
+    private Ghost() {
+        super();
+        this.duration = 3;
     }
-    
+
     @Override
-    public void applyEffect(Player player){
-        
+    public void applyEffect(Player player) {
+
     }
-    
+
     @Override
-    public void removeEffect(Player player){
-        
+    public void removeEffect(Player player) {
+
     }
-    
-    private void makeGhost(Player player){
-        
+
+    private void makeGhost(Player player) {
+
     }
 }
