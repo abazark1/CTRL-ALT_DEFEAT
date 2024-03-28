@@ -13,8 +13,9 @@ import java.time.LocalTime;
 
 public class NoBombCurse extends Curse {
     
-    public NoBombCurse(int duration){
-        super(duration);
+    private NoBombCurse() {
+        super();
+        this.duration = 3;
     }
     
     @Override

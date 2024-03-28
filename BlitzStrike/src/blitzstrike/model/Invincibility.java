@@ -14,8 +14,9 @@ package blitzstrike.model;
 public class Invincibility extends PowerUp{
     private int duration;
     
-    public Invincibility(int duration){
-        this.duration= duration;
+    private Invincibility(){
+        super();
+        this.duration = 3;
     }
     
     @Override

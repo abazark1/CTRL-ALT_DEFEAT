@@ -8,22 +8,22 @@ package blitzstrike.model;
  *
  * @author medina
  */
-
 //advanced power up
+public class RollerSkate extends PowerUp {
 
-public class RollerSkate extends PowerUp{
     private double bonusToSpeed;
-    
-    public RollerSkate(double bonusToSpeed){
-        this.bonusToSpeed= bonusToSpeed;
+
+    private RollerSkate() {
+        super();
+        this.bonusToSpeed = 3;
     }
-    
+
     @Override
-    public void applyEffect(Player player){
-        
+    public void applyEffect(Player player) {
+
     }
-    
-    private void increaseSpeed(Player player){
-        
+
+    private void increaseSpeed(Player player) {
+
     }
 }

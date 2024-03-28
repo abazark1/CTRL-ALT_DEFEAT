@@ -14,8 +14,9 @@ package blitzstrike.model;
 public class Obstacle extends PowerUp{
     private int numberOfObstacles;
     
-    public Obstacle(int numberOfObstacles){
-        this.numberOfObstacles= numberOfObstacles;
+    private Obstacle(){
+        super();
+        this.numberOfObstacles = 3;
     }
     
     @Override

@@ -12,8 +12,9 @@ import java.time.LocalTime;
  */
 public class BombRangeCurse extends Curse {
     
-    public BombRangeCurse(int duration){
-        super(duration);
+    private BombRangeCurse() {
+        super();
+        this.duration = 3;
     }
     
     @Override

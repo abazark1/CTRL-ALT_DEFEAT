@@ -8,27 +8,16 @@ package blitzstrike.model;
  *
  * @author aliia
  */
-public class Curse extends Effect{
-    private int duration;
-    private static Curse instance;
+public class Curse extends Effect {
 
-    
-    public Curse(int duration){
-        this.duration = duration;
-    }
-    
+    protected int duration;
+
     public int getDuration() {
         return this.duration;
     }
-    
-    public void removeEffect(Player p){
-        
+
+    public void removeEffect(Player p) {
+
     }
-    
-    public static Curse getInstance(int duration) {
-        if (instance == null) {
-            instance = new Curse(duration);
-        }
-        return instance;
-    }
+
 }

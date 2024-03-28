@@ -11,24 +11,39 @@ import java.util.Random;
  * @author aliia
  */
 public class Effect {
-    public boolean isEmpty(){
+
+    private static Effect instance;
+
+    protected Effect() {
+    }
+
+    ;
+
+    public static Effect getInstance() {
+        if (instance == null) {
+            instance = new Effect();
+        }
+        return instance;
+    }
+
+    public boolean isEmpty() {
         return false;
     }
-    
-    public void applyEffect(Player player){
-        
+
+    public void applyEffect(Player player) {
+
     }
-    
-//    static public Effect getRandomEffect(){
-//        Random rand = new Random();
-//        int randomNumber = rand.nextInt(6);
-//        switch (randomNumber){
-//            case 0:
-//                return new BombIncrease();
-//            case 1:
-//                return new BlastRange();
-//            default:
-//                return new Empty();
-//        }
-//    }
+
+    static public Effect getRandomEffect() {
+        Random rand = new Random();
+        int randomNumber = rand.nextInt(6);
+        switch (randomNumber) {
+            case 0:
+                return BombIncrease.getInstance();
+            case 1:
+                return BlastRange.getInstance();
+            default:
+                return EmptyEffect.getInstance();
+        }
+    }
 }
