@@ -20,6 +20,7 @@ import java.util.Timer;
 public class Game {
     
     public static final int MAP_SIZE = 15;
+    public boolean endGame = false;
     
     private int roundsToWin;
     private LocalTime startingTime;
@@ -28,16 +29,17 @@ public class Game {
     private Player player2;
     private int player1Score;
     private int player2Score;
+    private String filepath;
     
+    private Player winner;
     private Cell[][] space = new Cell[MAP_SIZE][MAP_SIZE];
     
     private ArrayList<Monster> monsters = new ArrayList<>();
 
-    public Game(Player player1, Player player2, LocalTime startingTime, int roundsToWin) {
+    public Game(Player player1, Player player2, int roundsToWin) {
         this.roundsToWin = roundsToWin;
         this.player1 = player1;
         this.player2 = player2;
-        this.startingTime = startingTime;
     }
     public Game(){}
     
@@ -88,15 +90,45 @@ public class Game {
         
     }
     public void loadNextGame(){}
-    public void endGame(){}
-    public void restartgame(){}
-    public void pauseGame(){}
+    
+    public void endGame()
+    {
+        if(roundsToWin==player1.getGamesWon() || roundsToWin == player2.getGamesWon()){
+            endGame= true;
+        }
+        
+    }
+    public void restartgame()
+    {
+        
+        loadMap(filepath);
+        player1.reset();
+        player2.reset();
+        player1Score = 0;
+        player2Score = 0;
+        startingTime = LocalTime.now();
+        endGame = false;
+    }
+    public void pauseGame()
+    {
+        
+    }
     public void continueGame(){}
-    public void movePlayer1(Direction d){}
-    public void movePlayer2(Direction d){}
+    public void movePlayer1(Direction d)
+    {
+        player1.movePlayer(d);
+    }
+    public void movePlayer2(Direction d)
+    {
+        player2.movePlayer(d);
+    }
     public void moveMonsters(Monster m){}
     public boolean isPlayerDead(){ return false;}
-//    public Player getWinner(){return;}
+    public Player getWinner(){
+        //промежуточный winner?
+        
+        return this.winner;
+    }
 //    public boolean gameSuccessfullEnd(){return false;}
 //    public Player checkScore(){return ;}
     public boolean doCollapse(){return false;}
