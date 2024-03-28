@@ -11,17 +11,15 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Timer;
 
-
-
 /**
  *
  * @author aselh
  */
 public class Game {
-    
+
     public static final int MAP_SIZE = 15;
     public boolean endGame = false;
-    
+
     private int roundsToWin;
     private LocalTime startingTime;
     private int gameDuration;
@@ -30,19 +28,22 @@ public class Game {
     private int player1Score;
     private int player2Score;
     private String filepath;
-    
-    private Player winner;
-    private Cell[][] space = new Cell[MAP_SIZE][MAP_SIZE];
-    
-    private ArrayList<Monster> monsters = new ArrayList<>();
 
-    public Game(Player player1, Player player2, int roundsToWin) {
+    private Player winner;
+    private Cell[][] space;
+
+    private ArrayList<Monster> monsters;
+
+    public Game(String filepath, Player player1, Player player2, int roundsToWin) {
+        this.filepath = filepath;
         this.roundsToWin = roundsToWin;
         this.player1 = player1;
         this.player2 = player2;
     }
-    public Game(){}
-    
+
+    public Game() {
+    }
+
     public Box getBox(int x, int y) {
         Cell cell = space[y][x];
         if (cell instanceof Box) {
@@ -50,7 +51,7 @@ public class Game {
         }
         return null;
     }
-    
+
     public Empty getEmpty(int x, int y) {
         Cell cell = space[y][x];
         if (cell instanceof Empty) {
@@ -58,7 +59,7 @@ public class Game {
         }
         return null;
     }
-    
+
     public Wall getWall(int x, int y) {
         Cell cell = space[y][x];
         if (cell instanceof Wall) {
@@ -66,7 +67,7 @@ public class Game {
         }
         return null;
     }
-    
+
     public Player getPlayer(int x, int y) {
         if (player1.getPosition().getX() == x && player1.getPosition().getY() == y) {
             return player1;
@@ -75,7 +76,7 @@ public class Game {
         }
         return null;
     }
-    
+
     public Monster getMonster(int x, int y) {
         for (Monster monster : monsters) {
             if (monster.getPosition().getX() == x && monster.getPosition().getY() == y) {
@@ -84,75 +85,157 @@ public class Game {
         }
         return null;
     }
-    
-    public void loadMap(String filepath){
-        
-        
-    }
-    public void loadNextGame(){}
-    
-    public void endGame()
-    {
-        if(roundsToWin==player1.getGamesWon() || roundsToWin == player2.getGamesWon()){
-            endGame= true;
+
+    // basically, to refresh everything based on the file.
+    // TODO?: SHOULD THIS METHOD ALSO RESET ALL THE FIELDS OF PLAYER?
+    public void loadMap() {
+        this.monsters = new ArrayList<>();
+        this.space = new Cell[MAP_SIZE][MAP_SIZE];
+
+        String map = readFile();
+
+        //populate matrix
+        for (int row = 0; row < MAP_SIZE; row++) {
+            String line = map.split("\n")[row];
+            for (int column = 0; column < MAP_SIZE; column++) {
+                Position position = new Position(column, row);
+                char symbol = line.charAt(column);
+                Cell cell;
+                switch (symbol) {
+                    case 'x':
+                        cell = new Wall(position);
+                        break;
+                    case '#':
+                        cell = new Box(position);
+                        break;
+                    case 'a':
+                        cell = new Empty(position);
+                        this.player1.setPosition(position);
+                        break;
+                    case 'b':
+                        cell = new Empty(position);
+                        this.player2.setPosition(position);
+                        break;
+                    case '1':
+                        cell = new Empty(position);
+                        Monster monster = new BasicMonster(1.0, position, this.space);
+                        this.monsters.add(monster);
+                        break;
+                    default:
+                        cell = new Empty(position);
+                        break;
+                }
+                space[row][column] = cell;
+            }
         }
-        
     }
-    public void restartgame()
-    {
+
+    public void loadNextRound() throws Exception {
+        Player player = getCurrentRoundWinnerIfAny();
         
-        loadMap(filepath);
+        if (player != null) {
+            if (player == player1) {
+                this.player1Score++;
+            } else if (player == player2) {
+                this.player2Score++;
+            }
+        }
+
+        if (!gameSuccessfullEnd()) {
+            loadMap();
+        }
+    }
+
+    public void endGame() {
+        if (roundsToWin == player1.getGamesWon() || roundsToWin == player2.getGamesWon()) {
+            endGame = true;
+        }
+
+    }
+
+    public void restartgame() {
+
         player1.reset();
         player2.reset();
+        loadMap();
         player1Score = 0;
         player2Score = 0;
         startingTime = LocalTime.now();
         endGame = false;
     }
-    public void pauseGame()
-    {
-        
+
+    public void pauseGame() {
+
     }
-    public void continueGame(){}
-    public void movePlayer1(Direction d)
-    {
+
+    public void continueGame() {
+    }
+
+    public void movePlayer1(Direction d) {
         player1.movePlayer(d);
     }
-    public void movePlayer2(Direction d)
-    {
+
+    public void movePlayer2(Direction d) {
         player2.movePlayer(d);
     }
-    public void moveMonsters(Monster m){}
-    public boolean isPlayerDead(){ return false;}
-    public Player getWinner(){
+
+    public void moveMonsters(Monster m) {
+    }
+
+    public boolean isPlayerDead() {
+        return false;
+    }
+
+    public Player getWinner() {
         //промежуточный winner?
-        
+
         return this.winner;
     }
-//    public boolean gameSuccessfullEnd(){return false;}
-//    public Player checkScore(){return ;}
-    public boolean doCollapse(){return false;}
-    public void handleCollapse(){}
-    public void handleBombExplosion(){}
-    public void saveGame(Player player1name, Player player2name, int player1score, int player2score, int roundsToWin, Timer timer){}
-    
-    public String FileReader(String filePath)
-    {
-        StringBuilder sb = new StringBuilder();
-        try
-        {
-            BufferedReader br = new BufferedReader(new FileReader(filePath));
-            String line;
-            while ((line=br.readLine()) != null){
-                sb.append(line).append('\n');
-            } 
+
+    public boolean gameSuccessfullEnd() {
+        return this.player1Score >= this.roundsToWin || this.player2Score >= this.roundsToWin;
+    }
+
+    // Промежуточный победитель
+    public Player getCurrentRoundWinnerIfAny() throws Exception {
+        if (this.player1.isAlive() && this.player2.isAlive()) {
+            throw new Exception("Both can't be alive");
+        } else if (this.player1.isAlive()) {
+            return this.player1;
+        } else if (this.player2.isAlive()) {
+            return this.player2;
+        } else {
+            // Both died, nobody wins
+            return null;
         }
-        catch(IOException e){
+    }
+
+    public boolean doCollapse() {
+        return false;
+    }
+
+    public void handleCollapse() {
+    }
+
+    public void handleBombExplosion() {
+    }
+
+    public void saveGame(Player player1name, Player player2name, int player1score, int player2score, int roundsToWin, Timer timer) {
+    }
+
+    public String readFile() {
+        StringBuilder sb = new StringBuilder();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(this.filepath));
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append('\n');
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
         String result = sb.toString();
         return result;
-        
+
     }
 }
-
