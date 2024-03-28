@@ -169,5 +169,31 @@ public class Player {
     public void setBlastRange(int newBlastRange){
         this.blastRange = newBlastRange;
     }
+    
+    public int getGamesWon(){
+        return this.gamesWon;
+    }
+    
+    public void reset()
+    {     
+        this.position = new Position(0, 0);
+        this.bombs = new ArrayList<>();
+        this.obstacles = new ArrayList<>();
+        this.alive = true;
+        this.gamesWon = 0;
+        this.blastRange = 3;
+        this.speed = 1.0;
+        this.maxBombNumber = 1;
+        this.isInvincible = false;
+        this.isGhost = false;
+        this.isDetonatorOn = false;
+        this.maxNumberOfObstacles = 0;
+        this.noBombCurse = false;
+        this.placeBombImmediatelyCurse = false;
+    }
+    
+
+
+
 
 }
