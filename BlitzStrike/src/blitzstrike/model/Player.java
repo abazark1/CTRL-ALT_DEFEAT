@@ -41,8 +41,6 @@ public class Player {
     public Player(String name, Cell[][] space) {
         this.name = name;
         this.space = space;
-        // TO BE CHANGED
-        this.position = new Position(0, 0);
         this.bombs = new ArrayList<>();
         this.obstacles = new ArrayList<>();
         this.alive = true;
@@ -56,6 +54,14 @@ public class Player {
         this.maxNumberOfObstacles = 0;
         this.noBombCurse = false;
         this.placeBombImmediatelyCurse = false;
+    }
+    
+    public void setPosition(Position position){
+        this.position = position;
+    }
+    
+    public boolean isAlive(){
+        return this.alive;
     }
 
     public void placeBomb() {
