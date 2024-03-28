@@ -131,14 +131,6 @@ public class Game {
     }
 
     public void loadNextRound() throws Exception {
-        if (this.player1.isAlive() && this.player2.isAlive()) {
-            throw new Exception("Both can't be alive");
-        } else if (this.player1.isAlive()) {
-            this.player1Score++;
-        } else {
-            this.player2Score++;
-        }
-
         Player player = getCurrentRoundWinnerIfAny();
         
         if (player != null) {
@@ -163,9 +155,9 @@ public class Game {
 
     public void restartgame() {
 
-        loadMap();
         player1.reset();
         player2.reset();
+        loadMap();
         player1Score = 0;
         player2Score = 0;
         startingTime = LocalTime.now();
