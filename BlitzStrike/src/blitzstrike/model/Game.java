@@ -68,10 +68,15 @@ public class Game {
         return null;
     }
 
-    public Player getPlayer(int x, int y) {
+    public Player getPlayer1(int x, int y) {
         if (player1.getPosition().getX() == x && player1.getPosition().getY() == y) {
             return player1;
-        } else if (player2.getPosition().getX() == x && player2.getPosition().getY() == y) {
+        } 
+        return null;
+    }
+    
+    public Player getPlayer2(int x, int y) {
+        if (player2.getPosition().getX() == x && player2.getPosition().getY() == y) {
             return player2;
         }
         return null;
