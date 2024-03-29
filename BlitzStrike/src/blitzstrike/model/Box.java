@@ -33,4 +33,8 @@ public class Box extends Cell {
     public Effect getEffect() {
         return this.effect;
     }
+    
+    public boolean isDestroyed(){
+        return this.destroyed;
+    }
 }
