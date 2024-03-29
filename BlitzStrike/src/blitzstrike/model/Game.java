@@ -6,6 +6,7 @@ package blitzstrike.model;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -218,9 +219,49 @@ public class Game {
     }
 
     public void handleBombExplosion() {
+        
     }
 
-    public void saveGame(Player player1name, Player player2name, int player1score, int player2score, int roundsToWin, Timer timer) {
+    public void saveGame(Player player1name, Player player2name, int player1score, int player2score, int roundsToWin, Timer timer) 
+    {
+          StringBuilder mapBuilder = new StringBuilder();
+
+          // Save map state
+          for (int y = 0; y < MAP_SIZE; y++) 
+          {
+              for (int x = 0; x < MAP_SIZE; x++) 
+              {
+                  Cell cell = space[y][x];
+                  if (cell instanceof Wall) {
+                      mapBuilder.append('x');
+                  } else if (cell instanceof Box) {
+                      mapBuilder.append('#');
+                  } else if (player1.getPosition().equals(new Position(x, y))) {
+                      mapBuilder.append('a');
+                  } else if (player2.getPosition().equals(new Position(x, y))) {
+                      mapBuilder.append('b');
+                  } else if (isMonsterAtPosition(x, y)) {
+                      mapBuilder.append('1'); 
+                  } else {
+                      mapBuilder.append(' '); 
+                  }
+              }
+              mapBuilder.append("\n"); 
+          }
+          
+            try (FileWriter writer = new FileWriter("gamestate.txt")) {
+                writer.write("Player1Name:" + player1.getName() + "\n");
+                writer.write("Player2Name:" + player2.getName() + "\n");
+                writer.write("Player1Score:" + player1Score + "\n");
+                writer.write("Player2Score:" + player2Score + "\n");
+                writer.write("RoundsToWin:" + roundsToWin + "\n");
+
+                writer.write(mapBuilder.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+          
+          
     }
 
     public String readFile() {
@@ -238,4 +279,13 @@ public class Game {
         return result;
 
     }
+    
+    private boolean isMonsterAtPosition(int x, int y) {
+    for (Monster monster : monsters) {
+        if (monster.getPosition().equals(new Position(x, y))) {
+            return true;
+        }
+    }
+    return false;
+}
 }
