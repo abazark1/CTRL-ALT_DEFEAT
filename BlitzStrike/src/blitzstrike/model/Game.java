@@ -19,11 +19,12 @@ import java.util.Timer;
 public class Game {
 
     public static final int MAP_SIZE = 15;
+    public static final int GAME_DURATION = 180; // seconds. Needed for battle royale BUT NOT NOW!!!
     public boolean endGame = false;
 
     private int roundsToWin;
     private LocalTime startingTime;
-    private int gameDuration;
+    
     private Player player1;
     private Player player2;
     private int player1Score;
@@ -98,7 +99,10 @@ public class Game {
     public void loadMap() {
         this.monsters = new ArrayList<>();
         this.space = new Cell[MAP_SIZE][MAP_SIZE];
-
+        this.startingTime = LocalTime.now();
+        this.player1.setSpace(this.space);
+        this.player2.setSpace(this.space);
+        
         String map = readFile();
 
         //populate matrix
