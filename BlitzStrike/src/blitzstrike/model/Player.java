@@ -180,6 +180,9 @@ public class Player {
         return this.gamesWon;
     }
     
+    public String getName(){
+        return this.name;
+    }
     public void reset()
     {     
         this.position = new Position(0, 0);
