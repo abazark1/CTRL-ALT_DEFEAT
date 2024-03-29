@@ -32,6 +32,7 @@ public class Game {
 
     private Player winner;
     private Cell[][] space;
+    private boolean isPaused;
 
     private ArrayList<Monster> monsters;
 
@@ -171,10 +172,16 @@ public class Game {
     }
 
     public void pauseGame() {
+        isPaused = true;
+        //stop monsters from moving
+        
+        //showPauseDialog();
+              
 
     }
 
     public void continueGame() {
+        isPaused = false;
     }
 
     public void movePlayer1(Direction d) {
@@ -186,6 +193,7 @@ public class Game {
     }
 
     public void moveMonsters(Monster m) {
+        
     }
 
     public boolean isPlayerDead() {
@@ -193,8 +201,7 @@ public class Game {
     }
 
     public Player getWinner() {
-        //промежуточный winner?
-
+        //final winner
         return this.winner;
     }
 
@@ -221,11 +228,37 @@ public class Game {
     }
 
     public void handleCollapse() {
-    }
-
-    public void handleBombExplosion() {
         
     }
+
+    public void handleBombExplosion(Position bombPosition, int blastRadius) {
+        for (int dx = -blastRadius; dx <= blastRadius; dx++) {
+        for (int dy = -blastRadius; dy <= blastRadius; dy++) {
+            Position affectedPos = new Position(bombPosition.getX() + dx, bombPosition.getY() + dy);
+
+            if (isOutOfBounds(affectedPos)) {
+                continue;
+            }
+
+            Cell cell = space[affectedPos.getY()][affectedPos.getX()];
+            if (cell instanceof Wall) {
+                continue; //block if its wall
+            }
+            if (cell instanceof Box) {
+                // Destroy the box and potentially reveal a power-up
+                ((Box) cell).getDestroyed();
+                continue;
+            }
+            // Check for players or monsters at the affected position
+            checkAndAffectEntitiesAt(affectedPos);
+        }
+    }
+    }
+
+    private boolean isOutOfBounds(Position position) {
+    // Returns true if the position is outside the game field.
+    return position.getX() < 0 || position.getX() >= MAP_SIZE || position.getY() < 0 || position.getY() >= MAP_SIZE;
+}
 
     public void saveGame(Player player1name, Player player2name, int player1score, int player2score, int roundsToWin, Timer timer) 
     {
