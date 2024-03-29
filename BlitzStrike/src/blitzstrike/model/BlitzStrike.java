@@ -22,10 +22,10 @@ public class BlitzStrike {
         // TODO code application logic here
          SwingUtilities.invokeLater(() -> {
              //new MainWindow();
-             String path = "C:\\Users\\aselh\\OneDrive\\Desktop\\BlitzStrike\\ctrl-alt-defeat\\BlitzStrike\\src\\blitzstrike\\model\\map1.txt";
+             String path = "src/blitzstrike/model/map1.txt";
              Game g = new Game();
-             String a = g.FileReader(path);
-             System.out.println(a);
+//             String a = g.FileReader(path);
+//             System.out.println(a);
         });
     }
     
