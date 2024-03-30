@@ -38,9 +38,8 @@ public class Player {
     
     private Cell[][] space;
 
-    public Player(String name, Cell[][] space) {
+    public Player(String name) {
         this.name = name;
-        this.space = space;
         this.bombs = new ArrayList<>();
         this.obstacles = new ArrayList<>();
         this.alive = true;
@@ -58,6 +57,10 @@ public class Player {
     
     public void setPosition(Position position){
         this.position = position;
+    }
+    
+    public void setSpace(Cell[][] space){
+        this.space = space;
     }
     
     public boolean isAlive(){
