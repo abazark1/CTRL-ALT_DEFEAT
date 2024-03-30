@@ -6,6 +6,8 @@ package blitzstrike.model;
 
 import blitzstrike.view.MainWindow;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 //import blitzstrike.res.*;
 
@@ -21,11 +23,15 @@ public class BlitzStrike {
     public static void main(String[] args) {
         // TODO code application logic here
          SwingUtilities.invokeLater(() -> {
-             //new MainWindow();
-             String path = "C:\\Users\\aselh\\OneDrive\\Desktop\\BlitzStrike\\ctrl-alt-defeat\\BlitzStrike\\src\\blitzstrike\\model\\map1.txt";
+             try {
+                 new MainWindow();
+             } catch (IOException ex) {
+                 Logger.getLogger(BlitzStrike.class.getName()).log(Level.SEVERE, null, ex);
+             }
+             //String path = "C:\\Users\\aselh\\OneDrive\\Desktop\\BlitzStrike\\ctrl-alt-defeat\\BlitzStrike\\src\\blitzstrike\\model\\map1.txt";
              Game g = new Game();
-             String a = g.FileReader(path);
-             System.out.println(a);
+             //String a = g.FileReader(path);
+             //System.out.println(a);
         });
     }
     

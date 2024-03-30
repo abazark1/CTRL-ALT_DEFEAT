@@ -5,6 +5,7 @@
 package blitzstrike.view;
 
 import javax.swing.*;
+import javax.swing.Box;
 import java.awt.event.*;
 import blitzstrike.model.*;
 import java.awt.BorderLayout;
@@ -20,7 +21,7 @@ import res.ResourceLoader;
 
 /**
  *
- * @author emedash
+ * @author medina
  */
 public class MainWindow extends JFrame{
     private Game game;
@@ -33,6 +34,42 @@ public class MainWindow extends JFrame{
         
         frame = new JFrame("BlitzStrike");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menu = new JMenu("Menu");
+        
+        JMenuItem resumePause = new JMenuItem("Pause/Resume");        
+        resumePause.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //method to implement pause/resume
+            }
+        });
+        menu.add(resumePause);
+        
+        JMenuItem restart = new JMenuItem("Restart");     
+        restart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //method to implement restart
+            }
+        });
+        menu.add(restart);
+        
+        
+        JMenuItem exit = new JMenuItem("Exit");
+        exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                confirmExit();
+            }
+        });
+        menu.add(exit);
+        
+        menuBar.add(menu);
+        frame.setJMenuBar(menuBar);
+        frame.setVisible(true);
+        
+        
         
         final JPanel mMenu = new JPanel()
         {
@@ -107,28 +144,9 @@ public class MainWindow extends JFrame{
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Handle quit button click
+                confirmExit();
             }
         });
- 
-         
-    /*
-    MainWindow(){
-        game =  new Game();
-        view = new View();
-        timeLabel = new JLabel();
-    }
-    */
-    
-//    public void createMainMenuItems(JMenu m){
-//        
-//    }
-//    public void createGameMenuItems(JMenu m){
-//        
-//    }
-//    public void createGameCsaleItems(JMenu m, double to, double from, double by){
-//        
-//    }
     
     }
     
@@ -157,7 +175,12 @@ public class MainWindow extends JFrame{
             
             
     }
-    
+    private void confirmExit() {
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+            System.exit(1);
+        }
+    }
     
 }
 
