@@ -126,6 +126,9 @@ public class Player {
             this.immediateBombCurseTimer = null;
         }
     }
+    public void setName(String name){
+        this.name = name;
+    }
     
     public void setBombRangeCurse(int value){
         this.blastRange = value;
