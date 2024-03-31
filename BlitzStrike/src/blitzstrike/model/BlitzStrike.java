@@ -23,7 +23,11 @@ public class BlitzStrike {
     public static void main(String[] args) {
         // TODO code application logic here
          SwingUtilities.invokeLater(() -> {
-             //new MainWindow();
+             try {
+                 new MainWindow();
+             } catch (IOException ex) {
+                 Logger.getLogger(BlitzStrike.class.getName()).log(Level.SEVERE, null, ex);
+             }
              String path = "src/blitzstrike/model/map1.txt";
              Game g = new Game();
 //             String a = g.FileReader(path);
