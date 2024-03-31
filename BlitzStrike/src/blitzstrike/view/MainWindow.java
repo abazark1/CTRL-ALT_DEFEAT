@@ -5,6 +5,7 @@
 package blitzstrike.view;
 
 import blitzstrike.model.Game;
+import blitzstrike.model.Player;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -16,9 +17,12 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -26,6 +30,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import res.ResourceLoader;
 
 /**
@@ -36,6 +41,8 @@ public class MainWindow extends JFrame{
     private Game game;
     private View view; ///in the class diagram Board board
     private JLabel timeLabel;
+    private Player player1;
+    private Player player2;
     
     private JFrame frame;
     public MainWindow() throws IOException 
@@ -191,5 +198,44 @@ public class MainWindow extends JFrame{
         }
     }
     
-}
+  
+    
+    
 
+    public void showRoundEndPopup(String message) {
+//    SwingUtilities.invokeLater(() -> {
+//        JOptionPane.showMessageDialog(this, message, "Round Over", JOptionPane.INFORMATION_MESSAGE);
+//        Game g = new Game();
+//        try {
+//            g.loadNextRound();
+//        } catch (Exception ex) {
+//            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    });
+
+    JDialog roundEndDialog = new JDialog(this, "Round Ended", true);
+    roundEndDialog.setLayout(new FlowLayout());
+    roundEndDialog.setSize(400, 200); // You can adjust the size based on your content
+    roundEndDialog.setLocationRelativeTo(this); // Center on screen
+
+    // Message
+    JLabel messageLabel = new JLabel("<html><center>" + message + "<br>Player 1 Score: " + player1.getGamesWon() + "<br>Player 2 Score: " + player2.getGamesWon() + "</center></html>");
+    roundEndDialog.add(messageLabel);
+
+    // Next Round Button
+    JButton nextRoundButton = new JButton("Go to Next Round");
+    nextRoundButton.addActionListener(e -> {
+        try {
+            roundEndDialog.setVisible(false);
+            roundEndDialog.dispose(); // Close and dispose of the dialog
+            game.loadNextRound();
+        } catch (Exception ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    });
+    roundEndDialog.add(nextRoundButton);
+
+    roundEndDialog.setVisible(true);
+
+    }
+}
