@@ -25,7 +25,7 @@ public class Game {
 
     private int roundsToWin;
     private LocalTime startingTime;
-    
+
     private Player player1;
     private Player player2;
     private int player1Score;
@@ -75,10 +75,10 @@ public class Game {
     public Player getPlayer1(int x, int y) {
         if (player1.getPosition().getX() == x && player1.getPosition().getY() == y) {
             return player1;
-        } 
+        }
         return null;
     }
-    
+
     public Player getPlayer2(int x, int y) {
         if (player2.getPosition().getX() == x && player2.getPosition().getY() == y) {
             return player2;
@@ -103,7 +103,7 @@ public class Game {
         this.startingTime = LocalTime.now();
         this.player1.setSpace(this.space);
         this.player2.setSpace(this.space);
-        
+
         String map = readFile();
 
         //populate matrix
@@ -141,71 +141,70 @@ public class Game {
             }
         }
     }
-    
-    public void continueGame()
-    {
+
+    public void continueGame() {
         try (BufferedReader reader = new BufferedReader(new FileReader("gamestate.txt"))) {
-        String line;
-        while ((line = reader.readLine()) != null) {
-            if (line.startsWith("Player1Name:")) {
-                player1.setName(line.substring("Player1Name:".length()));
-            } else if (line.startsWith("Player2Name:")) {
-                player2.setName(line.substring("Player2Name:".length()));
-            } else if (line.startsWith("Player1Score:")) {
-                player1Score = Integer.parseInt(line.substring("Player1Score:".length()));
-            } else if (line.startsWith("Player2Score:")) {
-                player2Score = Integer.parseInt(line.substring("Player2Score:".length()));
-            } else if (line.startsWith("RoundsToWin:")) {
-                roundsToWin = Integer.parseInt(line.substring("RoundsToWin:".length()));
-            } else {
-                // Assuming this line is part of the map
-                // You'll start processing the map after handling all the metadata
-                break; // Exit the loop to handle map separately
-            }
-        }
-        
-        //map
-        int y = 0;
-        while ((line = reader.readLine()) != null && y < MAP_SIZE) {
-            for (int x = 0; x < line.length() && x < MAP_SIZE; x++) {
-                char symbol = line.charAt(x);
-                Position position = new Position(x, y);
-                switch (symbol) {
-                    case 'x':
-                        space[y][x] = new Wall(position);
-                        break;
-                    case '#':
-                        space[y][x] = new Box(position);
-                        break;
-                    case 'a':
-                        player1.setPosition(position);
-                        space[y][x] = new Empty(position);
-                        break;
-                    case 'b':
-                        player2.setPosition(position);
-                        space[y][x] = new Empty(position);
-                        break;
-                    case '1':
-                        Monster monster = new BasicMonster(1.0, position, space);
-                        monsters.add(monster);
-                        space[y][x] = new Empty(position);
-                        break;
-                    case ' ':
-                        space[y][x] = new Empty(position);
-                        break;
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Player1Name:")) {
+                    player1.setName(line.substring("Player1Name:".length()));
+                } else if (line.startsWith("Player2Name:")) {
+                    player2.setName(line.substring("Player2Name:".length()));
+                } else if (line.startsWith("Player1Score:")) {
+                    player1Score = Integer.parseInt(line.substring("Player1Score:".length()));
+                } else if (line.startsWith("Player2Score:")) {
+                    player2Score = Integer.parseInt(line.substring("Player2Score:".length()));
+                } else if (line.startsWith("RoundsToWin:")) {
+                    roundsToWin = Integer.parseInt(line.substring("RoundsToWin:".length()));
+                } else {
+                    // Assuming this line is part of the map
+                    // You'll start processing the map after handling all the metadata
+                    break; // Exit the loop to handle map separately
                 }
             }
-            y++;
+
+            //map
+            int y = 0;
+            while ((line = reader.readLine()) != null && y < MAP_SIZE) {
+                for (int x = 0; x < line.length() && x < MAP_SIZE; x++) {
+                    char symbol = line.charAt(x);
+                    Position position = new Position(x, y);
+                    switch (symbol) {
+                        case 'x':
+                            space[y][x] = new Wall(position);
+                            break;
+                        case '#':
+                            space[y][x] = new Box(position);
+                            break;
+                        case 'a':
+                            player1.setPosition(position);
+                            space[y][x] = new Empty(position);
+                            break;
+                        case 'b':
+                            player2.setPosition(position);
+                            space[y][x] = new Empty(position);
+                            break;
+                        case '1':
+                            Monster monster = new BasicMonster(1.0, position, space);
+                            monsters.add(monster);
+                            space[y][x] = new Empty(position);
+                            break;
+                        case ' ':
+                            space[y][x] = new Empty(position);
+                            break;
+                    }
+                }
+                y++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-        
+
     }
 
     public void loadNextRound() throws Exception {
         Player player = getCurrentRoundWinnerIfAny();
-        
+
         if (player != null) {
             if (player == player1) {
                 this.player1Score++;
@@ -249,7 +248,6 @@ public class Game {
 //    public void resumeGame() {
 //        isPaused = false;
 //    }
-
     public void movePlayer1(Direction d) {
         player1.movePlayer(d);
     }
@@ -259,10 +257,10 @@ public class Game {
     }
 
     public void moveMonsters(Monster m) {
-        for(Monster monster : monsters){
+        for (Monster monster : monsters) {
             monster.move();
         }
-        
+
     }
 
     public boolean isPlayerDead() {
@@ -298,93 +296,65 @@ public class Game {
 
     public void handleCollapse() {
         for (Monster monster : monsters) {
-            if (monster.getPosition().equals(player1.getPosition())) {            
-                player1.getExploded(); 
-                endRound = true; 
+            if (monster.getPosition().equals(player1.getPosition())) {
+                player1.getExploded();
+                endRound = true;
                 System.out.println("Player 1 has encountered a monster and the round is over.");
                 return; // Exit the method to avoid further processing
             }
 
-            
             if (player2 != null && monster.getPosition().equals(player2.getPosition())) {
                 player2.getExploded();
-                endGame = true; 
+                endGame = true;
                 System.out.println("Player 2 has encountered a monster and the game is over.");
                 return;
             }
         }
-        
+
     }
 
-    public void handleBombExplosion(Position bombPosition, int blastRadius) {
-        for (int dx = -blastRadius; dx <= blastRadius; dx++) {
-        for (int dy = -blastRadius; dy <= blastRadius; dy++) {
-            Position affectedPos = new Position(bombPosition.getX() + dx, bombPosition.getY() + dy);
+    public void handleBombExplosion(Bomb bomb, Position bombPosition, int blastRadius) {
+        bomb.handleExplosion(bombPosition, blastRadius, this.player1, this.player2, this.monsters);
+    }
 
-            if (isOutOfBounds(affectedPos)) {
-                continue;
-            }
 
-            Cell cell = space[affectedPos.getY()][affectedPos.getX()];
-            if (cell instanceof Wall) {
-                continue; //block if its wall
+
+    public void saveGame(Player player1name, Player player2name, int player1score, int player2score, int roundsToWin, Timer timer) {
+        StringBuilder mapBuilder = new StringBuilder();
+
+        // Save map state
+        for (int y = 0; y < MAP_SIZE; y++) {
+            for (int x = 0; x < MAP_SIZE; x++) {
+                Cell cell = space[y][x];
+                if (cell instanceof Wall) {
+                    mapBuilder.append('x');
+                } else if (cell instanceof Box) {
+                    mapBuilder.append('#');
+                } else if (player1.getPosition().equals(new Position(x, y))) {
+                    mapBuilder.append('a');
+                } else if (player2.getPosition().equals(new Position(x, y))) {
+                    mapBuilder.append('b');
+                } else if (isMonsterAtPosition(x, y)) {
+                    mapBuilder.append('1');
+                } else {
+                    mapBuilder.append(' ');
+                }
             }
-            if (cell instanceof Box) {
-                // Destroy the box and potentially reveal a power-up
-                ((Box) cell).getDestroyed();
-                continue;
-            }
-            // Check for players or monsters at the affected position
-            checkAndAffectEntitiesAt(affectedPos);
+            mapBuilder.append("\n");
         }
-    }
-    }
 
-    private boolean isOutOfBounds(Position position) {
-    // Returns true if the position is outside the game field.
-    return position.getX() < 0 || position.getX() >= MAP_SIZE || position.getY() < 0 || position.getY() >= MAP_SIZE;
-}
+        try (FileWriter writer = new FileWriter("gamestate.txt")) {
+            writer.write("Player1Name:" + player1.getName() + "\n");
+            writer.write("Player2Name:" + player2.getName() + "\n");
+            writer.write("Player1Score:" + player1Score + "\n");
+            writer.write("Player2Score:" + player2Score + "\n");
+            writer.write("RoundsToWin:" + roundsToWin + "\n");
 
-    public void saveGame(Player player1name, Player player2name, int player1score, int player2score, int roundsToWin, Timer timer) 
-    {
-          StringBuilder mapBuilder = new StringBuilder();
+            writer.write(mapBuilder.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-          // Save map state
-          for (int y = 0; y < MAP_SIZE; y++) 
-          {
-              for (int x = 0; x < MAP_SIZE; x++) 
-              {
-                  Cell cell = space[y][x];
-                  if (cell instanceof Wall) {
-                      mapBuilder.append('x');
-                  } else if (cell instanceof Box) {
-                      mapBuilder.append('#');
-                  } else if (player1.getPosition().equals(new Position(x, y))) {
-                      mapBuilder.append('a');
-                  } else if (player2.getPosition().equals(new Position(x, y))) {
-                      mapBuilder.append('b');
-                  } else if (isMonsterAtPosition(x, y)) {
-                      mapBuilder.append('1'); 
-                  } else {
-                      mapBuilder.append(' '); 
-                  }
-              }
-              mapBuilder.append("\n"); 
-          }
-          
-            try (FileWriter writer = new FileWriter("gamestate.txt")) {
-                writer.write("Player1Name:" + player1.getName() + "\n");
-                writer.write("Player2Name:" + player2.getName() + "\n");
-                writer.write("Player1Score:" + player1Score + "\n");
-                writer.write("Player2Score:" + player2Score + "\n");
-                writer.write("RoundsToWin:" + roundsToWin + "\n");
-
-                writer.write(mapBuilder.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-          
-          
     }
 
     public String readFile() {
@@ -402,35 +372,14 @@ public class Game {
         return result;
 
     }
-    
-    private boolean isMonsterAtPosition(int x, int y) 
-    {
+
+    private boolean isMonsterAtPosition(int x, int y) {
         for (Monster monster : monsters) {
             if (monster.getPosition().equals(new Position(x, y))) {
                 return true;
             }
         }
         return false;
-    }
-    
-    private void checkAndAffectEntitiesAt(Position affectedPos) 
-    {
-      
-        if (player1.getPosition().equals(affectedPos)) {
-            player1.getExploded();
-            //System.out.println("Player 1 hit by explosion at " + affectedPos);
-        }
-
-        if (player2 != null && player2.getPosition().equals(affectedPos)) {
-            player2.getExploded();
-            //System.out.println("Player 2 hit by explosion at " + affectedPos);
-        }
-        for (Monster monster : monsters) {
-            if (monster.getPosition().equals(affectedPos)) {
-                monster.getExploded(); 
-                //System.out.println("Monster hit by explosion at " + affectedPos);
-            }
-        }
     }
 
 }

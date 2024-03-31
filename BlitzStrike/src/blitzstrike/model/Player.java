@@ -68,7 +68,7 @@ public class Player {
     }
 
     public void placeBomb() {
-        Bomb bomb = new Bomb(this.position, this);
+        Bomb bomb = new Bomb(this.position, this, this.space);
         this.bombs.add(bomb);
         System.out.println("I've placed a bomb");
     }
