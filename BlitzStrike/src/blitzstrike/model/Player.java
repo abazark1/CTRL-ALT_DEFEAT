@@ -79,7 +79,11 @@ public class Player {
     }
 
     public void movePlayer(Direction direction) {
-        this.position = this.position.translate(direction);
+        if(isValidPosition(direction))
+        {
+            this.position = this.position.translate(direction);
+        }
+
     }
 
     public void getExploded() {
