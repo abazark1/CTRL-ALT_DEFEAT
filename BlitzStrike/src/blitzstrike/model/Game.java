@@ -278,11 +278,12 @@ public class Game {
 
     // Промежуточный победитель
     public Player getCurrentRoundWinnerIfAny() throws Exception {
-        if (this.player1.isAlive() && this.player2.isAlive()) {
-            throw new Exception("Both can't be alive");
-        } else if (this.player1.isAlive()) {
+//        if (this.player1.isAlive() && this.player2.isAlive()) {
+//            throw new Exception("Both can't be alive");
+//        } else 
+        if (this.player1.isAlive() && !this.player2.isAlive()) {
             return this.player1;
-        } else if (this.player2.isAlive()) {
+        } else if (this.player2.isAlive() && !this.player1.isAlive()) {
             return this.player2;
         } else {
             // Both died, nobody wins
