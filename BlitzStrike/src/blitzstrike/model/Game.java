@@ -313,7 +313,7 @@ public class Game {
         return false;
     }
 
-    public void handleCollapse() {
+    public void handleCollision() {
         for (Monster monster : monsters) {
             if (monster.getPosition().equals(player1.getPosition())) {
                 player1.getExploded();
@@ -329,7 +329,37 @@ public class Game {
                 return;
             }
         }
+        
+        // we're checking if player have collided with effect yet
+        Effect effectAtPlayer1Position = (player1 != null) ? getEffect(player1.getPosition()) : null;
+        Effect effectAtPlayer2Position = (player2 != null) ? getEffect(player2.getPosition()) : null;
+        
+        if (player1 != null){
+            applyEffect(player1, effectAtPlayer1Position);
+        }
+        if (player2 != null) {
+            applyEffect(player2, effectAtPlayer2Position);
+        }
+    }
+    
+    public Effect getEffect(Position position) {
+        Cell cell = space[position.getY()][position.getX()];
 
+        if (cell instanceof Curse) {
+            return ((Curse) cell).getEffect();
+        } else if (cell instanceof PowerUp) {
+            return ((PowerUp) cell).getEffect();
+        } else if (cell instanceof EmptyEffect) {
+            return ((EmptyEffect) cell).getEffect();
+        } else {
+            return null;
+        }
+    }
+    
+    private void applyEffect(Player player, Effect effect) {
+        if (effect != null) {
+            effect.applyEffect(player);
+        }
     }
 
     public void handleBombExplosion(Bomb bomb, Position bombPosition, int blastRadius) {
