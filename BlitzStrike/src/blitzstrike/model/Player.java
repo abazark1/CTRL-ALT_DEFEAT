@@ -85,6 +85,25 @@ public class Player {
         }
 
     }
+    
+    // check if the player has a bomb on certain field
+    public boolean hasBombAtPosition(int x, int y) {
+        for (Bomb bomb: bombs){
+            Position bombPos = bomb.getPosition();
+            return bombPos.getX() == x && bombPos.getY() == y;
+        }
+        return false;
+    }
+    
+    public Bomb getBomb(int x, int y){
+        for (Bomb bomb: bombs){
+            Position bombPos = bomb.getPosition();
+            if (bombPos.getX() == x && bombPos.getY() == y){
+                return bomb;
+            }
+        }
+        return null;
+    }
 
     public void getExploded() {
         this.alive = false;
@@ -210,9 +229,4 @@ public class Player {
         this.noBombCurse = false;
         this.placeBombImmediatelyCurse = false;
     }
-    
-
-
-
-
 }

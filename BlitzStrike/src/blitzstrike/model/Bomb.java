@@ -73,5 +73,10 @@ public class Bomb {
         // Returns true if the position is outside the game field.
         return position.getX() < 0 || position.getX() >= MAP_SIZE || position.getY() < 0 || position.getY() >= MAP_SIZE;
     }
+    
+    // getter
+    public Position getPosition(){
+        return this.position;
+    }
 
 }

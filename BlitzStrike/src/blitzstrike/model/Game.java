@@ -37,12 +37,17 @@ public class Game {
     private boolean isPaused;
 
     private ArrayList<Monster> monsters;
+    
+    // to check if there's any explosion for View class
+    private boolean isExplosionInProgress;
 
     public Game(String filepath, Player player1, Player player2, int roundsToWin) {
         this.filepath = filepath;
         this.roundsToWin = roundsToWin;
         this.player1 = player1;
         this.player2 = player2;
+        
+        this.isExplosionInProgress = false;
     }
 
     public Game() {
@@ -92,6 +97,19 @@ public class Game {
                 return monster;
             }
         }
+        return null;
+    }
+    
+    public boolean isBombAtPosition(int x, int y){
+        return this.player1.hasBombAtPosition(x, y) || this.player2.hasBombAtPosition(x, y);
+    }
+    
+    public Bomb getBomb(int x, int y){
+        if (this.player1.hasBombAtPosition(x, y)){
+            this.player1.getBomb(x, y);
+        } else if (this.player2.hasBombAtPosition(x, y)) {
+           return  this.player2.getBomb(x, y);
+        } 
         return null;
     }
 
@@ -315,7 +333,12 @@ public class Game {
     }
 
     public void handleBombExplosion(Bomb bomb, Position bombPosition, int blastRadius) {
+        this.isExplosionInProgress = true;
         bomb.handleExplosion(bombPosition, blastRadius, this.player1, this.player2, this.monsters);
+    }
+    
+    public boolean isExplosionInProgress(){
+        return this.isExplosionInProgress;
     }
 
 
