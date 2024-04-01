@@ -34,6 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import res.ResourceLoader;
 
 /**
@@ -49,6 +50,9 @@ public class MainWindow extends JFrame {
     private Player player2;
 
     private JFrame frame;
+    
+    private Timer monsterMoveTimer;
+    private static final int MONSTER_MOVE = 2000;
 
     public MainWindow() throws IOException {
 
@@ -157,7 +161,30 @@ public class MainWindow extends JFrame {
                 confirmExit();
             }
         });
+        
+        startMoveMonsterTimer();
 
+    }
+    
+    
+    //for continuous movement of monsters
+    private void startMoveMonsterTimer() {
+        monsterMoveTimer = new Timer(MONSTER_MOVE, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Move monsters
+                moveMonsters();
+            }
+        });
+        monsterMoveTimer.start();
+    }
+    
+    private void moveMonsters() {
+        if (game != null) {
+            game.moveMonsters();
+            // Repaint the view to update the monster positions
+            view.repaint();
+        }
     }
 
     private JButton createButton(String label) {

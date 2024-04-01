@@ -274,7 +274,7 @@ public class Game {
         player2.movePlayer(d);
     }
 
-    public void moveMonsters(Monster m) {
+    public void moveMonsters() {
         for (Monster monster : monsters) {
             monster.move();
         }
