@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -30,6 +31,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import res.ResourceLoader;
 
@@ -37,23 +40,24 @@ import res.ResourceLoader;
  *
  * @author medina
  */
-public class MainWindow extends JFrame{
+public class MainWindow extends JFrame {
+
     private Game game;
     private View view; ///in the class diagram Board board
     private JLabel timeLabel;
     private Player player1;
     private Player player2;
-    
+
     private JFrame frame;
-    public MainWindow() throws IOException 
-    {
-        
+
+    public MainWindow() throws IOException {
+
         frame = new JFrame("BlitzStrike");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Menu");
-        
-        JMenuItem resumePause = new JMenuItem("Pause/Resume");        
+
+        JMenuItem resumePause = new JMenuItem("Pause/Resume");
         resumePause.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -61,8 +65,8 @@ public class MainWindow extends JFrame{
             }
         });
         menu.add(resumePause);
-        
-        JMenuItem restart = new JMenuItem("Restart");     
+
+        JMenuItem restart = new JMenuItem("Restart");
         restart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -70,8 +74,7 @@ public class MainWindow extends JFrame{
             }
         });
         menu.add(restart);
-        
-        
+
         JMenuItem exit = new JMenuItem("Exit");
         exit.addActionListener(new ActionListener() {
             @Override
@@ -80,35 +83,30 @@ public class MainWindow extends JFrame{
             }
         });
         menu.add(exit);
-        
+
         menuBar.add(menu);
         frame.setJMenuBar(menuBar);
         frame.setVisible(true);
-        
-        
-        
-        final JPanel mMenu = new JPanel()
-        {
+
+        final JPanel mMenu = new JPanel() {
             @Override
-            public void paintComponent(Graphics gc){
+            public void paintComponent(Graphics gc) {
                 super.paintComponent(gc);
-                try{
+                try {
 //                    Image mMenuImage = ResourceLoader.loadImage("blitzstrike/res/mainMenu.jpg");
 //                    gc.drawImage(mMenuImage, 150, 150, null);
-                    
+
                     Image mMenuImage = ResourceLoader.loadImage("blitzstrike/res/mainM.png");
                     int x = (getWidth() - mMenuImage.getWidth(null)) / 2;
                     int y = (getHeight() - mMenuImage.getHeight(null)) / 2;
                     gc.drawImage(mMenuImage, x, y, null);
 
-                }
-                catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-   
+
         };
- 
 
         //mMenu.setLayout(new BorderLayout());
         mMenu.setBackground(Color.BLACK);
@@ -117,42 +115,38 @@ public class MainWindow extends JFrame{
         mMenu.add(Box.createVerticalGlue());
         mMenu.add(Box.createVerticalGlue());
         mMenu.add(Box.createVerticalGlue());
-        
-   
+
         JButton playButton = createButton("PLAY");
         JButton continueButton = createButton("CONTINUE");
         JButton quitButton = createButton("QUIT");
-        
+
         addButton(mMenu, playButton);
         mMenu.add(Box.createVerticalStrut(10)); // Add space
         addButton(mMenu, continueButton);
         mMenu.add(Box.createVerticalStrut(10)); // Add space
         addButton(mMenu, quitButton);
 
-	mMenu.add(Box.createVerticalGlue());
+        mMenu.add(Box.createVerticalGlue());
         mMenu.add(Box.createVerticalGlue());
         mMenu.add(Box.createVerticalGlue());
         frame.add(mMenu);
         frame.setPreferredSize(new Dimension(800, 600));
         frame.setResizable(false);
-        frame.pack();      
+        frame.pack();
         frame.setVisible(true);
         setLocationRelativeTo(null);
-        
-        playButton.addActionListener(new ActionListener() 
-        {
+
+        playButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) 
-            {
+            public void actionPerformed(ActionEvent e) {
                 // Handle play button click
+                showGameSetupWindow();
             }
         });
 
-        continueButton.addActionListener(new ActionListener() 
-        {
+        continueButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) 
-            {
+            public void actionPerformed(ActionEvent e) {
                 // Handle continue button click
             }
         });
@@ -163,44 +157,38 @@ public class MainWindow extends JFrame{
                 confirmExit();
             }
         });
-    
+
     }
-    
-    private JButton createButton(String label) 
-    {
-    JButton button = new JButton(label);
-    Dimension buttonSize = new Dimension(180, 60);
-    button.setPreferredSize(buttonSize);
-    button.setMaximumSize(buttonSize);
-    button.setMinimumSize(buttonSize);
-    button.setBackground(Color.BLUE);
-    button.setForeground(Color.WHITE);
-    button.setFont(new Font("SansSerif", Font.BOLD, 17));
-    return button;
+
+    private JButton createButton(String label) {
+        JButton button = new JButton(label);
+        Dimension buttonSize = new Dimension(180, 60);
+        button.setPreferredSize(buttonSize);
+        button.setMaximumSize(buttonSize);
+        button.setMinimumSize(buttonSize);
+        button.setBackground(Color.BLUE);
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("SansSerif", Font.BOLD, 17));
+        return button;
     }
-    
+
     // Helper method to create a button and add it to the panel
-    private void addButton(JPanel panel, JButton button) 
-    {
-            
-            JPanel buttonPanel = new JPanel();
-            buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-            buttonPanel.setOpaque(false);
-            buttonPanel.add(button);
-            panel.add(buttonPanel);
-            
-            
+    private void addButton(JPanel panel, JButton button) {
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setOpaque(false);
+        buttonPanel.add(button);
+        panel.add(buttonPanel);
+
     }
+
     private void confirmExit() {
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
             System.exit(1);
         }
     }
-    
-  
-    
-    
 
     public void showRoundEndPopup(String message) {
 //    SwingUtilities.invokeLater(() -> {
@@ -213,29 +201,131 @@ public class MainWindow extends JFrame{
 //        }
 //    });
 
-    JDialog roundEndDialog = new JDialog(this, "Round Ended", true);
-    roundEndDialog.setLayout(new FlowLayout());
-    roundEndDialog.setSize(400, 200); // You can adjust the size based on your content
-    roundEndDialog.setLocationRelativeTo(this); // Center on screen
+        JDialog roundEndDialog = new JDialog(this, "Round Ended", true);
+        roundEndDialog.setLayout(new FlowLayout());
+        roundEndDialog.setSize(400, 200); // You can adjust the size based on your content
+        roundEndDialog.setLocationRelativeTo(this); // Center on screen
 
-    // Message
-    JLabel messageLabel = new JLabel("<html><center>" + message + "<br>Player 1 Score: " + player1.getGamesWon() + "<br>Player 2 Score: " + player2.getGamesWon() + "</center></html>");
-    roundEndDialog.add(messageLabel);
+        // Message
+        JLabel messageLabel = new JLabel("<html><center>" + message + "<br>Player 1 Score: " + player1.getGamesWon() + "<br>Player 2 Score: " + player2.getGamesWon() + "</center></html>");
+        roundEndDialog.add(messageLabel);
 
-    // Next Round Button
-    JButton nextRoundButton = new JButton("Go to Next Round");
-    nextRoundButton.addActionListener(e -> {
-        try {
-            roundEndDialog.setVisible(false);
-            roundEndDialog.dispose(); // Close and dispose of the dialog
-            game.loadNextRound();
-        } catch (Exception ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    });
-    roundEndDialog.add(nextRoundButton);
+        // Next Round Button
+        JButton nextRoundButton = new JButton("Go to Next Round");
+        nextRoundButton.addActionListener(e -> {
+            try {
+                roundEndDialog.setVisible(false);
+                roundEndDialog.dispose(); // Close and dispose of the dialog
+                game.loadNextRound();
+            } catch (Exception ex) {
+                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        roundEndDialog.add(nextRoundButton);
 
-    roundEndDialog.setVisible(true);
+        roundEndDialog.setVisible(true);
 
+    }
+
+    private void showGameSetupWindow() {
+        JDialog gameSetupDialog = new JDialog(this, "Game Setup", true);
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
+        JLabel nameLabel = new JLabel("Enter players' names:");
+        mainPanel.add(nameLabel);
+
+        JTextField player1NameField = new JTextField(15);
+        mainPanel.add(player1NameField);
+
+        mainPanel.add(Box.createHorizontalStrut(10));
+
+        JTextField player2NameField = new JTextField(15);
+        mainPanel.add(player2NameField);
+
+        mainPanel.add(Box.createHorizontalStrut(10));
+
+        JLabel mapLabel = new JLabel("Choose your map:");
+        mainPanel.add(mapLabel);
+
+        ButtonGroup mapButtonGroup = new ButtonGroup();
+
+        JRadioButton map1RadioButton = new JRadioButton("Map 1");
+        mapButtonGroup.add(map1RadioButton);
+        mainPanel.add(map1RadioButton);
+
+        JRadioButton map2RadioButton = new JRadioButton("Map 2");
+        mapButtonGroup.add(map2RadioButton);
+        mainPanel.add(map2RadioButton);
+
+        JRadioButton map3RadioButton = new JRadioButton("Map 3");
+        mapButtonGroup.add(map3RadioButton);
+        mainPanel.add(map3RadioButton);
+
+        mainPanel.add(Box.createHorizontalStrut(10));
+
+        JLabel numGamesLabel = new JLabel("Enter number of games:");
+        mainPanel.add(numGamesLabel);
+
+        JTextField numGamesField = new JTextField(5);
+        mainPanel.add(numGamesField);
+
+        mainPanel.add(Box.createHorizontalStrut(10));
+
+        JButton startButton = new JButton("START");
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                boolean allFieldsAreGood = true;
+
+                String player1Name = player1NameField.getText().trim();
+                String player2Name = player2NameField.getText().trim();
+
+                if (player1Name.isEmpty() || player2Name.isEmpty()) {
+                    JOptionPane.showMessageDialog(gameSetupDialog, "Enter both players' names!", "Missing Information", JOptionPane.ERROR_MESSAGE);
+                    allFieldsAreGood = false;
+                }
+
+                if (!map1RadioButton.isSelected() && !map2RadioButton.isSelected() && !(map3RadioButton != null && map3RadioButton.isSelected())) {
+                    JOptionPane.showMessageDialog(gameSetupDialog, "Select a map!", "Missing Information", JOptionPane.ERROR_MESSAGE);
+                    allFieldsAreGood = false;
+                }
+
+                int numGames = 0;
+                try {
+                    numGames = Integer.parseInt(numGamesField.getText());
+                    if (numGames <= 0) {
+                        allFieldsAreGood = false;
+                        throw new NumberFormatException();
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(gameSetupDialog, "Enter a valid number of games (positive integer)!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    allFieldsAreGood = false;
+                }
+
+                if (allFieldsAreGood) {
+                    int selectedMap = map1RadioButton.isSelected() ? 1 : (map2RadioButton.isSelected() ? 2 : (map3RadioButton != null && map3RadioButton.isSelected() ? 3 : 0));
+                    String filePath = "src/blitzstrike/model/map" + selectedMap + ".txt";
+                    
+                    player1 = new Player(player1Name);
+                    player2 = new Player(player2Name);
+
+                    game = new Game(filePath, player1, player2, numGames);
+
+                    gameSetupDialog.setVisible(false);
+                    gameSetupDialog.dispose();
+                }
+            }
+        });
+        mainPanel.add(startButton);
+
+        mainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        gameSetupDialog.setContentPane(mainPanel);
+
+        gameSetupDialog.pack();
+        gameSetupDialog.setLocationRelativeTo(this);
+
+        gameSetupDialog.setVisible(true);
     }
 }
