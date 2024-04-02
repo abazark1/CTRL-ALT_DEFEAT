@@ -6,6 +6,10 @@
 package blitzstrike.view;
 
 import blitzstrike.model.BlitzStrike;
+import static  blitzstrike.model.Direction.UP;
+import static  blitzstrike.model.Direction.DOWN;
+import static  blitzstrike.model.Direction.LEFT;
+import static  blitzstrike.model.Direction.RIGHT;
 import blitzstrike.model.Game;
 import blitzstrike.model.Player;
 import java.awt.BorderLayout;
@@ -18,6 +22,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -167,6 +173,55 @@ public class MainWindow extends JFrame {
             });
             
             startMoveMonsterTimer();
+          
+        KeyAdapter player1KeyListener = new KeyAdapter(){
+            @Override
+            public void keyPressed(KeyEvent e) {
+            int keyCode = e.getKeyCode();
+            switch (keyCode) {
+                case KeyEvent.VK_W:
+                    player1.movePlayer(UP); 
+                    break;
+                case KeyEvent.VK_S:
+                    player1.movePlayer(DOWN); 
+                    break;
+                case KeyEvent.VK_A:
+                    player1.movePlayer(LEFT); 
+                    break;
+                case KeyEvent.VK_D:
+                    player1.movePlayer(RIGHT); 
+                    break;
+                case KeyEvent.VK_SPACE:
+                    player1.placeBomb();
+            }
+            }
+        };    
+            
+        KeyAdapter player2KeyListener = new KeyAdapter(){
+            @Override
+            public void keyPressed(KeyEvent e) {
+            int keyCode = e.getKeyCode();
+            switch (keyCode) {
+                case KeyEvent.VK_UP:
+                    player2.movePlayer(UP); 
+                    break;
+                case KeyEvent.VK_DOWN:
+                    player2.movePlayer(DOWN); 
+                    break;
+                case KeyEvent.VK_LEFT:
+                    player2.movePlayer(LEFT); 
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    player2.movePlayer(RIGHT); 
+                    break;
+                case KeyEvent.VK_ENTER:
+                    player2.placeBomb();
+            }
+            }
+        };
+        
+        frame.addKeyListener(player1KeyListener);
+        frame.addKeyListener(player2KeyListener);
     }
     
     //for continuous movement of monsters
@@ -387,5 +442,7 @@ public class MainWindow extends JFrame {
 
         gameSetupDialog.setVisible(true);
     }
+    
+    
 }
 
