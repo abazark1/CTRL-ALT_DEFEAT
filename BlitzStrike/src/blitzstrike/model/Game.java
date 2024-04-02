@@ -38,12 +38,17 @@ public class Game {
     private boolean isPaused;
 
     private ArrayList<Monster> monsters;
+    
+    // to check if there's any explosion for View class
+    private boolean isExplosionInProgress;
 
     public Game(String filepath, Player player1, Player player2, int roundsToWin) {
         this.filepath = filepath;
         this.roundsToWin = roundsToWin;
         this.player1 = player1;
         this.player2 = player2;
+        
+        this.isExplosionInProgress = false;
     }
 
     public Game() {
@@ -93,6 +98,19 @@ public class Game {
                 return monster;
             }
         }
+        return null;
+    }
+    
+    public boolean isBombAtPosition(int x, int y){
+        return this.player1.hasBombAtPosition(x, y) || this.player2.hasBombAtPosition(x, y);
+    }
+    
+    public Bomb getBomb(int x, int y){
+        if (this.player1.hasBombAtPosition(x, y)){
+            this.player1.getBomb(x, y);
+        } else if (this.player2.hasBombAtPosition(x, y)) {
+           return  this.player2.getBomb(x, y);
+        } 
         return null;
     }
 
@@ -257,7 +275,7 @@ public class Game {
         player2.movePlayer(d);
     }
 
-    public void moveMonsters(Monster m) {
+    public void moveMonsters() {
         for (Monster monster : monsters) {
             monster.move();
         }
@@ -301,7 +319,7 @@ public class Game {
         return false;
     }
 
-    public void handleCollapse() {
+    public void handleCollision() {
         for (Monster monster : monsters) {
             if (monster.getPosition().equals(player1.getPosition())) {
                 player1.getExploded();
@@ -317,11 +335,46 @@ public class Game {
                 return;
             }
         }
+        
+        // we're checking if player have collided with effect yet
+        Effect effectAtPlayer1Position = (player1 != null) ? getEffect(player1.getPosition()) : null;
+        Effect effectAtPlayer2Position = (player2 != null) ? getEffect(player2.getPosition()) : null;
+        
+        if (player1 != null){
+            applyEffect(player1, effectAtPlayer1Position);
+        }
+        if (player2 != null) {
+            applyEffect(player2, effectAtPlayer2Position);
+        }
+    }
+    
+    public Effect getEffect(Position position) {
+        Cell cell = space[position.getY()][position.getX()];
 
+        if (cell instanceof Curse) {
+            return ((Curse) cell).getEffect();
+        } else if (cell instanceof PowerUp) {
+            return ((PowerUp) cell).getEffect();
+        } else if (cell instanceof EmptyEffect) {
+            return ((EmptyEffect) cell).getEffect();
+        } else {
+            return null;
+        }
+    }
+    
+    private void applyEffect(Player player, Effect effect) {
+        if (effect != null) {
+            effect.applyEffect(player);
+        }
     }
 
     public void handleBombExplosion(Bomb bomb, Position bombPosition, int blastRadius) {
+        this.isExplosionInProgress = true;
         bomb.handleExplosion(bombPosition, blastRadius, this.player1, this.player2, this.monsters);
+    }
+    
+    public boolean isExplosionInProgress(){
+        return this.isExplosionInProgress;
     }
 
 

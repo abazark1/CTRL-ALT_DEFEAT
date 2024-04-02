@@ -28,10 +28,11 @@ import blitzstrike.model.Curse;
 import blitzstrike.model.EmptyEffect;
 import blitzstrike.model.Wall;
 import blitzstrike.model.Empty;
+import blitzstrike.model.Bomb;
 
 public class View extends JPanel {
     private final Game game;
-    private final Image player1, player2, monster1, monster2, monster3, monster4, bomb, powerUp, curse, box, wall, empty;
+    private final Image player1, player2, monster1, monster2, monster3, monster4, bomb, powerUp, curse, box, wall, empty, explosion;
     private double scale;
     private int scaled_size;
     private final int tile_size = 48;
@@ -52,6 +53,7 @@ public class View extends JPanel {
         box = ResourceLoader.loadImage("blitzstrike/res/box.png");
         wall = ResourceLoader.loadImage("blitzstrike/res/wall.png");
         empty = ResourceLoader.loadImage("blitzstrike/res/empty.png");
+        explosion = ResourceLoader.loadImage("blitzstrike/res/explosion.pngs");
     }
     
     /*
@@ -97,6 +99,12 @@ public class View extends JPanel {
                         img = box;
                     }  
                 } else {
+                    if(game.isBombAtPosition(x, y)){
+                        if(game.isExplosionInProgress()){
+                            drawExplosion(gr, game.getBomb(x, y), scaled_size);
+                        }
+                        img = bomb;
+                    }
                     Monster m = game.getMonster(x, y);
                     Player p1 = game.getPlayer1(x, y);
                     Player p2 = game.getPlayer2(x, y);
@@ -122,4 +130,23 @@ public class View extends JPanel {
             }
         }
     }
+    
+    public void drawExplosion(Graphics2D gr, Bomb bomb, int scaled_size){
+        int bombX = bomb.getPosition().getX();
+        int bombY = bomb.getPosition().getY();
+        
+        for (int dx = -2; dx <= 2; dx++) {
+        for (int dy = -2; dy <= 2; dy++) {
+            if (Math.abs(dx) + Math.abs(dy) <= 2) {
+                int x = bombX + dx;
+                int y = bombY + dy;
+                if (x >= 0 && x < game.MAP_SIZE && y >= 0 && y < game.MAP_SIZE) {
+                    gr.drawImage(explosion, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+                }
+            }
+        }
+    }
+    }
+    
+    
 }
