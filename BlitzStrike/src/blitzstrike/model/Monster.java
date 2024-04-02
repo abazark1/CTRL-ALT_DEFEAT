@@ -46,8 +46,7 @@ public class Monster {
 //    }
 
     public boolean isValidPosition(Position p) {
-        return this.space[p.getX()][p.getY()].isWalkable();
-        //return this.space[10][10].isWalkable();
+        return this.space[p.getY()][p.getX()].isWalkable();
     }
     
     public Position getPosition() {
@@ -67,7 +66,7 @@ class BasicMonster extends Monster {
         super(speed, position, space);
         this.counterUntilChangeDirection = 0;
         // we initialize its currentDirection to any available direction first
-        //settleCurrentDirection();
+        settleCurrentDirection();
     }
 
     // we call this move() constantly, it checks if it can move with the currentPosition. 
@@ -99,12 +98,13 @@ class BasicMonster extends Monster {
     private void settleCurrentDirection() {
         Position newPosUp = position.translate(Direction.UP);
         Position newPosDown = position.translate(Direction.DOWN);
+        System.out.println(newPosDown.getY() + " " + newPosDown.getX());
         Position newPosLeft = position.translate(Direction.LEFT);
         Position newPosRight = position.translate(Direction.RIGHT);
         if (isValidPosition(newPosUp)) {
             this.currentDirection = Direction.UP;
-        } else if (isValidPosition(newPosDown)) {
-            this.currentDirection = Direction.DOWN;
+//        } else if (isValidPosition(newPosDown)) {
+//            this.currentDirection = Direction.DOWN;
         } else if (isValidPosition(newPosLeft)) {
             this.currentDirection = Direction.LEFT;
         } else if (isValidPosition(newPosRight)) {
