@@ -193,6 +193,7 @@ public class MainWindow extends JFrame {
                     case KeyEvent.VK_SPACE:
                         player1.placeBomb();
                 }
+                view.repaint();
             }
         };
 
@@ -216,6 +217,7 @@ public class MainWindow extends JFrame {
                     case KeyEvent.VK_ENTER:
                         player2.placeBomb();
                 }
+                view.repaint();
             }
         };
 
@@ -230,6 +232,7 @@ public class MainWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Move monsters
                 moveMonsters();
+//                view.repaint();
             }
         });
         monsterMoveTimer.start();
