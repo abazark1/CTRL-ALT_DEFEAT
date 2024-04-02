@@ -135,31 +135,39 @@ public class Game {
 //                Position position = new Position(row, column);
                 char symbol = line.charAt(column);
                 Cell cell;
+//                Monster monster = null;
                 switch (symbol) {
                     case 'x':
                         cell = new Wall(position);
+                        space[row][column] = cell;
                         break;
                     case '#':
                         cell = new Box(position);
+                        space[row][column] = cell;
                         break;
                     case 'a':
                         cell = new Empty(position);
+                        space[row][column] = cell;
                         this.player1.setPosition(position);
                         break;
                     case 'b':
                         cell = new Empty(position);
+                        space[row][column] = cell;
                         this.player2.setPosition(position);
                         break;
                     case '1':
                         cell = new Empty(position);
+                        space[row][column] = cell;
                         Monster monster = new BasicMonster(1.0, position, this.space);
                         this.monsters.add(monster);
                         break;
                     default:
                         cell = new Empty(position);
+                        space[row][column] = cell;
                         break;
                 }
                 space[row][column] = cell;
+//                if (monster != null) monster.settleCurrentDirection();
             }
         }
     }
