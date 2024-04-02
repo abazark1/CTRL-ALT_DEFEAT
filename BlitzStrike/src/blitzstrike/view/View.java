@@ -136,16 +136,16 @@ public class View extends JPanel {
         int bombY = bomb.getPosition().getY();
         
         for (int dx = -2; dx <= 2; dx++) {
-        for (int dy = -2; dy <= 2; dy++) {
-            if (Math.abs(dx) + Math.abs(dy) <= 2) {
-                int x = bombX + dx;
-                int y = bombY + dy;
-                if (x >= 0 && x < game.MAP_SIZE && y >= 0 && y < game.MAP_SIZE) {
-                    gr.drawImage(explosion, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+            for (int dy = -2; dy <= 2; dy++) {
+                if (Math.abs(dx) + Math.abs(dy) <= 2) {
+                    int x = bombX + dx;
+                    int y = bombY + dy;
+                    if (x >= 0 && x < game.MAP_SIZE && y >= 0 && y < game.MAP_SIZE) {
+                        gr.drawImage(explosion, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+                    }
                 }
             }
         }
-    }
     }
     
     
