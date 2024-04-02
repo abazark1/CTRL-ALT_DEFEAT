@@ -4,6 +4,7 @@
  */
 package blitzstrike.view;
 
+import blitzstrike.model.BlitzStrike;
 import blitzstrike.model.Game;
 import blitzstrike.model.Player;
 import java.awt.BorderLayout;
@@ -52,112 +53,112 @@ public class MainWindow extends JFrame {
 
     public MainWindow() throws IOException {
 
-        frame = new JFrame("BlitzStrike");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("Menu");
+        //public void loadMainWindow(){
+            frame = new JFrame("BlitzStrike");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            JMenuBar menuBar = new JMenuBar();
+            JMenu menu = new JMenu("Menu");
 
-        JMenuItem resumePause = new JMenuItem("Pause/Resume");
-        resumePause.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //method to implement pause/resume
-            }
-        });
-        menu.add(resumePause);
-
-        JMenuItem restart = new JMenuItem("Restart");
-        restart.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //method to implement restart
-            }
-        });
-        menu.add(restart);
-
-        JMenuItem exit = new JMenuItem("Exit");
-        exit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                confirmExit();
-            }
-        });
-        menu.add(exit);
-
-        menuBar.add(menu);
-        frame.setJMenuBar(menuBar);
-        frame.setVisible(true);
-
-        final JPanel mMenu = new JPanel() {
-            @Override
-            public void paintComponent(Graphics gc) {
-                super.paintComponent(gc);
-                try {
-//                    Image mMenuImage = ResourceLoader.loadImage("blitzstrike/res/mainMenu.jpg");
-//                    gc.drawImage(mMenuImage, 150, 150, null);
-
-                    Image mMenuImage = ResourceLoader.loadImage("blitzstrike/res/mainM.png");
-                    int x = (getWidth() - mMenuImage.getWidth(null)) / 2;
-                    int y = (getHeight() - mMenuImage.getHeight(null)) / 2;
-                    gc.drawImage(mMenuImage, x, y, null);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+            JMenuItem resumePause = new JMenuItem("Pause/Resume");
+            resumePause.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //method to implement pause/resume
                 }
-            }
+            });
+            menu.add(resumePause);
 
-        };
+            JMenuItem restart = new JMenuItem("Restart");
+            restart.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //method to implement restart
+                }
+            });
+            menu.add(restart);
 
-        //mMenu.setLayout(new BorderLayout());
-        mMenu.setBackground(Color.BLACK);
-        mMenu.setLayout(new BoxLayout(mMenu, BoxLayout.Y_AXIS));
-        mMenu.add(Box.createVerticalGlue());
-        mMenu.add(Box.createVerticalGlue());
-        mMenu.add(Box.createVerticalGlue());
-        mMenu.add(Box.createVerticalGlue());
+            JMenuItem exit = new JMenuItem("Save and Exit");
+            exit.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    confirmExitandSave();
+                }
+            });
+            menu.add(exit);
 
-        JButton playButton = createButton("PLAY");
-        JButton continueButton = createButton("CONTINUE");
-        JButton quitButton = createButton("QUIT");
+            menuBar.add(menu);
+            frame.setJMenuBar(menuBar);
+            frame.setVisible(true);
 
-        addButton(mMenu, playButton);
-        mMenu.add(Box.createVerticalStrut(10)); // Add space
-        addButton(mMenu, continueButton);
-        mMenu.add(Box.createVerticalStrut(10)); // Add space
-        addButton(mMenu, quitButton);
+            final JPanel mMenu = new JPanel() {
+                @Override
+                public void paintComponent(Graphics gc) {
+                    super.paintComponent(gc);
+                    try {
+    //                    Image mMenuImage = ResourceLoader.loadImage("blitzstrike/res/mainMenu.jpg");
+    //                    gc.drawImage(mMenuImage, 150, 150, null);
 
-        mMenu.add(Box.createVerticalGlue());
-        mMenu.add(Box.createVerticalGlue());
-        mMenu.add(Box.createVerticalGlue());
-        frame.add(mMenu);
-        frame.setPreferredSize(new Dimension(800, 600));
-        frame.setResizable(false);
-        frame.pack();
-        frame.setVisible(true);
-        setLocationRelativeTo(null);
+                        Image mMenuImage = ResourceLoader.loadImage("blitzstrike/res/mainM.png");
+                        int x = (getWidth() - mMenuImage.getWidth(null)) / 2;
+                        int y = (getHeight() - mMenuImage.getHeight(null)) / 2;
+                        gc.drawImage(mMenuImage, x, y, null);
 
-        playButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Handle play button click
-                showGameSetupWindow();
-            }
-        });
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-        continueButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Handle continue button click
-            }
-        });
+            };
 
-        quitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                confirmExit();
-            }
-        });
+            //mMenu.setLayout(new BorderLayout());
+            mMenu.setBackground(Color.BLACK);
+            mMenu.setLayout(new BoxLayout(mMenu, BoxLayout.Y_AXIS));
+            mMenu.add(Box.createVerticalGlue());
+            mMenu.add(Box.createVerticalGlue());
+            mMenu.add(Box.createVerticalGlue());
+            mMenu.add(Box.createVerticalGlue());
 
+            JButton playButton = createButton("PLAY");
+            JButton continueButton = createButton("CONTINUE");
+            JButton quitButton = createButton("QUIT");
+
+            addButton(mMenu, playButton);
+            mMenu.add(Box.createVerticalStrut(10)); // Add space
+            addButton(mMenu, continueButton);
+            mMenu.add(Box.createVerticalStrut(10)); // Add space
+            addButton(mMenu, quitButton);
+
+            mMenu.add(Box.createVerticalGlue());
+            mMenu.add(Box.createVerticalGlue());
+            mMenu.add(Box.createVerticalGlue());
+            frame.add(mMenu);
+            frame.setPreferredSize(new Dimension(800, 600));
+            frame.setResizable(false);
+            frame.pack();
+            frame.setVisible(true);
+            setLocationRelativeTo(null);
+
+            playButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Handle play button click
+                    showGameSetupWindow();
+                }
+            });
+
+            continueButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Handle continue button click
+                }
+            });
+
+            quitButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    confirmExit();
+                }
+            });
     }
 
     private JButton createButton(String label) {
@@ -189,7 +190,19 @@ public class MainWindow extends JFrame {
             System.exit(1);
         }
     }
-
+    
+    private void confirmExitandSave() {
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+            //function to save the game
+            returnToMainMenu();
+        }
+    }
+    public void returnToMainMenu(){
+        JPanel mMenu = new JPanel();
+        mMenu.setVisible(true);
+    }
+    
     public void showRoundEndPopup(String message) {
 //    SwingUtilities.invokeLater(() -> {
 //        JOptionPane.showMessageDialog(this, message, "Round Over", JOptionPane.INFORMATION_MESSAGE);
@@ -227,6 +240,24 @@ public class MainWindow extends JFrame {
 
     }
 
+    private void showGameEndPopup(){
+          if (game.endGame){
+                JDialog gameEndDialog = new JDialog(this, "Game End", true);
+                JPanel mPanel = new JPanel();
+                mPanel.setLayout(new BoxLayout(mPanel, BoxLayout.Y_AXIS));
+                JLabel congratsLabel = new JLabel("Congrats!");
+                JLabel winnerNameLabel = new JLabel(game.getWinner().getName());
+                JLabel winnerScoreLabel = new JLabel(Integer.toString(game.getRoundsToWin()));
+                
+                mPanel.add(congratsLabel);
+                mPanel.add(winnerNameLabel);
+                mPanel.add(winnerScoreLabel);
+                
+                JButton returnButton = new JButton("RETURN");
+                returnButton.addActionListener(e -> returnToMainMenu());
+                mPanel.add(returnButton);
+          }
+    }
     private void showGameSetupWindow() {
         JDialog gameSetupDialog = new JDialog(this, "Game Setup", true);
         JPanel mainPanel = new JPanel();
