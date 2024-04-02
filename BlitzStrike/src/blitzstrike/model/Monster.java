@@ -8,6 +8,7 @@ package blitzstrike.model;
  *
  * @author aselh
  */
+import static blitzstrike.model.Game.MAP_SIZE;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -18,7 +19,7 @@ public class Monster {
     protected boolean ableToGoThroughWalls;
     protected boolean alive;
     protected Position position;
-    protected Cell[][] space;
+    protected Cell[][] space = new Cell [MAP_SIZE][MAP_SIZE];
 
     public Monster(double speed, Position position, Cell[][] space) {
         this.speed = speed;
@@ -45,7 +46,8 @@ public class Monster {
 //    }
 
     public boolean isValidPosition(Position p) {
-        return this.space[p.getY()][p.getY()].isWalkable();
+        return this.space[p.getX()][p.getY()].isWalkable();
+        //return this.space[10][10].isWalkable();
     }
     
     public Position getPosition() {
@@ -65,7 +67,7 @@ class BasicMonster extends Monster {
         super(speed, position, space);
         this.counterUntilChangeDirection = 0;
         // we initialize its currentDirection to any available direction first
-        settleCurrentDirection();
+        //settleCurrentDirection();
     }
 
     // we call this move() constantly, it checks if it can move with the currentPosition. 
