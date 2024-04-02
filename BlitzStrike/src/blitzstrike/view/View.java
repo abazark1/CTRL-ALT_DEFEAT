@@ -53,7 +53,7 @@ public class View extends JPanel {
         box = ResourceLoader.loadImage("blitzstrike/res/box.png");
         wall = ResourceLoader.loadImage("blitzstrike/res/wall.png");
         empty = ResourceLoader.loadImage("blitzstrike/res/empty.png");
-        explosion = ResourceLoader.loadImage("blitzstrike/res/explosion.pngs");
+        explosion = ResourceLoader.loadImage("blitzstrike/res/explosion.png");
     }
     
     /*

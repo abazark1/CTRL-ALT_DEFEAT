@@ -34,7 +34,7 @@ public class Game {
     private String filepath;
 
     private Player winner;
-    private Cell[][] space;
+    private Cell[][] space = new Cell[MAP_SIZE][MAP_SIZE];
     private boolean isPaused;
 
     private ArrayList<Monster> monsters;
@@ -47,6 +47,8 @@ public class Game {
         this.roundsToWin = roundsToWin;
         this.player1 = player1;
         this.player2 = player2;
+        
+        this.monsters = new ArrayList<>();
         
         this.isExplosionInProgress = false;
     }
@@ -130,6 +132,7 @@ public class Game {
             String line = map.split("\n")[row];
             for (int column = 0; column < MAP_SIZE; column++) {
                 Position position = new Position(column, row);
+//                Position position = new Position(row, column);
                 char symbol = line.charAt(column);
                 Cell cell;
                 switch (symbol) {
@@ -319,6 +322,7 @@ public class Game {
         return false;
     }
 
+    /*
     public void handleCollision() {
         for (Monster monster : monsters) {
             if (monster.getPosition().equals(player1.getPosition())) {
@@ -362,6 +366,7 @@ public class Game {
         }
     }
     
+    */
     private void applyEffect(Player player, Effect effect) {
         if (effect != null) {
             effect.applyEffect(player);
