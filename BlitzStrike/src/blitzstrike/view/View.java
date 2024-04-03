@@ -133,7 +133,13 @@ public class View extends JPanel {
                 if (img != null) {
                     gr.drawImage(img, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
                 }
+                //placing bomb
+                for (Bomb bomb1 : game.getPlayer11().getBombs()) {
+                gr.drawImage(this.bomb, bomb1.getPosition().getX() * scaled_size, bomb1.getPosition().getY() * scaled_size, scaled_size, scaled_size, null);}
+                for (Bomb bomb2 : game.getPlayer22().getBombs()) {
+                gr.drawImage(this.bomb, bomb2.getPosition().getX() * scaled_size, bomb2.getPosition().getY() * scaled_size, scaled_size, scaled_size, null);
             }
+        }
         }
         //g.drawImage(buffer, 0, 0, null);
     }

@@ -56,6 +56,12 @@ public class Game {
     public Game() {
     }
 
+    public Player getPlayer11(){
+        return player1;
+    }
+    public Player getPlayer22(){
+        return player2;
+    }
     public Box getBox(int x, int y) {
         Cell cell = space[y][x];
         if (cell instanceof Box) {
