@@ -63,6 +63,9 @@ public class Player {
         this.space = space;
     }
     
+    public List<Bomb> getBombs(){
+        return this.bombs;
+    } 
     public boolean isAlive(){
         return this.alive;
     }
