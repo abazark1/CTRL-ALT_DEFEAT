@@ -64,6 +64,7 @@ public class MainWindow extends JFrame {
 
     private Timer repaintTimer;
     private static final int REPAINT = 300;
+    final JPanel mMenu;
 
     public MainWindow() throws IOException {
 
@@ -104,7 +105,7 @@ public class MainWindow extends JFrame {
         frame.setJMenuBar(menuBar);
         frame.setVisible(true);
 
-        final JPanel mMenu = new JPanel() {
+        mMenu = new JPanel() {
             @Override
             public void paintComponent(Graphics gc) {
                 super.paintComponent(gc);
@@ -297,14 +298,17 @@ public class MainWindow extends JFrame {
     private void confirmExitandSave() {
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
-            //function to save the game
+            //here should be function to save the game, which I'll think about later
             returnToMainMenu();
         }
     }
 
+    //function that removes playing view and returns mainWindow
     public void returnToMainMenu() {
-        JPanel mMenu = new JPanel();
-        mMenu.setVisible(true);
+        frame.remove(view);
+        frame.add(mMenu);
+        frame.revalidate();
+        frame.repaint();
     }
 
     public void showRoundEndPopup(String message) {
