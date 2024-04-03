@@ -183,19 +183,23 @@ public class MainWindow extends JFrame {
                 int keyCode = e.getKeyCode();
                 switch (keyCode) {
                     case KeyEvent.VK_W:
-                        player1.movePlayer(UP);
+                        player1.movePlayer(UP, player2, game.getMonsters());
                         break;
                     case KeyEvent.VK_S:
-                        player1.movePlayer(DOWN);
+                        player1.movePlayer(DOWN, player2, game.getMonsters());
                         break;
                     case KeyEvent.VK_A:
-                        player1.movePlayer(LEFT);
+                        player1.movePlayer(LEFT, player2, game.getMonsters());
                         break;
                     case KeyEvent.VK_D:
-                        player1.movePlayer(RIGHT);
+                        player1.movePlayer(RIGHT, player2, game.getMonsters());
                         break;
                     case KeyEvent.VK_SPACE:
                         player1.placeBomb();
+                }
+                
+                if (view != null){
+                    view.repaint();
                 }
             }
         };
@@ -206,19 +210,22 @@ public class MainWindow extends JFrame {
                 int keyCode = e.getKeyCode();
                 switch (keyCode) {
                     case KeyEvent.VK_UP:
-                        player2.movePlayer(UP);
+                        player2.movePlayer(UP, player1, game.getMonsters());
                         break;
                     case KeyEvent.VK_DOWN:
-                        player2.movePlayer(DOWN);
+                        player2.movePlayer(DOWN, player1, game.getMonsters());
                         break;
                     case KeyEvent.VK_LEFT:
-                        player2.movePlayer(LEFT);
+                        player2.movePlayer(LEFT, player1, game.getMonsters());
                         break;
                     case KeyEvent.VK_RIGHT:
-                        player2.movePlayer(RIGHT);
+                        player2.movePlayer(RIGHT, player1, game.getMonsters());
                         break;
                     case KeyEvent.VK_ENTER:
                         player2.placeBomb();
+                }
+                if (view != null){
+                    view.repaint();
                 }
             }
         };
@@ -235,10 +242,13 @@ public class MainWindow extends JFrame {
                 // Move monsters
                 if (game != null) {
                     game.moveMonsters();
+                    
                 }
             }
         });
         monsterMoveTimer.start();
+        // repainting if monster has caught up to a player, so player should be removed from the map
+        //view.repaint();
     }
 
     // for continuous repaint

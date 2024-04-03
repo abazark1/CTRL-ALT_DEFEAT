@@ -17,6 +17,7 @@ import java.awt.Image;
 import java.io.IOException;
 import javax.swing.JPanel;
 import res.ResourceLoader;
+import java.awt.image.BufferedImage;
 import blitzstrike.model.Cell;
 import blitzstrike.model.Game;
 import blitzstrike.model.Effect;
@@ -35,7 +36,10 @@ public class View extends JPanel {
     private final Image player1, player2, monster1, monster2, monster3, monster4, bomb, powerUp, curse, box, wall, empty, explosion;
     private double scale;
     private int scaled_size;
-    private final int tile_size = 48;
+    private final int tile_size = 42;
+    
+    private BufferedImage buffer;
+
     
     public View(Game g) throws IOException{
         game = g;
@@ -54,6 +58,7 @@ public class View extends JPanel {
         wall = ResourceLoader.loadImage("blitzstrike/res/wall.png");
         empty = ResourceLoader.loadImage("blitzstrike/res/empty.png");
         explosion = ResourceLoader.loadImage("blitzstrike/res/explosion.png");
+        buffer = new BufferedImage(800, 800, BufferedImage.TYPE_INT_RGB);
     }
     
     /*
@@ -77,6 +82,7 @@ public class View extends JPanel {
     
     @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
         //if (!game.isLevelLoaded()) return;
         Graphics2D gr = (Graphics2D) g;
         for (int y = 0; y < game.MAP_SIZE; y++) {
@@ -129,6 +135,7 @@ public class View extends JPanel {
                 }
             }
         }
+        //g.drawImage(buffer, 0, 0, null);
     }
     
     public void drawExplosion(Graphics2D gr, Bomb bomb, int scaled_size){

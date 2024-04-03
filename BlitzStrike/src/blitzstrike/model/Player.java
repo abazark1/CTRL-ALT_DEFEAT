@@ -78,8 +78,8 @@ public class Player {
         System.out.println("I've placed an obstacle");
     }
 
-    public void movePlayer(Direction direction) {
-        if(isValidPosition(direction))
+    public void movePlayer(Direction direction, Player player2, ArrayList<Monster> monsters) {
+        if(isAlive() && isValidPosition(direction, player2, monsters))
         {
             this.position = this.position.translate(direction);
         }
@@ -109,9 +109,22 @@ public class Player {
         this.alive = false;
     }
 
-    public boolean isValidPosition(Direction direction) {
+    public boolean isValidPosition(Direction direction, Player player2, ArrayList<Monster> monsters) {
         Position newPosition = this.position.translate(direction);
-        return this.space[newPosition.getY()][newPosition.getX()].isWalkable();
+        
+        if (!this.space[newPosition.getY()][newPosition.getX()].isWalkable()){
+            return false;
+        } else if (player2.getPosition().equals(newPosition)){
+            return false;
+        }
+        
+        for (Monster m: monsters){
+            if(m.getPosition().equals(newPosition)){
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     public void activateEffect(Effect effect) {

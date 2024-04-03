@@ -81,14 +81,14 @@ public class Game {
     }
 
     public Player getPlayer1(int x, int y) {
-        if (player1.getPosition().getX() == x && player1.getPosition().getY() == y) {
+        if (player1.isAlive() && player1.getPosition().getX() == x && player1.getPosition().getY() == y) {
             return player1;
         }
         return null;
     }
 
     public Player getPlayer2(int x, int y) {
-        if (player2.getPosition().getX() == x && player2.getPosition().getY() == y) {
+        if (player2.isAlive() && player2.getPosition().getX() == x && player2.getPosition().getY() == y) {
             return player2;
         }
         return null;
@@ -132,10 +132,8 @@ public class Game {
             String line = map.split("\n")[row];
             for (int column = 0; column < MAP_SIZE; column++) {
                 Position position = new Position(column, row);
-//                Position position = new Position(row, column);
                 char symbol = line.charAt(column);
                 Cell cell;
-//                Monster monster = null;
                 switch (symbol) {
                     case 'x':
                         cell = new Wall(position);
@@ -167,7 +165,6 @@ public class Game {
                         break;
                 }
                 space[row][column] = cell;
-//                if (monster != null) monster.settleCurrentDirection();
             }
         }
     }
@@ -279,18 +276,21 @@ public class Game {
 //        isPaused = false;
 //    }
     public void movePlayer1(Direction d) {
-        player1.movePlayer(d);
+        player1.movePlayer(d, player2, monsters);
+        handleCollision();
+        
     }
 
     public void movePlayer2(Direction d) {
-        player2.movePlayer(d);
+        player2.movePlayer(d, player1, monsters);
+        handleCollision();
     }
 
     public void moveMonsters() {
         for (Monster monster : monsters) {
             monster.move();
         }
-
+        handleCollision();
     }
 
     public boolean isPlayerDead() {
@@ -306,6 +306,10 @@ public class Game {
         //final winner
         return this.roundsToWin;
     }
+     
+    public ArrayList<Monster> getMonsters(){
+        return this.monsters;
+    }
 
     public boolean gameSuccessfullEnd() {
         return this.player1Score >= this.roundsToWin || this.player2Score >= this.roundsToWin;
@@ -313,9 +317,6 @@ public class Game {
 
     // Промежуточный победитель
     public Player getCurrentRoundWinnerIfAny() throws Exception {
-//        if (this.player1.isAlive() && this.player2.isAlive()) {
-//            throw new Exception("Both can't be alive");
-//        } else 
         if (this.player1.isAlive() && !this.player2.isAlive()) {
             return this.player1;
         } else if (this.player2.isAlive() && !this.player1.isAlive()) {
@@ -330,26 +331,28 @@ public class Game {
         return false;
     }
 
-    /*
+    
     public void handleCollision() {
         for (Monster monster : monsters) {
             if (monster.getPosition().equals(player1.getPosition())) {
                 player1.getExploded();
                 endRound = true;
+                removePlayerFromMap(player1);
                 System.out.println("Player 1 has encountered a monster and the round is over.");
-                return; // Exit the method to avoid further processing
+                //return; // Exit the method to avoid further processing
             }
 
             if (player2 != null && monster.getPosition().equals(player2.getPosition())) {
                 player2.getExploded();
-                endGame = true;
-                System.out.println("Player 2 has encountered a monster and the game is over.");
-                return;
+                endRound = true;
+                removePlayerFromMap(player2);
+                System.out.println("Player 2 has encountered a monster and the round is over.");
+                //return;
             }
         }
         
         // we're checking if player have collided with effect yet
-        Effect effectAtPlayer1Position = (player1 != null) ? getEffect(player1.getPosition()) : null;
+        /*Effect effectAtPlayer1Position = (player1 != null) ? getEffect(player1.getPosition()) : null;
         Effect effectAtPlayer2Position = (player2 != null) ? getEffect(player2.getPosition()) : null;
         
         if (player1 != null){
@@ -357,9 +360,10 @@ public class Game {
         }
         if (player2 != null) {
             applyEffect(player2, effectAtPlayer2Position);
-        }
+        }*/
     }
     
+    /*
     public Effect getEffect(Position position) {
         Cell cell = space[position.getY()][position.getX()];
 
@@ -389,8 +393,6 @@ public class Game {
     public boolean isExplosionInProgress(){
         return this.isExplosionInProgress;
     }
-
-
 
     public void saveGame(Player player1name, Player player2name, int player1score, int player2score, int roundsToWin, Timer timer) {
         StringBuilder mapBuilder = new StringBuilder();
@@ -453,6 +455,28 @@ public class Game {
             }
         }
         return false;
+    }
+    
+    //check if monster has caught up to a player
+    /*public void checkMonsterPlayerCollision(Monster monster) {
+        if (monster.getPosition().equals(player1.getPosition())) {
+            System.out.println("Monster collided with pplayer");
+            player1.getExploded();
+            removePlayerFromMap(player1);
+        } else if (monster.getPosition().equals(player2.getPosition())) {
+            System.out.println("Monster collided with player");
+            player2.getExploded();
+            removePlayerFromMap(player2);
+        }
+        
+    }*/
+    
+    // removing player if monster has caught him/her
+    public void removePlayerFromMap(Player player) {
+        Position playerPosition = player.getPosition();
+        space[playerPosition.getY()][playerPosition.getX()] = new Empty(playerPosition);
+        player.setPosition(new Position(0, 0));
+        
     }
 
 }
