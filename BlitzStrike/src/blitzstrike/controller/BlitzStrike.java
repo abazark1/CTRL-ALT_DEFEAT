@@ -29,10 +29,6 @@ public class BlitzStrike {
              } catch (IOException ex) {
                  Logger.getLogger(BlitzStrike.class.getName()).log(Level.SEVERE, null, ex);
              }
-             String path = "src/blitzstrike/model/map1.txt";
-             Game g = new Game();
-             String a = g.readFile();
-             System.out.println(a);
         });
     }
     

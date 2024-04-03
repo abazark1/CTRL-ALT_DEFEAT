@@ -62,6 +62,9 @@ public class MainWindow extends JFrame {
     private Timer monsterMoveTimer;
     private static final int MONSTER_MOVE = 2000;
 
+    private Timer repaintTimer;
+    private static final int REPAINT = 300;
+
     public MainWindow() throws IOException {
 
         //public void loadMainWindow(){
@@ -172,6 +175,7 @@ public class MainWindow extends JFrame {
         });
 
         startMoveMonsterTimer();
+        startRepaintTimer();
 
         KeyAdapter player1KeyListener = new KeyAdapter() {
             @Override
@@ -193,7 +197,6 @@ public class MainWindow extends JFrame {
                     case KeyEvent.VK_SPACE:
                         player1.placeBomb();
                 }
-                view.repaint();
             }
         };
 
@@ -217,7 +220,6 @@ public class MainWindow extends JFrame {
                     case KeyEvent.VK_ENTER:
                         player2.placeBomb();
                 }
-                view.repaint();
             }
         };
 
@@ -231,19 +233,25 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Move monsters
-                moveMonsters();
-//                view.repaint();
+                if (game != null) {
+                    game.moveMonsters();
+                }
             }
         });
         monsterMoveTimer.start();
     }
 
-    private void moveMonsters() {
-        if (game != null) {
-            game.moveMonsters();
-            // Repaint the view to update the monster positions
-//            view.repaint();
-        }
+    // for continuous repaint
+    private void startRepaintTimer() {
+        repaintTimer = new Timer(REPAINT, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (view != null) {
+                    view.repaint();
+                }
+            }
+        });
+        repaintTimer.start();
     }
 
     private JButton createButton(String label) {
@@ -302,7 +310,7 @@ public class MainWindow extends JFrame {
 
         JDialog roundEndDialog = new JDialog(this, "Round Ended", true);
         roundEndDialog.setLayout(new FlowLayout());
-        roundEndDialog.setSize(400, 200); // You can adjust the size based on your content
+        roundEndDialog.setSize(400, 200);
         roundEndDialog.setLocationRelativeTo(this); // Center on screen
 
         // Message
@@ -433,7 +441,7 @@ public class MainWindow extends JFrame {
                  */
                 player1 = new Player("John");
                 player2 = new Player("Vanessa");
-                game = new Game("src/blitzstrike/res/map1.txt",player1, player2, 0);
+                game = new Game("src/blitzstrike/res/map1.txt", player1, player2, 0);
                 game.loadMap();
                 try {
                     view = new View(game);
@@ -447,27 +455,21 @@ public class MainWindow extends JFrame {
                 gameSetupDialog.setVisible(false);
                 gameSetupDialog.dispose();
 //            }
+            }
         }
+        );
+        mainPanel.add(startButton);
+
+        mainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        gameSetupDialog.setContentPane(mainPanel);
+
+        gameSetupDialog.pack();
+
+        gameSetupDialog.setLocationRelativeTo(
+                this);
+
+        gameSetupDialog.setVisible(
+                true);
     }
 
-    );
-    mainPanel.add (startButton);
-
-    mainPanel.setBorder (javax.swing.BorderFactory.createEmptyBorder
-
-    (10, 10, 10, 10));
-    gameSetupDialog.setContentPane (mainPanel);
-
-    gameSetupDialog.pack ();
-
-    gameSetupDialog.setLocationRelativeTo (
-
-    this);
-
-    gameSetupDialog.setVisible (
-
-true);
-    }
-    
-    
 }
