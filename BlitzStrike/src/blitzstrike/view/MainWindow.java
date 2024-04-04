@@ -87,7 +87,7 @@ public class MainWindow extends JFrame {
         restart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //method to implement restart
+                game.restartgame();
             }
         });
         menu.add(restart);
@@ -183,20 +183,11 @@ public class MainWindow extends JFrame {
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
                 switch (keyCode) {
-                    case KeyEvent.VK_W:
-                        player1.movePlayer(UP, player2, game.getMonsters());
-                        break;
-                    case KeyEvent.VK_S:
-                        player1.movePlayer(DOWN, player2, game.getMonsters());
-                        break;
-                    case KeyEvent.VK_A:
-                        player1.movePlayer(LEFT, player2, game.getMonsters());
-                        break;
-                    case KeyEvent.VK_D:
-                        player1.movePlayer(RIGHT, player2, game.getMonsters());
-                        break;
-                    case KeyEvent.VK_SPACE:
-                        player1.placeBomb();
+                    case KeyEvent.VK_W -> player1.movePlayer(UP, player2, game.getMonsters());
+                    case KeyEvent.VK_S -> player1.movePlayer(DOWN, player2, game.getMonsters());
+                    case KeyEvent.VK_A -> player1.movePlayer(LEFT, player2, game.getMonsters());
+                    case KeyEvent.VK_D -> player1.movePlayer(RIGHT, player2, game.getMonsters());
+                    case KeyEvent.VK_SPACE -> player1.placeBomb();
                 }
                 
                 if (view != null){
@@ -210,20 +201,11 @@ public class MainWindow extends JFrame {
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
                 switch (keyCode) {
-                    case KeyEvent.VK_UP:
-                        player2.movePlayer(UP, player1, game.getMonsters());
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        player2.movePlayer(DOWN, player1, game.getMonsters());
-                        break;
-                    case KeyEvent.VK_LEFT:
-                        player2.movePlayer(LEFT, player1, game.getMonsters());
-                        break;
-                    case KeyEvent.VK_RIGHT:
-                        player2.movePlayer(RIGHT, player1, game.getMonsters());
-                        break;
-                    case KeyEvent.VK_ENTER:
-                        player2.placeBomb();
+                    case KeyEvent.VK_UP -> player2.movePlayer(UP, player1, game.getMonsters());
+                    case KeyEvent.VK_DOWN -> player2.movePlayer(DOWN, player1, game.getMonsters());
+                    case KeyEvent.VK_LEFT -> player2.movePlayer(LEFT, player1, game.getMonsters());
+                    case KeyEvent.VK_RIGHT -> player2.movePlayer(RIGHT, player1, game.getMonsters());
+                    case KeyEvent.VK_ENTER -> player2.placeBomb();
                 }
                 if (view != null){
                     view.repaint();
