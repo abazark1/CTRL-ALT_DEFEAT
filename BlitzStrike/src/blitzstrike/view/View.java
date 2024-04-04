@@ -165,5 +165,4 @@ public class View extends JPanel {
             }
         }
     }
-
 }
