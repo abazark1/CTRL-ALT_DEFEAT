@@ -32,19 +32,19 @@ import blitzstrike.model.Empty;
 import blitzstrike.model.Bomb;
 
 public class View extends JPanel {
+
     private final Game game;
     private final Image player1, player2, monster1, monster2, monster3, monster4, bomb, powerUp, curse, box, wall, empty, explosion;
     private double scale;
     private int scaled_size;
     private final int tile_size = 42;
-    
+
     private BufferedImage buffer;
 
-    
-    public View(Game g) throws IOException{
+    public View(Game g) throws IOException {
         game = g;
         scale = 1.0;
-        scaled_size = (int)(scale * tile_size);
+        scaled_size = (int) (scale * tile_size);
         player1 = ResourceLoader.loadImage("blitzstrike/res/player1.png");
         player2 = ResourceLoader.loadImage("blitzstrike/res/player2.png");
         monster1 = ResourceLoader.loadImage("blitzstrike/res/monster1.png");
@@ -60,7 +60,7 @@ public class View extends JPanel {
         explosion = ResourceLoader.loadImage("blitzstrike/res/explosion.png");
         buffer = new BufferedImage(800, 800, BufferedImage.TYPE_INT_RGB);
     }
-    
+
     /*
     Probably not needed, if the user cannot set up the scale
 
@@ -79,7 +79,6 @@ public class View extends JPanel {
         repaint();
         return true;
     }*/
-    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -93,22 +92,27 @@ public class View extends JPanel {
                 if (b != null) {
                     if (b.isDestroyed()) {
                         Effect effect = b.getEffect();
-                        if (effect instanceof PowerUp) {
+//                        System.out.println("Empty? " + effect.isEmpty());
+//                        System.out.println("Curse? " + effect.isCurse());
+//                        System.out.println("Powerup? " + effect.isPowerup());
+                        if (effect.isPowerup()) {
+                            System.out.println("YES IT IS POWER UP");
                             img = powerUp;
-                        } else if (effect instanceof Curse) {
+                        } else if (effect.isCurse()) {
+                            System.out.println("YES IT IS CURSE");
                             img = curse;
-                        } else if (effect instanceof EmptyEffect) {
-                            // Empty box, do nothing
-                            continue;
+                        } else if (effect.isEmpty()) {
+                            System.out.println("YES IT IS EMPTY CELL");
+                            img = empty;
                         }
                     } else {
                         img = box;
-                    }  
+                    }
                 } else {
-                    if(game.isBombAtPosition(x, y)){
-                        if(game.isExplosionInProgress()){
-                            drawExplosion(gr, game.getBomb(x, y), scaled_size);
-                        }
+                    if (game.isBombAtPosition(x, y)) {
+//                        if(game.isExplosionInProgress()){
+//                            drawExplosion(gr, game.getBomb(x, y), scaled_size);
+//                        }
                         img = bomb;
                     }
                     Monster m = game.getMonster(x, y);
@@ -135,19 +139,20 @@ public class View extends JPanel {
                 }
                 //placing bomb
                 for (Bomb bomb1 : game.getPlayer11().getBombs()) {
-                gr.drawImage(this.bomb, bomb1.getPosition().getX() * scaled_size, bomb1.getPosition().getY() * scaled_size, scaled_size, scaled_size, null);}
+                    gr.drawImage(this.bomb, bomb1.getPosition().getX() * scaled_size, bomb1.getPosition().getY() * scaled_size, scaled_size, scaled_size, null);
+                }
                 for (Bomb bomb2 : game.getPlayer22().getBombs()) {
-                gr.drawImage(this.bomb, bomb2.getPosition().getX() * scaled_size, bomb2.getPosition().getY() * scaled_size, scaled_size, scaled_size, null);
+                    gr.drawImage(this.bomb, bomb2.getPosition().getX() * scaled_size, bomb2.getPosition().getY() * scaled_size, scaled_size, scaled_size, null);
+                }
             }
-        }
         }
         //g.drawImage(buffer, 0, 0, null);
     }
-    
-    public void drawExplosion(Graphics2D gr, Bomb bomb, int scaled_size){
+
+    public void drawExplosion(Graphics2D gr, Bomb bomb, int scaled_size) {
         int bombX = bomb.getPosition().getX();
         int bombY = bomb.getPosition().getY();
-        
+
         for (int dx = -2; dx <= 2; dx++) {
             for (int dy = -2; dy <= 2; dy++) {
                 if (Math.abs(dx) + Math.abs(dy) <= 2) {
@@ -160,6 +165,5 @@ public class View extends JPanel {
             }
         }
     }
-    
-    
+
 }

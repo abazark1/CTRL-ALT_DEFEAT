@@ -6,6 +6,7 @@ package blitzstrike.model;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -35,7 +36,7 @@ public class Player {
     private LocalTime noBombCurseTimer;
     private boolean placeBombImmediatelyCurse;
     private LocalTime immediateBombCurseTimer;
-    
+
     private Cell[][] space;
 
     public Player(String name) {
@@ -54,19 +55,20 @@ public class Player {
         this.noBombCurse = false;
         this.placeBombImmediatelyCurse = false;
     }
-    
-    public void setPosition(Position position){
+
+    public void setPosition(Position position) {
         this.position = position;
     }
-    
-    public void setSpace(Cell[][] space){
+
+    public void setSpace(Cell[][] space) {
         this.space = space;
     }
-    
-    public List<Bomb> getBombs(){
+
+    public List<Bomb> getBombs() {
         return this.bombs;
-    } 
-    public boolean isAlive(){
+    }
+
+    public boolean isAlive() {
         return this.alive;
     }
 
@@ -82,51 +84,65 @@ public class Player {
     }
 
     public void movePlayer(Direction direction, Player player2, ArrayList<Monster> monsters) {
-        if(isAlive() && isValidPosition(direction, player2, monsters))
-        {
+        if (isAlive() && isValidPosition(direction, player2, monsters)) {
             this.position = this.position.translate(direction);
         }
 
     }
-    
+
     // check if the player has a bomb on certain field
     public boolean hasBombAtPosition(int x, int y) {
-        for (Bomb bomb: bombs){
+        for (Bomb bomb : bombs) {
             Position bombPos = bomb.getPosition();
             return bombPos.getX() == x && bombPos.getY() == y;
         }
         return false;
     }
-    
-    public Bomb getBomb(int x, int y){
-        for (Bomb bomb: bombs){
+
+    public Bomb getBomb(int x, int y) {
+        for (Bomb bomb : bombs) {
             Position bombPos = bomb.getPosition();
-            if (bombPos.getX() == x && bombPos.getY() == y){
+            if (bombPos.getX() == x && bombPos.getY() == y) {
                 return bomb;
             }
         }
         return null;
     }
+    
+    public void setBombs(ArrayList<Bomb> bombs){
+        this.bombs = bombs;
+    }
 
-    public void getExploded() {
+    public void removeBomb(Bomb bomb) {
+        Iterator<Bomb> bombIterator = this.bombs.iterator();
+        while (bombIterator.hasNext()) {
+            Bomb b = bombIterator.next();
+            if (b.getPosition().getX() == bomb.getPosition().getX() && b.getPosition().getY() == bomb.getPosition().getY()) {
+                bombIterator.remove();
+                System.out.println("The bomb at X:" + bomb.getPosition().getX() + " Y:" + bomb.getPosition().getY() + " was removed");
+            }
+        }
+    }
+
+    public void die() {
         this.alive = false;
     }
 
     public boolean isValidPosition(Direction direction, Player player2, ArrayList<Monster> monsters) {
         Position newPosition = this.position.translate(direction);
-        
-        if (!this.space[newPosition.getY()][newPosition.getX()].isWalkable()){
+
+        if (!this.space[newPosition.getY()][newPosition.getX()].isWalkable()) {
             return false;
-        } else if (player2.getPosition().equals(newPosition)){
+        } else if (player2.getPosition().equals(newPosition)) {
             return false;
         }
-        
-        for (Monster m: monsters){
-            if(m.getPosition().equals(newPosition)){
+
+        for (Monster m : monsters) {
+            if (m.getPosition().equals(newPosition)) {
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -134,102 +150,103 @@ public class Player {
         effect.applyEffect(this);
     }
 
-    public void setImmediateBombCurse(boolean value){
+    public void setImmediateBombCurse(boolean value) {
         this.placeBombImmediatelyCurse = value;
     }
-    
-    public LocalTime getImmediateBombCurseTimer(){
+
+    public LocalTime getImmediateBombCurseTimer() {
         return this.immediateBombCurseTimer;
     }
-    
+
     public void setImmediateBombCurseTimer(LocalTime time) {
-        if (time != null){
+        if (time != null) {
             this.immediateBombCurseTimer = time;
         } else {
             this.immediateBombCurseTimer = null;
         }
     }
-    
-    public void setNoBombCurse(boolean value){
+
+    public void setNoBombCurse(boolean value) {
         this.noBombCurse = value;
     }
-    
-    public LocalTime getNoBombCurseTimer(){
+
+    public LocalTime getNoBombCurseTimer() {
         return this.noBombCurseTimer;
     }
-    
-    public void setNoBombCurseTimer(LocalTime time){
-        if (time != null){
+
+    public void setNoBombCurseTimer(LocalTime time) {
+        if (time != null) {
             this.immediateBombCurseTimer = time;
         } else {
             this.immediateBombCurseTimer = null;
         }
     }
-    public void setName(String name){
+
+    public void setName(String name) {
         this.name = name;
     }
-    
-    public void setBombRangeCurse(int value){
+
+    public void setBombRangeCurse(int value) {
         this.blastRange = value;
     }
-    
-    public LocalTime getBombRangeCurseTimer(){
+
+    public LocalTime getBombRangeCurseTimer() {
         return this.blastRangeDecreaseTimer;
     }
-    
-    public void setBombRangeCurseTimer(LocalTime time){
-        if (time != null){
+
+    public void setBombRangeCurseTimer(LocalTime time) {
+        if (time != null) {
             this.immediateBombCurseTimer = time;
         } else {
             this.immediateBombCurseTimer = null;
         }
     }
-    
-    public void setSpeedCurse(double value){
+
+    public void setSpeedCurse(double value) {
         this.speed = value;
     }
-    
-    public LocalTime getSpeedCurseTimer(){
+
+    public LocalTime getSpeedCurseTimer() {
         return this.speedDecreaseTimer;
     }
-    
-    public void setSpeedCurseTimer(LocalTime time){
-        if (time != null){
+
+    public void setSpeedCurseTimer(LocalTime time) {
+        if (time != null) {
             this.immediateBombCurseTimer = time;
         } else {
             this.immediateBombCurseTimer = null;
         }
     }
-    
+
     public Position getPosition() {
         return this.position;
     }
-    
-    public int getBombNumber(){
+
+    public int getBombNumber() {
         return this.maxBombNumber;
     }
-    
-    public void setBombNumber(int newBombNumber){
+
+    public void setBombNumber(int newBombNumber) {
         this.maxBombNumber = newBombNumber;
     }
-    
-    public int getBlastRange(){
+
+    public int getBlastRange() {
         return this.blastRange;
     }
-    
-    public void setBlastRange(int newBlastRange){
+
+    public void setBlastRange(int newBlastRange) {
         this.blastRange = newBlastRange;
     }
-    
-    public int getGamesWon(){
+
+    public int getGamesWon() {
         return this.gamesWon;
     }
-    
-    public String getName(){
+
+    public String getName() {
         return this.name;
     }
-    public void reset()
-    {     
+
+    public void reset() {
         this.position = new Position(0, 0);
         this.bombs = new ArrayList<>();
         this.obstacles = new ArrayList<>();

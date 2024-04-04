@@ -26,7 +26,7 @@ public class Box extends Cell {
         this.walkable = true;
         this.destroyable = false;
         this.mineable = true;
-        //this.effect = Effect.getRandomEffect();
+        this.effect = Effect.getRandomEffect();
         System.out.println("I'm destroyed");
     }
     
@@ -36,5 +36,9 @@ public class Box extends Cell {
     
     public boolean isDestroyed(){
         return this.destroyed;
+    }
+    
+    public boolean isDestoyable(){
+        return this.destroyable;
     }
 }

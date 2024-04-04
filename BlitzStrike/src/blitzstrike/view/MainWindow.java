@@ -62,8 +62,8 @@ public class MainWindow extends JFrame {
     private Timer monsterMoveTimer;
     private static final int MONSTER_MOVE = 2000;
 
-    private Timer repaintTimer;
-    private static final int REPAINT = 300;
+    private Timer backgroundTimer;
+    private static final int BACKGROUND = 300;
     final JPanel mMenu;
 
     public MainWindow() throws IOException {
@@ -176,7 +176,7 @@ public class MainWindow extends JFrame {
         });
 
         startMoveMonsterTimer();
-        startRepaintTimer();
+        startBackgroundTimer();
 
         KeyAdapter player1KeyListener = new KeyAdapter() {
             @Override
@@ -253,16 +253,20 @@ public class MainWindow extends JFrame {
     }
 
     // for continuous repaint
-    private void startRepaintTimer() {
-        repaintTimer = new Timer(REPAINT, new ActionListener() {
+    private void startBackgroundTimer() {
+        backgroundTimer = new Timer(BACKGROUND, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (view != null) {
                     view.repaint();
                 }
+                if (game != null){
+                    game.handleBombExplosion();
+                    game.removeDeadMonsters();
+                }
             }
         });
-        repaintTimer.start();
+        backgroundTimer.start();
     }
 
     private JButton createButton(String label) {

@@ -9,8 +9,10 @@ package blitzstrike.model;
  * @author medina
  */
 public class EmptyEffect extends Effect {
-    @Override
-    public boolean isEmpty(){
-        return true;
+
+    protected EmptyEffect() {
+        super();
+        this.isEmpty = true;
     }
+
 }
