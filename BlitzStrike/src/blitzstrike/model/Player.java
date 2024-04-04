@@ -73,9 +73,11 @@ public class Player {
     }
 
     public void placeBomb() {
-        Bomb bomb = new Bomb(this.position, this, this.space);
-        this.bombs.add(bomb);
-        System.out.println("I've placed a bomb");
+        if (isAlive() && this.getBombs().size() < maxBombNumber) {
+            Bomb bomb = new Bomb(this.position, this, this.space);
+            this.bombs.add(bomb);
+            System.out.println("I've placed a bomb");
+        }
     }
 
     public void placeObstacle() {
@@ -108,8 +110,8 @@ public class Player {
         }
         return null;
     }
-    
-    public void setBombs(ArrayList<Bomb> bombs){
+
+    public void setBombs(ArrayList<Bomb> bombs) {
         this.bombs = bombs;
     }
 

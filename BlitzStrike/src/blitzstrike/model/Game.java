@@ -347,10 +347,10 @@ public class Game {
         }
     }
 
-    public boolean doCollapse() {
-        return false;
-    }
-
+//    public boolean doCollapse() {
+//        return false;
+//    }
+    // collision of monsters and players & players and effects
     public void handleCollision() {
         for (Monster monster : monsters) {
             if (monster.getPosition().equals(player1.getPosition())) {
@@ -367,6 +367,20 @@ public class Game {
                 removePlayerFromMap(player2);
                 System.out.println("Player 2 has encountered a monster and the round is over.");
                 //return;
+            }
+        }
+
+        // players and effects
+        if (player1.isAlive()) {
+            if (this.space[player1.getPosition().getY()][player1.getPosition().getX()].isDestroyed()) {
+                ((Box) this.space[player1.getPosition().getY()][player1.getPosition().getX()]).getEffect().applyEffect(player1);
+                this.space[player1.getPosition().getY()][player1.getPosition().getX()] = new Empty(player1.getPosition());
+            }
+        }
+        if (player2.isAlive()) {
+            if (this.space[player2.getPosition().getY()][player2.getPosition().getX()].isDestroyed()) {
+                ((Box) this.space[player2.getPosition().getY()][player2.getPosition().getX()]).getEffect().applyEffect(player2);
+                this.space[player2.getPosition().getY()][player2.getPosition().getX()] = new Empty(player2.getPosition());
             }
         }
 

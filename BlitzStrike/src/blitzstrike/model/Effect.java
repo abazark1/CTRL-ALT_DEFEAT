@@ -53,7 +53,7 @@ public class Effect {
     }
 
     public void applyEffect(Player player) {
-
+        System.out.println(player.getName() + " has just got the empty effect!");
     }
 
     static public Effect getRandomEffect() {

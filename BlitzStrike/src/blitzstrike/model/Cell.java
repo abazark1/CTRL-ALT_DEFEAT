@@ -13,6 +13,7 @@ public class Cell {
     protected boolean mineable;
     protected boolean enable;
     protected boolean walkable;
+    protected boolean destroyed;
     protected Position position;
     
     public Cell(Position position){
@@ -20,10 +21,15 @@ public class Cell {
         this.mineable = true;
         this.enable = true;
         this.walkable = true;
+        this.destroyed = false;
         this.position = position;
     }
     
     public boolean isWalkable(){
         return walkable;
+    }
+    
+    public boolean isDestroyed(){
+        return this.destroyed;
     }
 }

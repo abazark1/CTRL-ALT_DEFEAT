@@ -19,7 +19,7 @@ public class Monster {
     protected boolean ableToGoThroughWalls;
     protected boolean alive;
     protected Position position;
-    protected Cell[][] space = new Cell [MAP_SIZE][MAP_SIZE];
+    protected Cell[][] space = new Cell[MAP_SIZE][MAP_SIZE];
 
     public Monster(double speed, Position position, Cell[][] space) {
         this.speed = speed;
@@ -32,8 +32,8 @@ public class Monster {
     public void move() {
 
     }
-    
-    public boolean isAlive(){
+
+    public boolean isAlive() {
         return this.alive;
     }
 
@@ -48,15 +48,14 @@ public class Monster {
 //    public Position isPlayerClose(Position p) {
 //        return;
 //    }
-
     public boolean isValidPosition(Position p) {
         return this.space[p.getY()][p.getX()].isWalkable();
     }
-    
+
     public Position getPosition() {
         return this.position;
     }
-    
+
     //public abstract Monster getType();
 }
 
@@ -78,18 +77,23 @@ class BasicMonster extends Monster {
     // also every LIMIT_TO_CHANGE_DIRECTION_RANDOMLY, when it faces the wall, it changes the direction randomly
     @Override
     public void move() {
-        Position newPosition = this.position.translate(currentDirection);
-        if (isValidPosition(newPosition)) {
-            this.position = newPosition;
+        if (this.currentDirection == Direction.STILL) {
+            settleCurrentDirectionRandomly();
+            moveWithNewDirection();
         } else {
-            this.counterUntilChangeDirection++;
-            if (this.counterUntilChangeDirection >= LIMIT_TO_CHANGE_DIRECTION_RANDOMLY) {
-                settleCurrentDirectionRandomly();
-                moveWithNewDirection();
-                this.counterUntilChangeDirection = 0;
+            Position newPosition = this.position.translate(currentDirection);
+            if (isValidPosition(newPosition)) {
+                this.position = newPosition;
             } else {
-                settleCurrentDirection();
-                moveWithNewDirection();
+                this.counterUntilChangeDirection++;
+                if (this.counterUntilChangeDirection >= LIMIT_TO_CHANGE_DIRECTION_RANDOMLY) {
+                    settleCurrentDirectionRandomly();
+                    moveWithNewDirection();
+                    this.counterUntilChangeDirection = 0;
+                } else {
+                    settleCurrentDirection();
+                    moveWithNewDirection();
+                }
             }
         }
     }
@@ -102,7 +106,7 @@ class BasicMonster extends Monster {
     private void settleCurrentDirection() {
         Position newPosUp = position.translate(Direction.UP);
         Position newPosDown = position.translate(Direction.DOWN);
-        System.out.println(newPosDown.getY() + " " + newPosDown.getX());
+//        System.out.println(newPosDown.getY() + " " + newPosDown.getX());
         Position newPosLeft = position.translate(Direction.LEFT);
         Position newPosRight = position.translate(Direction.RIGHT);
         if (isValidPosition(newPosUp)) {
@@ -146,7 +150,7 @@ class BasicMonster extends Monster {
         int indexOfRandomDirection = rand.nextInt(numberOfPossibleDirections);
         this.currentDirection = possibleDirections.get(indexOfRandomDirection);
     }
-    
+
     /*@Override
     public Monster getType(){
         return Monseter.BASIC_MONSTER:
