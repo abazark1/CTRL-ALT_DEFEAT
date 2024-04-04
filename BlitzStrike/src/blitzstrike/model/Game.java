@@ -511,7 +511,7 @@ public class Game {
     public void removePlayerFromMap(Player player) {
         Position playerPosition = player.getPosition();
         space[playerPosition.getY()][playerPosition.getX()] = new Empty(playerPosition);
-        player.setPosition(new Position(0, 0));
+        player.setPosition(new Position(-10, -10));
 
     }
 
