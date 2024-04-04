@@ -15,6 +15,7 @@ public class BlastRange extends PowerUp{
     
     @Override
     public void applyEffect(Player player){
+        System.out.println(player.getName() + " has just got blast range!");
         increaseRange(player);
     }
     

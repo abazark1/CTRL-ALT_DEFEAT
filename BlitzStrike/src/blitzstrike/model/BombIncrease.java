@@ -15,6 +15,7 @@ public class BombIncrease extends PowerUp{
     
     @Override
     public void applyEffect(Player player){
+        System.out.println(player.getName() + " has just got bomb increase!");
         increaseBombs(player);
     }
     

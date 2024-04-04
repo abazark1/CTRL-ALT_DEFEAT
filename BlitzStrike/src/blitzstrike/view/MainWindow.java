@@ -60,7 +60,7 @@ public class MainWindow extends JFrame {
     private JFrame frame;
 
     private Timer monsterMoveTimer;
-    private static final int MONSTER_MOVE = 2000;
+    private static final int MONSTER_MOVE = 1000;
 
     private Timer backgroundTimer;
     private static final int BACKGROUND = 300;
@@ -245,6 +245,7 @@ public class MainWindow extends JFrame {
                 if (game != null){
                     game.handleBombExplosion();
                     game.removeDeadMonsters();
+                    game.handleCollision();
                 }
             }
         });

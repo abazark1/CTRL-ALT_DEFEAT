@@ -96,13 +96,13 @@ public class View extends JPanel {
 //                        System.out.println("Curse? " + effect.isCurse());
 //                        System.out.println("Powerup? " + effect.isPowerup());
                         if (effect.isPowerup()) {
-                            System.out.println("YES IT IS POWER UP");
+//                            System.out.println("YES IT IS POWER UP");
                             img = powerUp;
                         } else if (effect.isCurse()) {
-                            System.out.println("YES IT IS CURSE");
+//                            System.out.println("YES IT IS CURSE");
                             img = curse;
                         } else if (effect.isEmpty()) {
-                            System.out.println("YES IT IS EMPTY CELL");
+//                            System.out.println("YES IT IS EMPTY CELL");
                             img = empty;
                         }
                     } else {

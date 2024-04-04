@@ -10,7 +10,6 @@ package blitzstrike.model;
  */
 public class Box extends Cell {
     
-    private boolean destroyed;
     private Effect effect;
     
     public Box(Position position){
@@ -18,7 +17,6 @@ public class Box extends Cell {
         this.destroyable = true;
         this.mineable = false;
         this.walkable = false;
-        this.destroyed = false;
     }
     
     public void getDestroyed(){
