@@ -32,9 +32,13 @@ public class Monster {
     public void move() {
 
     }
+    
+    public boolean isAlive(){
+        return this.alive;
+    }
 
     public void getExploded() {
-
+        this.alive = false;
     }
 
     public void attack(Player p) {

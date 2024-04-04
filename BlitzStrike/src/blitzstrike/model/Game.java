@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Timer;
 
 /**
@@ -38,7 +39,7 @@ public class Game {
     private boolean isPaused;
 
     private ArrayList<Monster> monsters;
-    
+
     // to check if there's any explosion for View class
     private boolean isExplosionInProgress;
 
@@ -47,21 +48,23 @@ public class Game {
         this.roundsToWin = roundsToWin;
         this.player1 = player1;
         this.player2 = player2;
-        
+
         this.monsters = new ArrayList<>();
-        
+
         this.isExplosionInProgress = false;
     }
 
     public Game() {
     }
 
-    public Player getPlayer11(){
+    public Player getPlayer11() {
         return player1;
     }
-    public Player getPlayer22(){
+
+    public Player getPlayer22() {
         return player2;
     }
+
     public Box getBox(int x, int y) {
         Cell cell = space[y][x];
         if (cell instanceof Box) {
@@ -108,17 +111,17 @@ public class Game {
         }
         return null;
     }
-    
-    public boolean isBombAtPosition(int x, int y){
+
+    public boolean isBombAtPosition(int x, int y) {
         return this.player1.hasBombAtPosition(x, y) || this.player2.hasBombAtPosition(x, y);
     }
-    
-    public Bomb getBomb(int x, int y){
-        if (this.player1.hasBombAtPosition(x, y)){
+
+    public Bomb getBomb(int x, int y) {
+        if (this.player1.hasBombAtPosition(x, y)) {
             this.player1.getBomb(x, y);
         } else if (this.player2.hasBombAtPosition(x, y)) {
-           return  this.player2.getBomb(x, y);
-        } 
+            return this.player2.getBomb(x, y);
+        }
         return null;
     }
 
@@ -284,7 +287,7 @@ public class Game {
     public void movePlayer1(Direction d) {
         player1.movePlayer(d, player2, monsters);
         handleCollision();
-        
+
     }
 
     public void movePlayer2(Direction d) {
@@ -299,6 +302,17 @@ public class Game {
         handleCollision();
     }
 
+    public void removeDeadMonsters() {
+//        ArrayList<Monster> player1BombsCopy = new ArrayList<>(this.player1.getBombs());
+        Iterator<Monster> monsterIterator = this.monsters.iterator();
+        while (monsterIterator.hasNext()) {
+            Monster monster = monsterIterator.next();
+            if (!monster.isAlive()) {
+                monsterIterator.remove();
+            }
+        }
+    }
+
     public boolean isPlayerDead() {
         return false;
     }
@@ -307,13 +321,13 @@ public class Game {
         //final winner
         return this.winner;
     }
-    
-     public int getRoundsToWin() {
+
+    public int getRoundsToWin() {
         //final winner
         return this.roundsToWin;
     }
-     
-    public ArrayList<Monster> getMonsters(){
+
+    public ArrayList<Monster> getMonsters() {
         return this.monsters;
     }
 
@@ -337,11 +351,10 @@ public class Game {
         return false;
     }
 
-    
     public void handleCollision() {
         for (Monster monster : monsters) {
             if (monster.getPosition().equals(player1.getPosition())) {
-                player1.getExploded();
+                player1.die();
                 endRound = true;
                 removePlayerFromMap(player1);
                 System.out.println("Player 1 has encountered a monster and the round is over.");
@@ -349,14 +362,14 @@ public class Game {
             }
 
             if (player2 != null && monster.getPosition().equals(player2.getPosition())) {
-                player2.getExploded();
+                player2.die();
                 endRound = true;
                 removePlayerFromMap(player2);
                 System.out.println("Player 2 has encountered a monster and the round is over.");
                 //return;
             }
         }
-        
+
         // we're checking if player have collided with effect yet
         /*Effect effectAtPlayer1Position = (player1 != null) ? getEffect(player1.getPosition()) : null;
         Effect effectAtPlayer2Position = (player2 != null) ? getEffect(player2.getPosition()) : null;
@@ -368,7 +381,7 @@ public class Game {
             applyEffect(player2, effectAtPlayer2Position);
         }*/
     }
-    
+
     /*
     public Effect getEffect(Position position) {
         Cell cell = space[position.getY()][position.getX()];
@@ -384,22 +397,40 @@ public class Game {
         }
     }
     
-    */
+     */
     private void applyEffect(Player player, Effect effect) {
         if (effect != null) {
             effect.applyEffect(player);
         }
     }
 
-    public void handleBombExplosion(Bomb bomb, Position bombPosition, int blastRadius) {
-        this.isExplosionInProgress = true;
-        bomb.handleExplosion(bombPosition, blastRadius, this.player1, this.player2, this.monsters);
-    }
-    
-    public boolean isExplosionInProgress(){
-        return this.isExplosionInProgress;
+    public void handleBombExplosion() {
+        ArrayList<Bomb> player1BombsCopy = new ArrayList<>(this.player1.getBombs());
+        Iterator<Bomb> bombIterator1 = player1BombsCopy.iterator();
+        while (bombIterator1.hasNext()) {
+            Bomb b = bombIterator1.next();
+            b.setExploding();
+            if (b.getExploding()) {
+                System.out.println("Bomb at X: " + b.getPosition().getX() + " Y: " + b.getPosition().getY() + " is exploding!");
+                b.handleExplosion(player1, player2, monsters);
+            }
+        }
+
+        ArrayList<Bomb> player2BombsCopy = new ArrayList<>(this.player2.getBombs());
+        Iterator<Bomb> bombIterator2 = player2BombsCopy.iterator();
+        while (bombIterator2.hasNext()) {
+            Bomb b = bombIterator2.next();
+            b.setExploding();
+            if (b.getExploding()) {
+                System.out.println("Bomb at X: " + b.getPosition().getX() + " Y: " + b.getPosition().getY() + " is exploding!");
+                b.handleExplosion(player1, player2, monsters);
+            }
+        }
     }
 
+//    public boolean isExplosionInProgress() {
+//        return this.isExplosionInProgress;
+//    }
     public void saveGame(Player player1name, Player player2name, int player1score, int player2score, int roundsToWin, Timer timer) {
         StringBuilder mapBuilder = new StringBuilder();
 
@@ -462,7 +493,7 @@ public class Game {
         }
         return false;
     }
-    
+
     //check if monster has caught up to a player
     /*public void checkMonsterPlayerCollision(Monster monster) {
         if (monster.getPosition().equals(player1.getPosition())) {
@@ -476,13 +507,12 @@ public class Game {
         }
         
     }*/
-    
     // removing player if monster has caught him/her
     public void removePlayerFromMap(Player player) {
         Position playerPosition = player.getPosition();
         space[playerPosition.getY()][playerPosition.getX()] = new Empty(playerPosition);
         player.setPosition(new Position(0, 0));
-        
+
     }
 
 }

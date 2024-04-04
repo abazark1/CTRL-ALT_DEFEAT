@@ -8,9 +8,14 @@ package blitzstrike.model;
  *
  * @author medina
  */
-public class PowerUp extends Effect{
-    
-    public void removeEffect(Player player){
-        
+public class PowerUp extends Effect {
+
+    protected PowerUp() {
+        super();
+        this.isPowerup = true;
+    }
+
+    public void removeEffect(Player player) {
+
     }
 }

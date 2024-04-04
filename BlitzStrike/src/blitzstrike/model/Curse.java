@@ -11,7 +11,12 @@ package blitzstrike.model;
 public class Curse extends Effect {
 
     protected int duration;
-
+    
+    protected Curse() {
+        super();
+        this.isCurse = true;
+    }
+    
     public int getDuration() {
         return this.duration;
     }
