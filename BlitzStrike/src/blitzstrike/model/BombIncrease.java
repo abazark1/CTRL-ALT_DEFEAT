@@ -15,7 +15,7 @@ public class BombIncrease extends PowerUp{
     
     @Override
     public void applyEffect(Player player){
-        
+        increaseBombs(player);
     }
     
     private void increaseBombs(Player player){
