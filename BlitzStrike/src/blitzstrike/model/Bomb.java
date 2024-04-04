@@ -45,35 +45,33 @@ public class Bomb {
     }
 
     public void handleExplosion(Player player1, Player player2, ArrayList<Monster> monsters) {
-        for (int dx = -this.owner.getBlastRange(); dx <= this.owner.getBlastRange(); dx++) {
-            for (int dy = -this.owner.getBlastRange(); dy <= this.owner.getBlastRange(); dy++) {
+        for (int d = -this.owner.getBlastRange(); d <= this.owner.getBlastRange(); d++) {
                 // Skip the center (no explosion at the bomb's location)
-                if (dx == 0 && dy == 0) {
-                    continue;
-                }
-                Position affectedPos = new Position(this.position.getX() + dx, this.position.getY() + dy);
-
-                if (isOutOfBounds(affectedPos)) {
-                    continue;
-                }
-
-                Cell cell = space[affectedPos.getY()][affectedPos.getX()];
-                if (cell instanceof Wall) {
-                    continue; //block if its wall
-                }
-                if (cell instanceof Box) {
-//                    if (((Box) cell).isDestroyed()) {
-                    // Destroy the box and potentially reveal a power-up
-                    ((Box) cell).getDestroyed();
-                    continue;
-//                    }
-                }
-                // Check for players or monsters at the affected position
-                checkAndAffectEntitiesAt(affectedPos, player1, player2, monsters);
-                this.owner.getBombs().remove(this);
-            }
+                // Check horizontal positions (left and right of the bomb)
+                checkAndProcessCell(new Position(this.position.getX() + d, this.position.getY()), player1, player2, monsters);
+                // Check vertical positions (above and below the bomb)
+                checkAndProcessCell(new Position(this.position.getX(), this.position.getY() + d), player1, player2, monsters);
+                        
         }
+         this.owner.getBombs().remove(this);
     }
+    
+    private void checkAndProcessCell(Position position, Player player1, Player player2, ArrayList<Monster> monsters) {
+    if (isOutOfBounds(position)) return;
+
+    Cell cell = space[position.getY()][position.getX()];
+    if (cell instanceof Wall) {
+        // Walls block the explosion and are not affected
+        return;
+    }
+    if (cell instanceof Box) {
+        // Boxes get destroyed and may reveal a power-up
+        ((Box) cell).getDestroyed();
+    }
+
+    // Check for entities at the affected position
+    checkAndAffectEntitiesAt(position, player1, player2, monsters);
+}
 
     private void checkAndAffectEntitiesAt(Position affectedPos, Player player1, Player player2, ArrayList<Monster> monsters) {
 
