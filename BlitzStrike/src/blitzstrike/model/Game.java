@@ -48,82 +48,11 @@ public class Game {
         this.roundsToWin = roundsToWin;
         this.player1 = player1;
         this.player2 = player2;
-
         this.monsters = new ArrayList<>();
-
         this.isExplosionInProgress = false;
     }
 
-    public Game() {
-    }
-
-    public Player getPlayer11() {
-        return player1;
-    }
-
-    public Player getPlayer22() {
-        return player2;
-    }
-
-    public Box getBox(int x, int y) {
-        Cell cell = space[y][x];
-        if (cell instanceof Box) {
-            return (Box) cell;
-        }
-        return null;
-    }
-
-    public Empty getEmpty(int x, int y) {
-        Cell cell = space[y][x];
-        if (cell instanceof Empty) {
-            return (Empty) cell;
-        }
-        return null;
-    }
-
-    public Wall getWall(int x, int y) {
-        Cell cell = space[y][x];
-        if (cell instanceof Wall) {
-            return (Wall) cell;
-        }
-        return null;
-    }
-
-    public Player getPlayer1(int x, int y) {
-        if (player1.isAlive() && player1.getPosition().getX() == x && player1.getPosition().getY() == y) {
-            return player1;
-        }
-        return null;
-    }
-
-    public Player getPlayer2(int x, int y) {
-        if (player2.isAlive() && player2.getPosition().getX() == x && player2.getPosition().getY() == y) {
-            return player2;
-        }
-        return null;
-    }
-
-    public Monster getMonster(int x, int y) {
-        for (Monster monster : monsters) {
-            if (monster.getPosition().getX() == x && monster.getPosition().getY() == y) {
-                return monster;
-            }
-        }
-        return null;
-    }
-
-    public boolean isBombAtPosition(int x, int y) {
-        return this.player1.hasBombAtPosition(x, y) || this.player2.hasBombAtPosition(x, y);
-    }
-
-    public Bomb getBomb(int x, int y) {
-        if (this.player1.hasBombAtPosition(x, y)) {
-            this.player1.getBomb(x, y);
-        } else if (this.player2.hasBombAtPosition(x, y)) {
-            return this.player2.getBomb(x, y);
-        }
-        return null;
-    }
+    public Game() {}
 
     // basically, to refresh everything based on the file.
     // TODO?: SHOULD THIS METHOD ALSO RESET ALL THE FIELDS OF PLAYER?
@@ -195,7 +124,7 @@ public class Game {
                 } else {
                     // Assuming this line is part of the map
                     // You'll start processing the map after handling all the metadata
-                    break; // Exit the loop to handle map separately
+                    break;
                 }
             }
 
@@ -272,22 +201,27 @@ public class Game {
         endGame = false;
     }
 
-//    public void pauseGame() {
-//        isPaused = true;
-//        //stop monsters from moving
-//        
-//        //showPauseDialog();
-//              
-//
-//    }
-//
-//    public void resumeGame() {
-//        isPaused = false;
-//    }
+    /* to be done later
+    public void pauseGame() {
+        isPaused = true;
+        //stop monsters from moving
+        
+        //showPauseDialog();
+              
+
+    }
+
+    public void resumeGame() {
+        isPaused = false;
+    }
+    /*
+    
+    */
+    
+    
     public void movePlayer1(Direction d) {
         player1.movePlayer(d, player2, monsters);
         handleCollision();
-
     }
 
     public void movePlayer2(Direction d) {
@@ -302,54 +236,12 @@ public class Game {
         handleCollision();
     }
 
-    public void removeDeadMonsters() {
-//        ArrayList<Monster> player1BombsCopy = new ArrayList<>(this.player1.getBombs());
-        Iterator<Monster> monsterIterator = this.monsters.iterator();
-        while (monsterIterator.hasNext()) {
-            Monster monster = monsterIterator.next();
-            if (!monster.isAlive()) {
-                monsterIterator.remove();
-            }
-        }
-    }
-
-    public boolean isPlayerDead() {
-        return false;
-    }
-
-    public Player getWinner() {
-        //final winner
-        return this.winner;
-    }
-
-    public int getRoundsToWin() {
-        //final winner
-        return this.roundsToWin;
-    }
-
-    public ArrayList<Monster> getMonsters() {
-        return this.monsters;
-    }
 
     public boolean gameSuccessfullEnd() {
         return this.player1Score >= this.roundsToWin || this.player2Score >= this.roundsToWin;
     }
 
-    // Промежуточный победитель
-    public Player getCurrentRoundWinnerIfAny() throws Exception {
-        if (this.player1.isAlive() && !this.player2.isAlive()) {
-            return this.player1;
-        } else if (this.player2.isAlive() && !this.player1.isAlive()) {
-            return this.player2;
-        } else {
-            // Both died, nobody wins
-            return null;
-        }
-    }
-
-//    public boolean doCollapse() {
-//        return false;
-//    }
+    
     // collision of monsters and players & players and effects
     public void handleCollision() {
         for (Monster monster : monsters) {
@@ -358,7 +250,6 @@ public class Game {
                 endRound = true;
                 removePlayerFromMap(player1);
                 System.out.println("Player 1 has encountered a monster and the round is over.");
-                //return; // Exit the method to avoid further processing
             }
 
             if (player2 != null && monster.getPosition().equals(player2.getPosition())) {
@@ -366,7 +257,6 @@ public class Game {
                 endRound = true;
                 removePlayerFromMap(player2);
                 System.out.println("Player 2 has encountered a monster and the round is over.");
-                //return;
             }
         }
 
@@ -410,9 +300,7 @@ public class Game {
         }
     }
 
-//    public boolean isExplosionInProgress() {
-//        return this.isExplosionInProgress;
-//    }
+    
     public void saveGame(Player player1name, Player player2name, int player1score, int player2score, int roundsToWin, Timer timer) {
         StringBuilder mapBuilder = new StringBuilder();
 
@@ -466,7 +354,102 @@ public class Game {
         return result;
 
     }
+    
+    
+    // Removers
+    // removing player if monster has caught him/her
+    public void removePlayerFromMap(Player player) {
+        Position playerPosition = player.getPosition();
+        space[playerPosition.getY()][playerPosition.getX()] = new Empty(playerPosition);
+        player.setPosition(new Position(-10, -10));
+    }
+    
+    
+    public void removeDeadMonsters() {
+        // ArrayList<Monster> player1BombsCopy = new ArrayList<>(this.player1.getBombs());
+        Iterator<Monster> monsterIterator = this.monsters.iterator();
+        while (monsterIterator.hasNext()) {
+            Monster monster = monsterIterator.next();
+            if (!monster.isAlive()) {
+                monsterIterator.remove();
+            }
+        }
+    }
+    
+    
+    // getters 
+    public Player getPlayer11() {
+        return player1;
+    }
 
+    public Player getPlayer22() {
+        return player2;
+    }
+
+    public Box getBox(int x, int y) {
+        Cell cell = space[y][x];
+        if (cell instanceof Box) {
+            return (Box) cell;
+        }
+        return null;
+    }
+
+    public Empty getEmpty(int x, int y) {
+        Cell cell = space[y][x];
+        if (cell instanceof Empty) {
+            return (Empty) cell;
+        }
+        return null;
+    }
+
+    public Wall getWall(int x, int y) {
+        Cell cell = space[y][x];
+        if (cell instanceof Wall) {
+            return (Wall) cell;
+        }
+        return null;
+    }
+
+    public Player getPlayer1(int x, int y) {
+        if (player1.isAlive() && player1.getPosition().getX() == x && player1.getPosition().getY() == y) {
+            return player1;
+        }
+        return null;
+    }
+
+    public Player getPlayer2(int x, int y) {
+        if (player2.isAlive() && player2.getPosition().getX() == x && player2.getPosition().getY() == y) {
+            return player2;
+        }
+        return null;
+    }
+
+    public Monster getMonster(int x, int y) {
+        for (Monster monster : monsters) {
+            if (monster.getPosition().getX() == x && monster.getPosition().getY() == y) {
+                return monster;
+            }
+        }
+        return null;
+    }
+    
+     public Bomb getBomb(int x, int y) {
+        if (this.player1.hasBombAtPosition(x, y)) {
+            this.player1.getBomb(x, y);
+        } else if (this.player2.hasBombAtPosition(x, y)) {
+            return this.player2.getBomb(x, y);
+        }
+        return null;
+    }
+     
+    public boolean isBombAtPosition(int x, int y) {
+        return this.player1.hasBombAtPosition(x, y) || this.player2.hasBombAtPosition(x, y);
+    }
+
+    public boolean isPlayerDead() {
+        return false;
+    }
+    
     private boolean isMonsterAtPosition(int x, int y) {
         for (Monster monster : monsters) {
             if (monster.getPosition().equals(new Position(x, y))) {
@@ -476,25 +459,29 @@ public class Game {
         return false;
     }
 
-    //check if monster has caught up to a player
-    /*public void checkMonsterPlayerCollision(Monster monster) {
-        if (monster.getPosition().equals(player1.getPosition())) {
-            System.out.println("Monster collided with pplayer");
-            player1.getExploded();
-            removePlayerFromMap(player1);
-        } else if (monster.getPosition().equals(player2.getPosition())) {
-            System.out.println("Monster collided with player");
-            player2.getExploded();
-            removePlayerFromMap(player2);
-        }
-        
-    }*/
-    // removing player if monster has caught him/her
-    public void removePlayerFromMap(Player player) {
-        Position playerPosition = player.getPosition();
-        space[playerPosition.getY()][playerPosition.getX()] = new Empty(playerPosition);
-        player.setPosition(new Position(-10, -10));
-
+    public Player getWinner() {
+        //final winner
+        return this.winner;
     }
 
+    public int getRoundsToWin() {
+        //final winner
+        return this.roundsToWin;
+    }
+
+    public ArrayList<Monster> getMonsters() {
+        return this.monsters;
+    }
+    
+    // Промежуточный победитель
+    public Player getCurrentRoundWinnerIfAny() throws Exception {
+        if (this.player1.isAlive() && !this.player2.isAlive()) {
+            return this.player1;
+        } else if (this.player2.isAlive() && !this.player1.isAlive()) {
+            return this.player2;
+        } else {
+            // Both died, nobody wins
+            return null;
+        }
+    }
 }
