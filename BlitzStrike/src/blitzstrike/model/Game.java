@@ -249,14 +249,14 @@ public class Game {
                 player1.die();
                 endRound = true;
                 removePlayerFromMap(player1);
-                System.out.println("Player 1 has encountered a monster and the round is over.");
+                System.out.println(player1.getName() + " has encountered a monster!");
             }
 
             if (player2 != null && monster.getPosition().equals(player2.getPosition())) {
                 player2.die();
                 endRound = true;
                 removePlayerFromMap(player2);
-                System.out.println("Player 2 has encountered a monster and the round is over.");
+                System.out.println(player2.getName() + " has encountered a monster!");
             }
         }
 

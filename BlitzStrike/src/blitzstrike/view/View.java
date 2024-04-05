@@ -62,24 +62,6 @@ public class View extends JPanel {
         buffer = new BufferedImage(800, 800, BufferedImage.TYPE_INT_RGB);
     }
 
-    /*
-    Probably not needed, if the user cannot set up the scale
-
-    public boolean setScale(double scale){
-        this.scale = scale;
-        scaled_size = (int)(scale * tile_size);
-        return refresh();
-    }
-    
-     
-    public boolean refresh(){
-        Dimension dim = new Dimension(game.getLevelCols() * scaled_size, game.getLevelRows() * scaled_size);
-        setPreferredSize(dim);
-        setMaximumSize(dim);
-        setSize(dim);
-        repaint();
-        return true;
-    }*/
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

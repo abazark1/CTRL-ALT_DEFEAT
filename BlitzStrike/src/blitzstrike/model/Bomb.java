@@ -76,12 +76,12 @@ public class Bomb {
 
         if (player1.getPosition().equals(affectedPos)) {
             player1.die();
-            System.out.println("Player 1 died from the explosion at " + affectedPos.getX() + " " + affectedPos.getY());
+            System.out.println(player1.getName() +" died from the explosion at " + affectedPos.getX() + " " + affectedPos.getY());
         }
 
         if (player2.getPosition().equals(affectedPos)) {
             player2.die();
-            System.out.println("Player 2 died from the explosion at " + affectedPos.getX() + " " + affectedPos.getY());
+            System.out.println(player2.getName()+" died from the explosion at " + affectedPos.getX() + " " + affectedPos.getY());
         }
 
         for (Monster monster : monsters) {
