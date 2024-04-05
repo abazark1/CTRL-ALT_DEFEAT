@@ -14,5 +14,12 @@ public class EmptyEffect extends Effect {
         super();
         this.isEmpty = true;
     }
+    
+    @Override
+    public void applyEffect(Player player){
+        if (this.isEmpty()){
+            System.out.println(player.getName() + " has just got the empty effect!");
+        }
+    }
 
 }

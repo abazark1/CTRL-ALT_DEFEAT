@@ -8,7 +8,7 @@ package blitzstrike.model;
  *
  * @author aliia
  */
-public class Curse extends Effect {
+public abstract class Curse extends Effect {
 
     protected int duration;
     
@@ -24,5 +24,7 @@ public class Curse extends Effect {
     public void removeEffect(Player p) {
 
     }
+    
+    public abstract void applyEffect(Player p);
 
 }
