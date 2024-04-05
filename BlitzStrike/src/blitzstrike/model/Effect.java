@@ -10,7 +10,7 @@ import java.util.Random;
  *
  * @author aliia
  */
-public class Effect {
+public abstract class Effect {
 
     private static Effect instance;
     protected boolean isEmpty;
@@ -25,12 +25,12 @@ public class Effect {
 
     ;
 
-    public static Effect getInstance() {
+    /*public static Effect getInstance() {
         if (instance == null) {
             instance = new Effect();
         }
         return instance;
-    }
+    }*/
 
     public boolean isEmpty() {
         return this.isCurse;
@@ -52,9 +52,7 @@ public class Effect {
         this.isPowerup = true;
     }
 
-    public void applyEffect(Player player) {
-        System.out.println(player.getName() + " has just got the empty effect!");
-    }
+    public abstract void applyEffect(Player player);
 
     static public Effect getRandomEffect() {
         Random rand = new Random();
@@ -63,19 +61,22 @@ public class Effect {
         switch (randomNumber) {
             case 0:
                 System.out.println("I dropped Bomb Increase randomly");
-                effect = BombIncrease.getInstance();
+                //effect = BombIncrease.getInstance();
+                effect = new BombIncrease();
                 effect.setEverythingFalse();
                 effect.setIsPowerup();
                 return effect;
             case 1:
                 System.out.println("I dropped Blast range randomly");
-                effect = BlastRange.getInstance();
+                //effect = BlastRange.getInstance();
+                effect = new BlastRange();
                 effect.setEverythingFalse();
                 effect.setIsPowerup();
                 return effect;
             default:
                 System.out.println("I dropped Empty effect randomly");
-                effect = EmptyEffect.getInstance();
+                //effect = EmptyEffect.getInstance();
+                effect = new EmptyEffect();
                 effect.setEverythingFalse();
                 effect.setIsEmpty();
                 return effect;

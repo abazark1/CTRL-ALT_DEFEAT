@@ -34,7 +34,7 @@ import blitzstrike.model.Bomb;
 public class View extends JPanel {
 
     private final Game game;
-    private final Image player1, player2, monster1, monster2, monster3, monster4, bomb, powerUp, curse, box, wall, empty, explosion;
+    private final Image player1, player2, monster1, monster2, monster3, monster4, bomb, powerUp, curse, box, wall, empty, explosion, emptyeffect;
     private double scale;
     private int scaled_size;
     private final int tile_size = 42;
@@ -58,6 +58,7 @@ public class View extends JPanel {
         wall = ResourceLoader.loadImage("blitzstrike/res/wall.png");
         empty = ResourceLoader.loadImage("blitzstrike/res/empty.png");
         explosion = ResourceLoader.loadImage("blitzstrike/res/explosion.png");
+        emptyeffect = ResourceLoader.loadImage("blitzstrike/res/emptyeffect.png");
         buffer = new BufferedImage(800, 800, BufferedImage.TYPE_INT_RGB);
     }
 
@@ -103,7 +104,7 @@ public class View extends JPanel {
                             img = curse;
                         } else if (effect.isEmpty()) {
 //                            System.out.println("YES IT IS EMPTY CELL");
-                            img = empty;
+                            img = emptyeffect;
                         }
                     } else {
                         img = box;

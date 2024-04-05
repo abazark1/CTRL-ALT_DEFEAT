@@ -8,7 +8,7 @@ package blitzstrike.model;
  *
  * @author medina
  */
-public class PowerUp extends Effect {
+public abstract class PowerUp extends Effect {
 
     protected PowerUp() {
         super();
@@ -18,4 +18,6 @@ public class PowerUp extends Effect {
     public void removeEffect(Player player) {
 
     }
+    
+    public abstract void applyEffect(Player player);
 }

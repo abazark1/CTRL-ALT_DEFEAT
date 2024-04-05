@@ -383,40 +383,8 @@ public class Game {
                 this.space[player2.getPosition().getY()][player2.getPosition().getX()] = new Empty(player2.getPosition());
             }
         }
-
-        // we're checking if player have collided with effect yet
-        /*Effect effectAtPlayer1Position = (player1 != null) ? getEffect(player1.getPosition()) : null;
-        Effect effectAtPlayer2Position = (player2 != null) ? getEffect(player2.getPosition()) : null;
-        
-        if (player1 != null){
-            applyEffect(player1, effectAtPlayer1Position);
-        }
-        if (player2 != null) {
-            applyEffect(player2, effectAtPlayer2Position);
-        }*/
     }
 
-    /*
-    public Effect getEffect(Position position) {
-        Cell cell = space[position.getY()][position.getX()];
-
-        if (cell instanceof Curse) {
-            return ((Curse) cell).getEffect();
-        } else if (cell instanceof PowerUp) {
-            return ((PowerUp) cell).getEffect();
-        } else if (cell instanceof EmptyEffect) {
-            return ((EmptyEffect) cell).getEffect();
-        } else {
-            return null;
-        }
-    }
-    
-     */
-    private void applyEffect(Player player, Effect effect) {
-        if (effect != null) {
-            effect.applyEffect(player);
-        }
-    }
 
     public void handleBombExplosion() {
         ArrayList<Bomb> player1BombsCopy = new ArrayList<>(this.player1.getBombs());

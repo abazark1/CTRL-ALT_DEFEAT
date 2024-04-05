@@ -139,11 +139,11 @@ public class Player {
             return false;
         }
 
-        for (Monster m : monsters) {
-            if (m.getPosition().equals(newPosition)) {
-                return false;
-            }
-        }
+//        for (Monster m : monsters) {
+//            if (m.getPosition().equals(newPosition)) {
+//                return false;
+//            }
+//        }
 
         return true;
     }
