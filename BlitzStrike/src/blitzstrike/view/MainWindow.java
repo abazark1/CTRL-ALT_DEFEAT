@@ -183,14 +183,19 @@ public class MainWindow extends JFrame {
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
                 switch (keyCode) {
-                    case KeyEvent.VK_W -> player1.movePlayer(UP, player2, game.getMonsters());
-                    case KeyEvent.VK_S -> player1.movePlayer(DOWN, player2, game.getMonsters());
-                    case KeyEvent.VK_A -> player1.movePlayer(LEFT, player2, game.getMonsters());
-                    case KeyEvent.VK_D -> player1.movePlayer(RIGHT, player2, game.getMonsters());
-                    case KeyEvent.VK_SPACE -> player1.placeBomb();
+                    case KeyEvent.VK_W ->
+                        player1.movePlayer(UP, player2, game.getMonsters());
+                    case KeyEvent.VK_S ->
+                        player1.movePlayer(DOWN, player2, game.getMonsters());
+                    case KeyEvent.VK_A ->
+                        player1.movePlayer(LEFT, player2, game.getMonsters());
+                    case KeyEvent.VK_D ->
+                        player1.movePlayer(RIGHT, player2, game.getMonsters());
+                    case KeyEvent.VK_SPACE ->
+                        player1.placeBomb();
                 }
-                
-                if (view != null){
+
+                if (view != null) {
                     view.repaint();
                 }
             }
@@ -201,13 +206,18 @@ public class MainWindow extends JFrame {
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
                 switch (keyCode) {
-                    case KeyEvent.VK_UP -> player2.movePlayer(UP, player1, game.getMonsters());
-                    case KeyEvent.VK_DOWN -> player2.movePlayer(DOWN, player1, game.getMonsters());
-                    case KeyEvent.VK_LEFT -> player2.movePlayer(LEFT, player1, game.getMonsters());
-                    case KeyEvent.VK_RIGHT -> player2.movePlayer(RIGHT, player1, game.getMonsters());
-                    case KeyEvent.VK_ENTER -> player2.placeBomb();
+                    case KeyEvent.VK_UP ->
+                        player2.movePlayer(UP, player1, game.getMonsters());
+                    case KeyEvent.VK_DOWN ->
+                        player2.movePlayer(DOWN, player1, game.getMonsters());
+                    case KeyEvent.VK_LEFT ->
+                        player2.movePlayer(LEFT, player1, game.getMonsters());
+                    case KeyEvent.VK_RIGHT ->
+                        player2.movePlayer(RIGHT, player1, game.getMonsters());
+                    case KeyEvent.VK_ENTER ->
+                        player2.placeBomb();
                 }
-                if (view != null){
+                if (view != null) {
                     view.repaint();
                 }
             }
@@ -225,7 +235,7 @@ public class MainWindow extends JFrame {
                 // Move monsters
                 if (game != null) {
                     game.moveMonsters();
-                    
+
                 }
             }
         });
@@ -242,7 +252,7 @@ public class MainWindow extends JFrame {
                 if (view != null) {
                     view.repaint();
                 }
-                if (game != null){
+                if (game != null) {
                     game.handleBombExplosion();
                     game.removeDeadMonsters();
                     game.handleCollision();
@@ -403,7 +413,7 @@ public class MainWindow extends JFrame {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /*
+
                 boolean allFieldsAreGood = true;
 
                 String player1Name = player1NameField.getText().trim();
@@ -433,29 +443,29 @@ public class MainWindow extends JFrame {
 
                 if (allFieldsAreGood) {
                     int selectedMap = map1RadioButton.isSelected() ? 1 : (map2RadioButton.isSelected() ? 2 : (map3RadioButton != null && map3RadioButton.isSelected() ? 3 : 0));
-                    String filePath = "src/blitzstrike/model/map" + selectedMap + ".txt";
-                    
+                    String filePath = "src/blitzstrike/res/map" + selectedMap + ".txt";
+
                     player1 = new Player(player1Name);
                     player2 = new Player(player2Name);
 
                     game = new Game(filePath, player1, player2, numGames);
-                 */
-                player1 = new Player("John");
-                player2 = new Player("Vanessa");
-                game = new Game("src/blitzstrike/res/map1.txt", player1, player2, 0);
-                game.loadMap();
-                try {
-                    view = new View(game);
-                } catch (IOException ex) {
-                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+
+//                player1 = new Player("John");
+//                player2 = new Player("Vanessa");
+//                game = new Game("src/blitzstrike/res/map1.txt", player1, player2, 0);
+                    game.loadMap();
+                    try {
+                        view = new View(game);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    frame.remove(mMenu);
+                    frame.add(view);
+                    frame.revalidate();
+                    frame.repaint();
+                    gameSetupDialog.setVisible(false);
+                    gameSetupDialog.dispose();
                 }
-                frame.remove(mMenu);
-                frame.add(view);
-                frame.revalidate();
-                frame.repaint();
-                gameSetupDialog.setVisible(false);
-                gameSetupDialog.dispose();
-//            }
             }
         }
         );

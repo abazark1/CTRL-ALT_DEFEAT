@@ -1,4 +1,3 @@
-map3
 xxxxxxxxxxxxxxx
 x  ##    x  #bx
 x   xx    x   x
