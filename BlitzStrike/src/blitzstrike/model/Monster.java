@@ -44,10 +44,7 @@ public class Monster {
     public void attack(Player p) {
 
     }
-
-//    public Position isPlayerClose(Position p) {
-//        return;
-//    }
+    
     public boolean isValidPosition(Position p) {
         return this.space[p.getY()][p.getX()].isWalkable();
     }
@@ -55,8 +52,6 @@ public class Monster {
     public Position getPosition() {
         return this.position;
     }
-
-    //public abstract Monster getType();
 }
 
 class BasicMonster extends Monster {
@@ -106,7 +101,6 @@ class BasicMonster extends Monster {
     private void settleCurrentDirection() {
         Position newPosUp = position.translate(Direction.UP);
         Position newPosDown = position.translate(Direction.DOWN);
-//        System.out.println(newPosDown.getY() + " " + newPosDown.getX());
         Position newPosLeft = position.translate(Direction.LEFT);
         Position newPosRight = position.translate(Direction.RIGHT);
         if (isValidPosition(newPosUp)) {
@@ -150,11 +144,6 @@ class BasicMonster extends Monster {
         int indexOfRandomDirection = rand.nextInt(numberOfPossibleDirections);
         this.currentDirection = possibleDirections.get(indexOfRandomDirection);
     }
-
-    /*@Override
-    public Monster getType(){
-        return Monseter.BASIC_MONSTER:
-    }*/
 }
 
 //class Monster2 extends Monster {

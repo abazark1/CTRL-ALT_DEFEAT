@@ -21,5 +21,4 @@ public class EmptyEffect extends Effect {
             System.out.println(player.getName() + " has just got the empty effect!");
         }
     }
-
 }

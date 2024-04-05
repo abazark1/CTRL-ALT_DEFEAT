@@ -23,15 +23,6 @@ public abstract class Effect {
         this.isPowerup = false;
     }
 
-    ;
-
-    /*public static Effect getInstance() {
-        if (instance == null) {
-            instance = new Effect();
-        }
-        return instance;
-    }*/
-
     public boolean isEmpty() {
         return this.isCurse;
     }

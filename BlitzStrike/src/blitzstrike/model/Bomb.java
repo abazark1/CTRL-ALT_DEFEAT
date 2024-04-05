@@ -35,7 +35,7 @@ public class Bomb {
      *
      */
     public void setExploding() {
-        System.out.println(Duration.between(this.startingTime, LocalTime.now()).getSeconds() >= BOMB_COUNTDOWN);
+        // System.out.println(Duration.between(this.startingTime, LocalTime.now()).getSeconds() >= BOMB_COUNTDOWN);
         this.exploding = Duration.between(this.startingTime, LocalTime.now()).getSeconds() >= BOMB_COUNTDOWN;
         System.out.println("The bomb is set to exploding");
     }
@@ -51,27 +51,26 @@ public class Bomb {
                 checkAndProcessCell(new Position(this.position.getX() + d, this.position.getY()), player1, player2, monsters);
                 // Check vertical positions (above and below the bomb)
                 checkAndProcessCell(new Position(this.position.getX(), this.position.getY() + d), player1, player2, monsters);
-                        
         }
          this.owner.getBombs().remove(this);
     }
     
     private void checkAndProcessCell(Position position, Player player1, Player player2, ArrayList<Monster> monsters) {
-    if (isOutOfBounds(position)) return;
+        if (isOutOfBounds(position)) return;
 
-    Cell cell = space[position.getY()][position.getX()];
-    if (cell instanceof Wall) {
-        // Walls block the explosion and are not affected
-        return;
-    }
-    if (cell instanceof Box) {
-        // Boxes get destroyed and may reveal a power-up
-        ((Box) cell).getDestroyed();
-    }
+        Cell cell = space[position.getY()][position.getX()];
+        if (cell instanceof Wall) {
+            // Walls block the explosion and are not affected
+            return;
+        }
+        if (cell instanceof Box) {
+            // Boxes get destroyed and may reveal a power-up
+            ((Box) cell).getDestroyed();
+        }
 
-    // Check for entities at the affected position
-    checkAndAffectEntitiesAt(position, player1, player2, monsters);
-}
+        // Check for entities at the affected position
+        checkAndAffectEntitiesAt(position, player1, player2, monsters);
+    }
 
     private void checkAndAffectEntitiesAt(Position affectedPos, Player player1, Player player2, ArrayList<Monster> monsters) {
 
