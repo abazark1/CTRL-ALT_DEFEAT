@@ -44,7 +44,7 @@ public class Monster {
     public void attack(Player p) {
 
     }
-    
+
     public boolean isValidPosition(Position p) {
         return this.space[p.getY()][p.getX()].isWalkable();
     }
@@ -63,13 +63,9 @@ class BasicMonster extends Monster {
     public BasicMonster(double speed, Position position, Cell[][] space) {
         super(speed, position, space);
         this.counterUntilChangeDirection = 0;
-        // we initialize its currentDirection to any available direction first
-        settleCurrentDirection();
+        this.currentDirection = Direction.STILL;
     }
 
-    // we call this move() constantly, it checks if it can move with the currentPosition. 
-    //if it can, it moves. if it cannot, it changes the currentPosition and moves there.
-    // also every LIMIT_TO_CHANGE_DIRECTION_RANDOMLY, when it faces the wall, it changes the direction randomly
     @Override
     public void move() {
         if (this.currentDirection == Direction.STILL) {
@@ -105,8 +101,8 @@ class BasicMonster extends Monster {
         Position newPosRight = position.translate(Direction.RIGHT);
         if (isValidPosition(newPosUp)) {
             this.currentDirection = Direction.UP;
-//        } else if (isValidPosition(newPosDown)) {
-//            this.currentDirection = Direction.DOWN;
+        } else if (isValidPosition(newPosDown)) {
+            this.currentDirection = Direction.DOWN;
         } else if (isValidPosition(newPosLeft)) {
             this.currentDirection = Direction.LEFT;
         } else if (isValidPosition(newPosRight)) {
