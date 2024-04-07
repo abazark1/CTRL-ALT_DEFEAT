@@ -414,6 +414,7 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                /*
                 boolean allFieldsAreGood = true;
 
                 String player1Name = player1NameField.getText().trim();
@@ -449,10 +450,10 @@ public class MainWindow extends JFrame {
                     player2 = new Player(player2Name);
 
                     game = new Game(filePath, player1, player2, numGames);
-
-//                player1 = new Player("John");
-//                player2 = new Player("Vanessa");
-//                game = new Game("src/blitzstrike/res/map1.txt", player1, player2, 0);
+*/
+                player1 = new Player("John");
+                player2 = new Player("Vanessa");
+                game = new Game("src/blitzstrike/res/map1.txt", player1, player2, 0);
                     game.loadMap();
                     try {
                         view = new View(game);
@@ -466,7 +467,7 @@ public class MainWindow extends JFrame {
                     gameSetupDialog.setVisible(false);
                     gameSetupDialog.dispose();
                 }
-            }
+//            }
         }
         );
         mainPanel.add(startButton);
