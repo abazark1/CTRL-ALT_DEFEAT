@@ -42,12 +42,16 @@ public abstract class Effect {
     public void setIsPowerup() {
         this.isPowerup = true;
     }
+    
+    public void setIsCurse() {
+        this.isCurse = true;
+    }
 
     public abstract void applyEffect(Player player);
 
     static public Effect getRandomEffect() {
         Random rand = new Random();
-        int randomNumber = rand.nextInt(3);
+        int randomNumber = rand.nextInt(7);
         Effect effect;
         switch (randomNumber) {
             case 0:
@@ -63,6 +67,30 @@ public abstract class Effect {
                 effect = new BlastRange();
                 effect.setEverythingFalse();
                 effect.setIsPowerup();
+                return effect;
+            case 2:
+                System.out.println("I dropped Bomb Range CURSE");
+                effect = new BombRangeCurse();
+                effect.setEverythingFalse();
+                effect.setIsCurse();
+                return effect;
+            case 3:
+                System.out.println("I dropped Immediate Bomb CURSE");
+                effect = new ImmediateBombCurse();
+                effect.setEverythingFalse();
+                effect.setIsCurse();
+                return effect;
+            case 4:
+                System.out.println("I dropped No Bomb CURSE");
+                effect = new NoBombCurse();
+                effect.setEverythingFalse();
+                effect.setIsCurse();
+                return effect;
+            case 5:
+                System.out.println("I dropped Speed CURSE");
+                effect = new SpeedCurse();
+                effect.setEverythingFalse();
+                effect.setIsCurse();
                 return effect;
             default:
                 System.out.println("I dropped Empty effect randomly");

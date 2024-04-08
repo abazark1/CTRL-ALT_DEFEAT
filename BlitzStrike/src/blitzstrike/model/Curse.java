@@ -12,7 +12,7 @@ public abstract class Curse extends Effect {
 
     protected int duration;
     
-    protected Curse() {
+    public Curse() {
         super();
         this.isCurse = true;
     }

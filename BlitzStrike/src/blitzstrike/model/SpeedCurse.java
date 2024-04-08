@@ -12,7 +12,7 @@ import java.time.LocalTime;
  */
 public class SpeedCurse extends Curse {
 
-    private SpeedCurse() {
+    SpeedCurse() {
         super();
         this.duration = 3;
     }
