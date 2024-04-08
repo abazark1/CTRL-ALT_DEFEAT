@@ -12,7 +12,7 @@ import java.time.LocalTime;
  */
 public class ImmediateBombCurse extends Curse {
     
-    private ImmediateBombCurse() {
+    ImmediateBombCurse() {
         super();
         this.duration = 3;
     }

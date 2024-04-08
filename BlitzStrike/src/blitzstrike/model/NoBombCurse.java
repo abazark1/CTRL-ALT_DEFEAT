@@ -13,7 +13,7 @@ import java.time.LocalTime;
 
 public class NoBombCurse extends Curse {
     
-    private NoBombCurse() {
+    NoBombCurse() {
         super();
         this.duration = 3;
     }

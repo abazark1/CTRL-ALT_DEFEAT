@@ -12,7 +12,8 @@ import java.time.LocalTime;
  */
 public class BombRangeCurse extends Curse {
     
-    private BombRangeCurse() {
+    // I changed from private to public - aliia
+    BombRangeCurse() {
         super();
         this.duration = 3;
     }
