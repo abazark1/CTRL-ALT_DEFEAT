@@ -196,7 +196,7 @@ public class MainWindow extends JFrame {
                         player1.movePlayer(RIGHT, player2, game.getMonsters());
                         break;
                     case KeyEvent.VK_SPACE:
-                        player1.placeBomb();
+                        player1.placeBomb(game);
                 }
                 
                 if (view != null){
@@ -223,7 +223,7 @@ public class MainWindow extends JFrame {
                         player2.movePlayer(RIGHT, player1, game.getMonsters());
                         break;
                     case KeyEvent.VK_ENTER:
-                        player2.placeBomb();
+                        player2.placeBomb(game);
                 }
                 if (view != null){
                     view.repaint();

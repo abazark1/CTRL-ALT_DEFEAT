@@ -62,7 +62,7 @@ public class View extends JPanel {
     }
 
     /*
-    Probably not needed, if the user cannot set up the scale
+    Probably not needed, if the user cannot set up the scal
 
     public boolean setScale(double scale){
         this.scale = scale;
@@ -110,9 +110,18 @@ public class View extends JPanel {
                     }
                 } else {
                     if (game.isBombAtPosition(x, y)) {
-//                        if(game.isExplosionInProgress()){
-//                            drawExplosion(gr, game.getBomb(x, y), scaled_size);
-//                        }
+                        System.out.println(" if (game.isBombAtPosition(x, y)) -- true");
+                        System.out.println("explosion is in progress? " + game.isExplosionInProgress());
+                        if(game.isExplosionInProgress() && game.getBomb(x, y).getExploding()){
+                            //if(game.getBomb(x, y)!=null){
+                            System.out.println("Explosion is in progress, drawing");
+                            drawExplosion(gr, game.getBomb(x, y), scaled_size);
+                            //game.getBomb(x, y).setExploding(false);
+                            //}
+//                            else{
+//                                System.out.println("Trying to draw explosion on the null bomb ");
+//                            }
+                        }
                         img = bomb;
                     }
                     Monster m = game.getMonster(x, y);
@@ -140,7 +149,12 @@ public class View extends JPanel {
                 //placing bomb
                 for (Bomb bomb1 : game.getPlayer11().getBombs()) {
                     gr.drawImage(this.bomb, bomb1.getPosition().getX() * scaled_size, bomb1.getPosition().getY() * scaled_size, scaled_size, scaled_size, null);
+//                    if (game.isExplosionInProgress() && bomb1.getExploding()) {
+//                        System.out.println("isExplosion in Progress? " + game.isExplosionInProgress() + "bomb1.getExploding() " + bomb1.getExploding());
+//                        drawExplosion(gr, bomb1, scaled_size);
+//        }
                 }
+                
                 for (Bomb bomb2 : game.getPlayer22().getBombs()) {
                     gr.drawImage(this.bomb, bomb2.getPosition().getX() * scaled_size, bomb2.getPosition().getY() * scaled_size, scaled_size, scaled_size, null);
                 }
@@ -149,21 +163,85 @@ public class View extends JPanel {
         //g.drawImage(buffer, 0, 0, null);
     }
 
-    public void drawExplosion(Graphics2D gr, Bomb bomb, int scaled_size) {
-        int bombX = bomb.getPosition().getX();
-        int bombY = bomb.getPosition().getY();
+//    public void drawExplosion(Graphics2D gr, Bomb bomb, int scaled_size) {
+//        int bombX = bomb.getPosition().getX();
+//        int bombY = bomb.getPosition().getY();
+//
+//        for (int dx = -2; dx <= 2; dx++) {
+//            for (int dy = -2; dy <= 2; dy++) {
+//                int distance = Math.abs(dx) + Math.abs(dy);
+//                if (distance <= 2) {
+//                    int x = bombX + dx;
+//                    int y = bombY + dy;
+//                    if (x >= 0 && x < game.MAP_SIZE && y >= 0 && y < game.MAP_SIZE) {
+//                        if(distance == 2 || (distance == 1 && (dx == 0 || dy == 0))){
+//                            gr.drawImage(explosion, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+//                        }
+//                  }
+//                }
+//            }
+//        }
+//    }
+    
+//    public void drawExplosion(Graphics2D gr, Bomb bomb, int scaled_size) {
+//    int bombX = bomb.getPosition().getX();
+//    int bombY = bomb.getPosition().getY();
+//
+//    // Draw the center of the explosion where the bomb is
+//    gr.drawImage(explosion, bombX * scaled_size, bombY * scaled_size, scaled_size, scaled_size, null);
+//
+//    // Draw the cross pattern of the explosion
+//    for (int d = -2; d <= 2; d++) {
+//        if (d != 0) {
+//            int xHorizontal = bombX + d;
+//            int yVertical = bombY + d;
+//
+//            // Check horizontal range (left and right from the bomb)
+//            if (xHorizontal >= 0 && xHorizontal < game.MAP_SIZE) {
+//                gr.drawImage(explosion, xHorizontal * scaled_size, bombY * scaled_size, scaled_size, scaled_size, null);
+//            }
+//
+//            // Check vertical range (up and down from the bomb)
+//            if (yVertical >= 0 && yVertical < game.MAP_SIZE) {
+//                gr.drawImage(explosion, bombX * scaled_size, yVertical * scaled_size, scaled_size, scaled_size, null);
+//            }
+//        }
+//    }
+//}
 
-        for (int dx = -2; dx <= 2; dx++) {
-            for (int dy = -2; dy <= 2; dy++) {
-                if (Math.abs(dx) + Math.abs(dy) <= 2) {
-                    int x = bombX + dx;
-                    int y = bombY + dy;
-                    if (x >= 0 && x < game.MAP_SIZE && y >= 0 && y < game.MAP_SIZE) {
-                        gr.drawImage(explosion, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
-                    }
+    public void drawExplosion(Graphics2D gr, Bomb bomb, int scaled_size) {
+    int bombX = bomb.getPosition().getX();
+    int bombY = bomb.getPosition().getY();
+
+    // Draw the center of the explosion where the bomb is
+    gr.drawImage(explosion, bombX * scaled_size, bombY * scaled_size, scaled_size, scaled_size, null);
+
+                // Draw the horizontal lines (left and right from the bomb)
+//                for (int d = -3; d <0; d++) {
+//                //if (d == 0) continue;  // Skip center
+//
+//                  int xHorizontal = bombX + d;
+//                  gr.drawImage(explosion, xHorizontal * scaled_size, bombY * scaled_size, scaled_size, scaled_size, null);
+//                // Draw the vertical lines (up and down from the bomb)
+//
+//                  int yVertical = bombY + d;
+//                  gr.drawImage(explosion, bombX * scaled_size, yVertical * scaled_size, scaled_size, scaled_size, null);
+//                }
+                
+                for (int d = 1; d <=3; d++) {
+                //if (d == 0) continue;  // Skip center
+
+                  int xHorizontal = bombX + d;
+                  gr.drawImage(explosion, xHorizontal * scaled_size, bombY * scaled_size, scaled_size, scaled_size, null);
+                // Draw the vertical lines (up and down from the bomb)
+
+                  int yVertical = bombY + d;
+                  gr.drawImage(explosion, bombX * scaled_size, yVertical * scaled_size, scaled_size, scaled_size, null);
                 }
-            }
-        }
+                
+                
     }
+
+
 
 }

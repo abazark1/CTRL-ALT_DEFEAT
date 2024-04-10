@@ -8,6 +8,7 @@ import static blitzstrike.model.Game.MAP_SIZE;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  *
@@ -21,13 +22,15 @@ public class Bomb {
     private Player owner;
     private Cell[][] space;
     private boolean exploding;
+    private Game game;
 
-    public Bomb(Position position, Player owner, Cell[][] space) {
+    public Bomb(Position position, Player owner, Cell[][] space, Game game) {
         this.startingTime = LocalTime.now();
         this.position = position;
         this.owner = owner;
         this.space = space;
         this.exploding = false;
+        this.game = game;
     }
 
     /**
@@ -38,6 +41,7 @@ public class Bomb {
         System.out.println(Duration.between(this.startingTime, LocalTime.now()).getSeconds() >= BOMB_COUNTDOWN);
         this.exploding = Duration.between(this.startingTime, LocalTime.now()).getSeconds() >= BOMB_COUNTDOWN;
         System.out.println("The bomb is set to exploding");
+        game.setExplosionInProgress(true);
     }
 
     public boolean getExploding() {
@@ -45,24 +49,37 @@ public class Bomb {
     }
 
     public void handleExplosion(Player player1, Player player2, ArrayList<Monster> monsters) {
+        //game.setExplosionInProgress(true);
+        boolean continueHorizontal = true;
+        boolean continueVertical = true;
+        
         for (int d = -this.owner.getBlastRange(); d <= this.owner.getBlastRange(); d++) {
                 // Skip the center (no explosion at the bomb's location)
                 // Check horizontal positions (left and right of the bomb)
-                checkAndProcessCell(new Position(this.position.getX() + d, this.position.getY()), player1, player2, monsters);
+                if(continueHorizontal){
+                    continueHorizontal = checkAndProcessCell(new Position(this.position.getX() + d, this.position.getY()), player1, player2, monsters);}
                 // Check vertical positions (above and below the bomb)
-                checkAndProcessCell(new Position(this.position.getX(), this.position.getY() + d), player1, player2, monsters);
+                if(continueVertical){
+                    continueVertical = checkAndProcessCell(new Position(this.position.getX(), this.position.getY() + d), player1, player2, monsters); }
                         
         }
-         this.owner.getBombs().remove(this);
+        
+        
+        if(this.exploding = false){
+         this.owner.getBombs().remove(this);}
+         
+         game.setExplosionInProgress(false);
+         //view.repaint();
+         
     }
     
-    private void checkAndProcessCell(Position position, Player player1, Player player2, ArrayList<Monster> monsters) {
-    if (isOutOfBounds(position)) return;
+    private boolean checkAndProcessCell(Position position, Player player1, Player player2, ArrayList<Monster> monsters) {
+    if (isOutOfBounds(position)) return false;
 
     Cell cell = space[position.getY()][position.getX()];
     if (cell instanceof Wall) {
         // Walls block the explosion and are not affected
-        return;
+        return false;
     }
     if (cell instanceof Box) {
         // Boxes get destroyed and may reveal a power-up
@@ -71,6 +88,7 @@ public class Bomb {
 
     // Check for entities at the affected position
     checkAndAffectEntitiesAt(position, player1, player2, monsters);
+    return true;
 }
 
     private void checkAndAffectEntitiesAt(Position affectedPos, Player player1, Player player2, ArrayList<Monster> monsters) {

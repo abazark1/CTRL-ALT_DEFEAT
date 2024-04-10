@@ -118,11 +118,12 @@ public class Game {
 
     public Bomb getBomb(int x, int y) {
         if (this.player1.hasBombAtPosition(x, y)) {
-            this.player1.getBomb(x, y);
-        } else if (this.player2.hasBombAtPosition(x, y)) {
+            return this.player1.getBomb(x, y);
+        } 
+        //if (this.player2.hasBombAtPosition(x, y)) {
             return this.player2.getBomb(x, y);
-        }
-        return null;
+        //}
+        //return null;
     }
 
     // basically, to refresh everything based on the file.
@@ -405,10 +406,9 @@ public class Game {
     }
 
     public void handleBombExplosion() {
+       ///isExplosionInProgress = true;
         ArrayList<Bomb> player1BombsCopy = new ArrayList<>(this.player1.getBombs());
-        Iterator<Bomb> bombIterator1 = player1BombsCopy.iterator();
-        while (bombIterator1.hasNext()) {
-            Bomb b = bombIterator1.next();
+        for (Bomb b : player1BombsCopy) {
             b.setExploding();
             if (b.getExploding()) {
                 System.out.println("Bomb at X: " + b.getPosition().getX() + " Y: " + b.getPosition().getY() + " is exploding!");
@@ -426,11 +426,16 @@ public class Game {
                 b.handleExplosion(player1, player2, monsters);
             }
         }
+        
     }
 
-//    public boolean isExplosionInProgress() {
-//        return this.isExplosionInProgress;
-//    }
+    public boolean isExplosionInProgress() {
+        return this.isExplosionInProgress;
+    }
+    
+    public void setExplosionInProgress(boolean b){
+        this.isExplosionInProgress= b;
+    }
     public void saveGame(Player player1name, Player player2name, int player1score, int player2score, int roundsToWin, Timer timer) {
         StringBuilder mapBuilder = new StringBuilder();
 

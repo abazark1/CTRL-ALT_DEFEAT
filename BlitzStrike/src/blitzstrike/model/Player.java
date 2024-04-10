@@ -72,10 +72,11 @@ public class Player {
         return this.alive;
     }
 
-    public void placeBomb() {
-        Bomb bomb = new Bomb(this.position, this, this.space);
+    public void placeBomb(Game game) {
+        Bomb bomb = new Bomb(this.position, this, this.space, game);
         this.bombs.add(bomb);
         System.out.println("I've placed a bomb");
+        //game.setExplosionInProgress(true);
     }
 
     public void placeObstacle() {
@@ -101,11 +102,14 @@ public class Player {
 
     public Bomb getBomb(int x, int y) {
         for (Bomb bomb : bombs) {
+           System.out.println("printing pos of bomb in getBomb (PLayer) " + bomb.getPosition().toString());
+           System.out.println("Actual x and y: " + x + " " + y);
             Position bombPos = bomb.getPosition();
             if (bombPos.getX() == x && bombPos.getY() == y) {
                 return bomb;
             }
         }
+        System.out.println("Could not getBomb in Player class");
         return null;
     }
     
@@ -122,6 +126,7 @@ public class Player {
                 System.out.println("The bomb at X:" + bomb.getPosition().getX() + " Y:" + bomb.getPosition().getY() + " was removed");
             }
         }
+
     }
 
     public void die() {
