@@ -19,6 +19,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +31,7 @@ import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -66,6 +68,7 @@ public class MainWindow extends JFrame {
     private Timer backgroundTimer;
     private static final int BACKGROUND = 300;
     final JPanel mMenu;
+    private JPanel statsPanel;
 
     public MainWindow() throws IOException {
 
@@ -74,7 +77,12 @@ public class MainWindow extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Menu");
-
+        
+        statsPanel = new JPanel();
+        statsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        statsPanel.setBackground(Color.LIGHT_GRAY); 
+        frame.add(statsPanel, BorderLayout.NORTH);
+        
         JMenuItem resumePause = new JMenuItem("Pause/Resume");
         resumePause.addActionListener(new ActionListener() {
             @Override
@@ -231,6 +239,13 @@ public class MainWindow extends JFrame {
     public Timer getTimer(){
         return this.backgroundTimer;
     }
+    
+    private void toggleStatsPanelVisibility(boolean visible) {
+        statsPanel.setVisible(visible);
+        frame.revalidate();
+        frame.repaint();
+    }
+    
     //for continuous movement of monsters
     private void startMoveMonsterTimer() {
         monsterMoveTimer = new Timer(MONSTER_MOVE, new ActionListener() {
@@ -254,12 +269,16 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (view != null) {
+                    toggleStatsPanelVisibility(true);
                     view.repaint();
                 }
                 if (game != null) {
                     game.handleBombExplosion();
                     game.removeDeadMonsters();
                     game.handleCollision();
+                }
+                else {
+                    toggleStatsPanelVisibility(false);
                 }
             }
         });
@@ -309,6 +328,7 @@ public class MainWindow extends JFrame {
     //function that removes playing view and returns mainWindow
     public void returnToMainMenu() {
         frame.remove(view);
+        toggleStatsPanelVisibility(false);
         frame.add(mMenu);
         frame.revalidate();
         frame.repaint();
@@ -368,6 +388,26 @@ public class MainWindow extends JFrame {
             returnButton.addActionListener(e -> returnToMainMenu());
             mPanel.add(returnButton);
         }
+    }
+    
+    private JPanel createPlayerStatsPanel(Player player) {
+        JPanel playerPanel = new JPanel();
+        playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
+
+        // Add player picture (replace with your image loading logic)
+        ImageIcon playerImage = new ImageIcon("blitzstrike/res/monster2.png");
+        JLabel playerImageLabel = new JLabel(playerImage);
+        playerPanel.add(playerImageLabel);
+
+        JLabel playerNameLabel = new JLabel(player.getName());
+        playerNameLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
+        playerPanel.add(playerNameLabel);
+
+        JLabel playerScoreLabel = new JLabel("Score: " + player.getGamesWon());
+        playerScoreLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
+        playerPanel.add(playerScoreLabel);
+
+        return playerPanel;
     }
 
     private void showGameSetupWindow(JPanel mMenu) {
@@ -469,6 +509,10 @@ public class MainWindow extends JFrame {
                     }
                     frame.remove(mMenu);
                     frame.add(view);
+                    statsPanel.removeAll(); 
+                    statsPanel.add(createPlayerStatsPanel(player1));
+                    statsPanel.add(createPlayerStatsPanel(player2));
+                    statsPanel.add(new JLabel("Round: 1")); // to be changed for num games
                     frame.revalidate();
                     frame.repaint();
                     gameSetupDialog.setVisible(false);
