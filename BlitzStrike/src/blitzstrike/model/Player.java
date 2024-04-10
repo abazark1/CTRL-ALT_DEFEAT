@@ -241,6 +241,9 @@ public class Player {
         return this.name;
     }
 
+    public int getScore(){
+        return this.gamesWon;
+    }
     public void reset() {
         this.position = new Position(0, 0);
         this.bombs = new ArrayList<>();

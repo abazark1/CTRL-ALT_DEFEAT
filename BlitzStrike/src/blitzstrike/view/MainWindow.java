@@ -54,6 +54,7 @@ public class MainWindow extends JFrame {
     private Game game;
     private View view; ///in the class diagram Board board
     private JLabel timeLabel;
+    public JLabel numGamesLabel;
     private Player player1;
     private Player player2;
 
@@ -227,6 +228,9 @@ public class MainWindow extends JFrame {
         frame.addKeyListener(player2KeyListener);
     }
 
+    public Timer getTimer(){
+        return this.backgroundTimer;
+    }
     //for continuous movement of monsters
     private void startMoveMonsterTimer() {
         monsterMoveTimer = new Timer(MONSTER_MOVE, new ActionListener() {
@@ -296,6 +300,8 @@ public class MainWindow extends JFrame {
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
             //here should be function to save the game, which I'll think about later
+            game.saveGame(player1,player2,player1.getScore(), player2.getScore(), game.getRoundsToWin());
+            game.cntGame++;
             returnToMainMenu();
         }
     }
@@ -401,7 +407,7 @@ public class MainWindow extends JFrame {
 
         mainPanel.add(Box.createHorizontalStrut(10));
 
-        JLabel numGamesLabel = new JLabel("Enter number of games:");
+        numGamesLabel = new JLabel("Enter number of games:");
         mainPanel.add(numGamesLabel);
 
         JTextField numGamesField = new JTextField(5);
@@ -451,10 +457,11 @@ public class MainWindow extends JFrame {
 
                     game = new Game(filePath, player1, player2, numGames);
 */
-                player1 = new Player("John");
-                player2 = new Player("Vanessa");
+                player1 = new Player(player1NameField.getText());
+                player2 = new Player(player2NameField.getText());
                 game = new Game("src/blitzstrike/res/map1.txt", player1, player2, 0);
                     game.loadMap();
+                    game.setRoundsToWin(Integer.parseInt(numGamesField.getText())) ;
                     try {
                         view = new View(game);
                     } catch (IOException ex) {
