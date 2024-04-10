@@ -37,6 +37,7 @@ public class Game {
     private Player winner;
     private Cell[][] space = new Cell[MAP_SIZE][MAP_SIZE];
     private boolean isPaused;
+    public int cntGame =1;
 
     private ArrayList<Monster> monsters;
 
@@ -120,7 +121,7 @@ public class Game {
                 } else if (line.startsWith("Player2Score:")) {
                     player2Score = Integer.parseInt(line.substring("Player2Score:".length()));
                 } else if (line.startsWith("RoundsToWin:")) {
-                    roundsToWin = Integer.parseInt(line.substring("RoundsToWin:".length()));
+                    setRoundsToWin(Integer.parseInt(line.substring("RoundsToWin:".length())));
                 } else {
                     // Assuming this line is part of the map
                     // You'll start processing the map after handling all the metadata
@@ -301,9 +302,9 @@ public class Game {
     }
 
     
-    public void saveGame(Player player1name, Player player2name, int player1score, int player2score, int roundsToWin, Timer timer) {
+    public void saveGame(Player player1, Player player2, int player1score, int player2score, int roundsToWin/*, Timer timer*/) {
         StringBuilder mapBuilder = new StringBuilder();
-
+        //pauseGame();
         // Save map state
         for (int y = 0; y < MAP_SIZE; y++) {
             for (int x = 0; x < MAP_SIZE; x++) {
@@ -325,7 +326,10 @@ public class Game {
             mapBuilder.append("\n");
         }
 
-        try (FileWriter writer = new FileWriter("gamestate.txt")) {
+        //added counter to monitor the saved files, however at this point it 
+        //doesn't create the new files one after another but rewrites the existing one
+        // has to be changed
+        try (FileWriter writer = new FileWriter("src/blitzstrike/res/gamestate" + cntGame + ".txt")) {
             writer.write("Player1Name:" + player1.getName() + "\n");
             writer.write("Player2Name:" + player2.getName() + "\n");
             writer.write("Player1Score:" + player1Score + "\n");
@@ -333,6 +337,7 @@ public class Game {
             writer.write("RoundsToWin:" + roundsToWin + "\n");
 
             writer.write(mapBuilder.toString());
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -467,6 +472,10 @@ public class Game {
     public int getRoundsToWin() {
         //final winner
         return this.roundsToWin;
+    }
+    
+    public void setRoundsToWin(int rToWin){
+        this.roundsToWin = rToWin;
     }
 
     public ArrayList<Monster> getMonsters() {
