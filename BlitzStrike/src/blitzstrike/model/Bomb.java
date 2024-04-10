@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class Bomb {
 
-    public int BOMB_COUNTDOWN = 3;
+    public static final int BOMB_COUNTDOWN = 3;
     private LocalTime startingTime;
     private Position position;
     private Player owner;

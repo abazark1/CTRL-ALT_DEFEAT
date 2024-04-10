@@ -36,6 +36,7 @@ public class Player {
     private LocalTime noBombCurseTimer;
     private boolean placeBombImmediatelyCurse;
     private LocalTime immediateBombCurseTimer;
+    private LocalTime deathTime;
 
     private Cell[][] space;
 
@@ -70,6 +71,10 @@ public class Player {
 
     public boolean isAlive() {
         return this.alive;
+    }
+    
+    public LocalTime getDeathTime(){
+        return this.deathTime;
     }
 
     public void placeBomb() {
@@ -128,6 +133,7 @@ public class Player {
 
     public void die() {
         this.alive = false;
+        this.deathTime = LocalTime.now();
     }
 
     public boolean isValidPosition(Direction direction, Player player2, ArrayList<Monster> monsters) {
