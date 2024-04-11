@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,8 +23,8 @@ public class Game {
 
     public static final int MAP_SIZE = 15;
     public static final int GAME_DURATION = 180; // seconds. Needed for battle royale BUT NOT NOW!!!
-    public boolean endGame = false;
-    public boolean endRound = false;
+    public boolean endGame;
+    public boolean endRound;
 
     private int roundsToWin;
     private LocalTime startingTime;
@@ -37,7 +38,7 @@ public class Game {
     private Player winner;
     private Cell[][] space = new Cell[MAP_SIZE][MAP_SIZE];
     private boolean isPaused;
-    public int cntGame =1;
+    public int cntGame = 1;
 
     private ArrayList<Monster> monsters;
 
@@ -51,9 +52,12 @@ public class Game {
         this.player2 = player2;
         this.monsters = new ArrayList<>();
         this.isExplosionInProgress = false;
+        this.endGame = false;
+        this.endRound = false;
     }
 
-    public Game() {}
+    public Game() {
+    }
 
     // basically, to refresh everything based on the file.
     // TODO?: SHOULD THIS METHOD ALSO RESET ALL THE FIELDS OF PLAYER?
@@ -63,6 +67,8 @@ public class Game {
         this.startingTime = LocalTime.now();
         this.player1.setSpace(this.space);
         this.player2.setSpace(this.space);
+
+        this.endRound = false;
 
         String map = readFile();
 
@@ -168,29 +174,19 @@ public class Game {
 
     }
 
-    public void loadNextRound() throws Exception {
-        Player player = getCurrentRoundWinnerIfAny();
-
-        if (player != null) {
-            if (player == player1) {
-                this.player1Score++;
-            } else if (player == player2) {
-                this.player2Score++;
-            }
-        }
-
-        if (!gameSuccessfullEnd()) {
-            loadMap();
-        }
+    public void loadNextRound() {
+        loadMap();
+        this.player1.reset();
+        this.player2.reset();
     }
 
-    public void endGame() {
-        if (roundsToWin == player1.getGamesWon() || roundsToWin == player2.getGamesWon()) {
-            endGame = true;
-        }
-
-    }
-
+    // TO BE REMOVED
+//    public void endGame() {
+//        if (roundsToWin == player1.getGamesWon() || roundsToWin == player2.getGamesWon()) {
+//            endGame = true;
+//        }
+//
+//    }
     public void restartgame() {
 
         player1.reset();
@@ -217,9 +213,7 @@ public class Game {
     }
     /*
     
-    */
-    
-    
+     */
     public void movePlayer1(Direction d) {
         player1.movePlayer(d, player2, monsters);
         handleCollision();
@@ -237,12 +231,10 @@ public class Game {
         handleCollision();
     }
 
-
-    public boolean gameSuccessfullEnd() {
+    public boolean isGameTotallyFinished() {
         return this.player1Score >= this.roundsToWin || this.player2Score >= this.roundsToWin;
     }
 
-    
     // collision of monsters and players & players and effects
     public void handleCollision() {
         for (Monster monster : monsters) {
@@ -276,7 +268,6 @@ public class Game {
         }
     }
 
-
     public void handleBombExplosion() {
         ArrayList<Bomb> player1BombsCopy = new ArrayList<>(this.player1.getBombs());
         Iterator<Bomb> bombIterator1 = player1BombsCopy.iterator();
@@ -301,7 +292,6 @@ public class Game {
         }
     }
 
-    
     public void saveGame(Player player1, Player player2, int player1score, int player2score, int roundsToWin/*, Timer timer*/) {
         StringBuilder mapBuilder = new StringBuilder();
         //pauseGame();
@@ -337,7 +327,7 @@ public class Game {
             writer.write("RoundsToWin:" + roundsToWin + "\n");
 
             writer.write(mapBuilder.toString());
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -359,8 +349,7 @@ public class Game {
         return result;
 
     }
-    
-    
+
     // Removers
     // removing player if monster has caught him/her
     public void removePlayerFromMap(Player player) {
@@ -368,8 +357,7 @@ public class Game {
         space[playerPosition.getY()][playerPosition.getX()] = new Empty(playerPosition);
         player.setPosition(new Position(-10, -10));
     }
-    
-    
+
     public void removeDeadMonsters() {
         // ArrayList<Monster> player1BombsCopy = new ArrayList<>(this.player1.getBombs());
         Iterator<Monster> monsterIterator = this.monsters.iterator();
@@ -380,8 +368,7 @@ public class Game {
             }
         }
     }
-    
-    
+
     // getters 
     public Player getPlayer11() {
         return player1;
@@ -437,8 +424,8 @@ public class Game {
         }
         return null;
     }
-    
-     public Bomb getBomb(int x, int y) {
+
+    public Bomb getBomb(int x, int y) {
         if (this.player1.hasBombAtPosition(x, y)) {
             this.player1.getBomb(x, y);
         } else if (this.player2.hasBombAtPosition(x, y)) {
@@ -446,7 +433,7 @@ public class Game {
         }
         return null;
     }
-     
+
     public boolean isBombAtPosition(int x, int y) {
         return this.player1.hasBombAtPosition(x, y) || this.player2.hasBombAtPosition(x, y);
     }
@@ -454,7 +441,7 @@ public class Game {
     public boolean isPlayerDead() {
         return false;
     }
-    
+
     private boolean isMonsterAtPosition(int x, int y) {
         for (Monster monster : monsters) {
             if (monster.getPosition().equals(new Position(x, y))) {
@@ -473,24 +460,69 @@ public class Game {
         //final winner
         return this.roundsToWin;
     }
-    
-    public void setRoundsToWin(int rToWin){
+
+    public void setRoundsToWin(int rToWin) {
         this.roundsToWin = rToWin;
     }
 
     public ArrayList<Monster> getMonsters() {
         return this.monsters;
     }
-    
+
     // Промежуточный победитель
-    public Player getCurrentRoundWinnerIfAny() throws Exception {
-        if (this.player1.isAlive() && !this.player2.isAlive()) {
-            return this.player1;
-        } else if (this.player2.isAlive() && !this.player1.isAlive()) {
-            return this.player2;
+//    public Player getCurrentRoundWinnerIfAny() throws Exception {
+//        if (this.player1.isAlive() && !this.player2.isAlive()) {
+//            return this.player1;
+//        } else if (this.player2.isAlive() && !this.player1.isAlive()) {
+//            return this.player2;
+//        } else {
+//            // Both died, nobody wins
+//            return null;
+//        }
+//    }
+    private boolean isOneOfThePlayersDead() {
+        return !player1.isAlive() || !player2.isAlive();
+    }
+
+    private void handleFinishRoundAndGame() {
+        if (!isGameTotallyFinished()) {
+            this.endRound = true;
         } else {
-            // Both died, nobody wins
-            return null;
+            this.winner = this.player1Score > this.player2Score ? this.player1 : this.player2;
+//            this.endRound = true;
+            this.endGame = true;
+        }
+    }
+
+    // When in the dialog we click continue, we will call this method
+    public void handleEndRound() {
+        if (this.endRound) {
+            this.endRound = false;
+            loadNextRound();
+        }
+    }
+
+    // Main Window must check endRound and endGame and based on them call JDialog.
+    public void handleDeathOfThePlayer() {
+        if (isOneOfThePlayersDead()) {
+            if (this.player1.isAlive() && !this.player2.isAlive()) {
+                if (Duration.between(this.player2.getDeathTime(), LocalTime.now()).getSeconds() >= Bomb.BOMB_COUNTDOWN) {
+                    System.out.println("Only player 1 is alive");
+                    this.player1Score++;
+                    handleFinishRoundAndGame();
+                }
+            } else if (this.player2.isAlive() && !this.player1.isAlive()) {
+                if (Duration.between(this.player1.getDeathTime(), LocalTime.now()).getSeconds() >= Bomb.BOMB_COUNTDOWN) {
+                    System.out.println("Only player 2 is alive");
+                    this.player1Score++;
+                    handleFinishRoundAndGame();
+                }
+            } else if (!this.player1.isAlive() && !this.player2.isAlive()) {
+                System.out.println("They both are dead");
+                if (Duration.between(this.player1.getDeathTime(), LocalTime.now()).getSeconds() >= Bomb.BOMB_COUNTDOWN && Duration.between(this.player2.getDeathTime(), LocalTime.now()).getSeconds() >= Bomb.BOMB_COUNTDOWN) {
+                    handleFinishRoundAndGame();
+                }
+            }
         }
     }
 }

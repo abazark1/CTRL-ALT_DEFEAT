@@ -276,6 +276,7 @@ public class MainWindow extends JFrame {
                     game.handleBombExplosion();
                     game.removeDeadMonsters();
                     game.handleCollision();
+                    game.handleDeathOfThePlayer();
                 }
                 else {
                     toggleStatsPanelVisibility(false);
