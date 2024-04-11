@@ -470,17 +470,16 @@ public class Game {
     }
 
     // Промежуточный победитель
-    public Player getCurrentRoundWinnerIfAny() throws Exception {
-        if (this.player1.isAlive() && !this.player2.isAlive()) {
-            return this.player1;
-        } else if (this.player2.isAlive() && !this.player1.isAlive()) {
-            return this.player2;
-        } else {
-            // Both died, nobody wins
-            return null;
-        }
-    }
-
+//    public Player getCurrentRoundWinnerIfAny() throws Exception {
+//        if (this.player1.isAlive() && !this.player2.isAlive()) {
+//            return this.player1;
+//        } else if (this.player2.isAlive() && !this.player1.isAlive()) {
+//            return this.player2;
+//        } else {
+//            // Both died, nobody wins
+//            return null;
+//        }
+//    }
     private boolean isOneOfThePlayersDead() {
         return !player1.isAlive() || !player2.isAlive();
     }
@@ -489,20 +488,32 @@ public class Game {
         if (!isGameTotallyFinished()) {
             this.endRound = true;
         } else {
-            this.endRound = true;
+            this.winner = this.player1Score > this.player2Score ? this.player1 : this.player2;
+//            this.endRound = true;
             this.endGame = true;
         }
     }
 
+    // When in the dialog we click continue, we will call this method
+    public void handleEndRound() {
+        if (this.endRound) {
+            this.endRound = false;
+            loadNextRound();
+        }
+    }
+
+    // Main Window must check endRound and endGame and based on them call JDialog.
     public void handleDeathOfThePlayer() {
         if (isOneOfThePlayersDead()) {
             if (this.player1.isAlive() && !this.player2.isAlive()) {
                 if (Duration.between(this.player2.getDeathTime(), LocalTime.now()).getSeconds() >= Bomb.BOMB_COUNTDOWN) {
+                    System.out.println("Only player 1 is alive");
                     this.player1Score++;
                     handleFinishRoundAndGame();
                 }
             } else if (this.player2.isAlive() && !this.player1.isAlive()) {
                 if (Duration.between(this.player1.getDeathTime(), LocalTime.now()).getSeconds() >= Bomb.BOMB_COUNTDOWN) {
+                    System.out.println("Only player 2 is alive");
                     this.player1Score++;
                     handleFinishRoundAndGame();
                 }
