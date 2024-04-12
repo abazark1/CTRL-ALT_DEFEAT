@@ -79,29 +79,29 @@ public class MainWindow extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Menu");
-        
+
         statsPanel = new JPanel();
         statsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        statsPanel.setBackground(Color.LIGHT_GRAY); 
+        statsPanel.setBackground(Color.LIGHT_GRAY);
         frame.add(statsPanel, BorderLayout.NORTH);
-        
+
         JMenuItem resumePause = new JMenuItem("Pause/Resume");
         resumePause.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!game.getIsPaused()){
+                if (!game.getIsPaused()) {
                     game.pauseGame();
                     //stop monsters from moving
                     monsterMoveTimer.stop();
                     frame.removeKeyListener(player1KeyListener);
                     frame.removeKeyListener(player2KeyListener);
-                }else{
+                } else {
                     game.resumeGame();
                     //stop monsters from moving
                     monsterMoveTimer.restart();
                     frame.addKeyListener(player1KeyListener);
                     frame.addKeyListener(player2KeyListener);
-                
+
                 }
             }
         });
@@ -251,23 +251,23 @@ public class MainWindow extends JFrame {
         frame.addKeyListener(player2KeyListener);
     }
 
-    public Timer getTimer(){
+    public Timer getTimer() {
         return this.backgroundTimer;
     }
-    
+
     private void toggleStatsPanelVisibility(boolean visible) {
         statsPanel.setVisible(visible);
         frame.revalidate();
         frame.repaint();
     }
-    
+
     //for continuous movement of monsters
     private void startMoveMonsterTimer() {
         monsterMoveTimer = new Timer(MONSTER_MOVE, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Move monsters
-                if (game != null) {
+                if (game != null && !game.isGameOrRoundEnded()) {
                     game.moveMonsters();
 
                 }
@@ -288,12 +288,13 @@ public class MainWindow extends JFrame {
                     view.repaint();
                 }
                 if (game != null) {
-                    game.handleBombExplosion();
-                    game.removeDeadMonsters();
-                    game.handleCollision();
-                    game.handleDeathOfThePlayer();
-                }
-                else {
+                    if (!game.isGameOrRoundEnded()) {
+                        game.handleBombExplosion();
+                        game.removeDeadMonsters();
+                        game.handleCollision();
+                        game.handleDeathOfThePlayer();
+                    }
+                } else {
                     toggleStatsPanelVisibility(false);
                 }
             }
@@ -334,7 +335,7 @@ public class MainWindow extends JFrame {
     private void confirmExitandSave() {
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
-            game.saveGame(player1,player2,player1.getScore(), player2.getScore(), game.getRoundsToWin());
+            game.saveGame(player1, player2, player1.getScore(), player2.getScore(), game.getRoundsToWin());
             returnToMainMenu();
         }
     }
@@ -403,7 +404,7 @@ public class MainWindow extends JFrame {
             mPanel.add(returnButton);
         }
     }
-    
+
     private JPanel createPlayerStatsPanel(Player player) {
         JPanel playerPanel = new JPanel();
         playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
@@ -510,28 +511,28 @@ public class MainWindow extends JFrame {
                     player2 = new Player(player2Name);
 
                     game = new Game(filePath, player1, player2, numGames);
-*/
+                 */
                 player1 = new Player(player1NameField.getText());
                 player2 = new Player(player2NameField.getText());
                 game = new Game("src/blitzstrike/res/map1.txt", player1, player2, 0);
-                    game.loadMap();
-                    game.setRoundsToWin(Integer.parseInt(numGamesField.getText())) ;
-                    try {
-                        view = new View(game);
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    frame.remove(mMenu);
-                    frame.add(view);
-                    statsPanel.removeAll(); 
-                    statsPanel.add(createPlayerStatsPanel(player1));
-                    statsPanel.add(createPlayerStatsPanel(player2));
-                    statsPanel.add(new JLabel("Round: 1")); // to be changed for num games
-                    frame.revalidate();
-                    frame.repaint();
-                    gameSetupDialog.setVisible(false);
-                    gameSetupDialog.dispose();
+                game.loadMap();
+                game.setRoundsToWin(Integer.parseInt(numGamesField.getText()));
+                try {
+                    view = new View(game);
+                } catch (IOException ex) {
+                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                frame.remove(mMenu);
+                frame.add(view);
+                statsPanel.removeAll();
+                statsPanel.add(createPlayerStatsPanel(player1));
+                statsPanel.add(createPlayerStatsPanel(player2));
+                statsPanel.add(new JLabel("Round: 1")); // to be changed for num games
+                frame.revalidate();
+                frame.repaint();
+                gameSetupDialog.setVisible(false);
+                gameSetupDialog.dispose();
+            }
 //            }
         }
         );
