@@ -284,16 +284,17 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (view != null) {
+                    System.out.println("I am repainting");
                     toggleStatsPanelVisibility(true);
                     view.repaint();
                 }
                 if (game != null) {
-                    if (!game.isGameOrRoundEnded()) {
+//                    if (!game.isGameOrRoundEnded()) {
                         game.handleBombExplosion();
                         game.removeDeadMonsters();
                         game.handleCollision();
                         game.handleDeathOfThePlayer();
-                    }
+//                    }
                 } else {
                     toggleStatsPanelVisibility(false);
                 }
@@ -335,7 +336,7 @@ public class MainWindow extends JFrame {
     private void confirmExitandSave() {
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
-            game.saveGame(player1, player2, player1.getScore(), player2.getScore(), game.getRoundsToWin());
+            game.saveGame(player1, player2, game.getPlayer1Score(), game.getPlayer2Score(), game.getRoundsToWin());
             returnToMainMenu();
         }
     }
@@ -366,7 +367,7 @@ public class MainWindow extends JFrame {
         roundEndDialog.setLocationRelativeTo(this); // Center on screen
 
         // Message
-        JLabel messageLabel = new JLabel("<html><center>" + message + "<br>Player 1 Score: " + player1.getGamesWon() + "<br>Player 2 Score: " + player2.getGamesWon() + "</center></html>");
+        JLabel messageLabel = new JLabel("<html><center>" + message + "<br>Player 1 Score: " + game.getPlayer1Score() + "<br>Player 2 Score: " + game.getPlayer2Score() + "</center></html>");
         roundEndDialog.add(messageLabel);
 
         // Next Round Button
@@ -405,7 +406,7 @@ public class MainWindow extends JFrame {
         }
     }
 
-    private JPanel createPlayerStatsPanel(Player player) {
+    private JPanel createPlayerStatsPanel(Player player, int score) {
         JPanel playerPanel = new JPanel();
         playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
 
@@ -418,7 +419,7 @@ public class MainWindow extends JFrame {
         playerNameLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
         playerPanel.add(playerNameLabel);
 
-        JLabel playerScoreLabel = new JLabel("Score: " + player.getGamesWon());
+        JLabel playerScoreLabel = new JLabel("Score: " + score);
         playerScoreLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
         playerPanel.add(playerScoreLabel);
 
@@ -525,8 +526,8 @@ public class MainWindow extends JFrame {
                 frame.remove(mMenu);
                 frame.add(view);
                 statsPanel.removeAll();
-                statsPanel.add(createPlayerStatsPanel(player1));
-                statsPanel.add(createPlayerStatsPanel(player2));
+                statsPanel.add(createPlayerStatsPanel(player1, game.getPlayer1Score()));
+                statsPanel.add(createPlayerStatsPanel(player2, game.getPlayer2Score()));
                 statsPanel.add(new JLabel("Round: 1")); // to be changed for num games
                 frame.revalidate();
                 frame.repaint();

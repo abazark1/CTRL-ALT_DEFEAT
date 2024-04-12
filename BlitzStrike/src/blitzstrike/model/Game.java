@@ -188,9 +188,17 @@ public class Game {
         startingTime = LocalTime.now();
         endGame = false;
     }
-    
-    public boolean isGameOrRoundEnded(){
+
+    public boolean isGameOrRoundEnded() {
         return this.endGame || this.endRound;
+    }
+
+    public int getPlayer1Score() {
+        return this.player1Score;
+    }
+
+    public int getPlayer2Score() {
+        return this.player2Score;
     }
 
     public void pauseGame() {
@@ -474,9 +482,9 @@ public class Game {
 
     // Main Window must check endRound and endGame and based on them call JDialog.
     public void handleDeathOfThePlayer() {
-            System.out.println("Is game ended " + this.endGame);
-            System.out.println("Is round ended " + this.endRound);
-            System.out.println(this.player1Score + "/" + this.player2Score);
+        System.out.println("Is game ended " + this.endGame);
+        System.out.println("Is round ended " + this.endRound);
+        System.out.println(this.player1Score + "/" + this.player2Score);
         if (isOneOfThePlayersDead() && !this.endRound && !this.endGame) {
             if (this.player1.isAlive() && !this.player2.isAlive()) {
                 if (Duration.between(this.player2.getDeathTime(), LocalTime.now()).getSeconds() >= Bomb.BOMB_COUNTDOWN) {
