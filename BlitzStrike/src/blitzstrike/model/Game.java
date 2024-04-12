@@ -233,14 +233,12 @@ public class Game {
             if (monster.getPosition().equals(player1.getPosition())) {
                 player1.die();
                 endRound = true;
-                removePlayerFromMap(player1);
                 System.out.println(player1.getName() + " has encountered a monster!");
             }
 
             if (player2 != null && monster.getPosition().equals(player2.getPosition())) {
                 player2.die();
                 endRound = true;
-                removePlayerFromMap(player2);
                 System.out.println(player2.getName() + " has encountered a monster!");
             }
         }
@@ -344,11 +342,11 @@ public class Game {
 
     // Removers
     // removing player if monster has caught him/her
-    public void removePlayerFromMap(Player player) {
-        Position playerPosition = player.getPosition();
-        space[playerPosition.getY()][playerPosition.getX()] = new Empty(playerPosition);
-        player.setPosition(new Position(-10, -10));
-    }
+//    public void removePlayerFromMap(Player player) {
+//        Position playerPosition = player.getPosition();
+//        space[playerPosition.getY()][playerPosition.getX()] = new Empty(playerPosition);
+//        player.setPosition(new Position(-10, -10));
+//    }
 
     public void removeDeadMonsters() {
         // ArrayList<Monster> player1BombsCopy = new ArrayList<>(this.player1.getBombs());

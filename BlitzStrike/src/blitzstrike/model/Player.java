@@ -72,8 +72,8 @@ public class Player {
     public boolean isAlive() {
         return this.alive;
     }
-    
-    public LocalTime getDeathTime(){
+
+    public LocalTime getDeathTime() {
         return this.deathTime;
     }
 
@@ -134,6 +134,7 @@ public class Player {
     public void die() {
         this.alive = false;
         this.deathTime = LocalTime.now();
+        removePlayerFromMap();
     }
 
     public boolean isValidPosition(Direction direction, Player player2, ArrayList<Monster> monsters) {
@@ -247,9 +248,10 @@ public class Player {
         return this.name;
     }
 
-    public int getScore(){
+    public int getScore() {
         return this.gamesWon;
     }
+
     public void reset() {
         this.position = new Position(0, 0);
         this.bombs = new ArrayList<>();
@@ -265,5 +267,11 @@ public class Player {
         this.maxNumberOfObstacles = 0;
         this.noBombCurse = false;
         this.placeBombImmediatelyCurse = false;
+    }
+
+    private void removePlayerFromMap() {
+        Position playerPosition = this.position;
+        space[playerPosition.getY()][playerPosition.getX()] = new Empty(playerPosition);
+        this.position = new Position(-10, -10);
     }
 }
