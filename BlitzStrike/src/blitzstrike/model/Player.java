@@ -18,7 +18,6 @@ public class Player {
     private String name;
     private Position position;
     private boolean alive;
-    private int gamesWon;
     private List<Bomb> bombs;
     private List<Position> obstacles;
     private int blastRange;
@@ -45,7 +44,6 @@ public class Player {
         this.bombs = new ArrayList<>();
         this.obstacles = new ArrayList<>();
         this.alive = true;
-        this.gamesWon = 0;
         this.blastRange = 3;
         this.speed = 1.0;
         this.maxBombNumber = 1;
@@ -239,17 +237,9 @@ public class Player {
     public void setBlastRange(int newBlastRange) {
         this.blastRange = newBlastRange;
     }
-
-    public int getGamesWon() {
-        return this.gamesWon;
-    }
-
+    
     public String getName() {
         return this.name;
-    }
-
-    public int getScore() {
-        return this.gamesWon;
     }
 
     public void reset() {
@@ -257,7 +247,6 @@ public class Player {
         this.bombs = new ArrayList<>();
         this.obstacles = new ArrayList<>();
         this.alive = true;
-        this.gamesWon = 0;
         this.blastRange = 3;
         this.speed = 1.0;
         this.maxBombNumber = 1;
