@@ -69,6 +69,8 @@ public class MainWindow extends JFrame {
     private static final int BACKGROUND = 300;
     final JPanel mMenu;
     private JPanel statsPanel;
+    public KeyAdapter player1KeyListener;
+    public KeyAdapter player2KeyListener;
 
     public MainWindow() throws IOException {
 
@@ -87,7 +89,20 @@ public class MainWindow extends JFrame {
         resumePause.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //method to implement pause/resume
+                if (!game.getIsPaused()){
+                    game.pauseGame();
+                    //stop monsters from moving
+                    monsterMoveTimer.stop();
+                    frame.removeKeyListener(player1KeyListener);
+                    frame.removeKeyListener(player2KeyListener);
+                }else{
+                    game.resumeGame();
+                    //stop monsters from moving
+                    monsterMoveTimer.restart();
+                    frame.addKeyListener(player1KeyListener);
+                    frame.addKeyListener(player2KeyListener);
+                
+                }
             }
         });
         menu.add(resumePause);
@@ -187,7 +202,7 @@ public class MainWindow extends JFrame {
         startMoveMonsterTimer();
         startBackgroundTimer();
 
-        KeyAdapter player1KeyListener = new KeyAdapter() {
+        player1KeyListener = new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
@@ -210,7 +225,7 @@ public class MainWindow extends JFrame {
             }
         };
 
-        KeyAdapter player2KeyListener = new KeyAdapter() {
+        player2KeyListener = new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
