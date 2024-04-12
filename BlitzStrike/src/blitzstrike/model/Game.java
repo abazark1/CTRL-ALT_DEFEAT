@@ -197,22 +197,15 @@ public class Game {
         endGame = false;
     }
 
-    /* to be done later
+    
     public void pauseGame() {
         isPaused = true;
-        //stop monsters from moving
-        
-        //showPauseDialog();
-              
-
     }
 
     public void resumeGame() {
         isPaused = false;
     }
-    /*
     
-     */
     public void movePlayer1(Direction d) {
         player1.movePlayer(d, player2, monsters);
         handleCollision();
@@ -318,7 +311,7 @@ public class Game {
         //added counter to monitor the saved files, however at this point it 
         //doesn't create the new files one after another but rewrites the existing one
         // has to be changed
-        try (FileWriter writer = new FileWriter("src/blitzstrike/res/gamestate_" + player1.getName() +"_"+ player2.getName()+ ".txt")) {
+        try (FileWriter writer = new FileWriter(player1.getName() +"_"+ player2.getName()+"_"+player1Score+"_"+player2Score+"_"+roundsToWin+ ".txt")) {
             writer.write("Player1Name:" + player1.getName() + "\n");
             writer.write("Player2Name:" + player2.getName() + "\n");
             writer.write("Player1Score:" + player1Score + "\n");
@@ -433,6 +426,9 @@ public class Game {
         return null;
     }
 
+    public boolean getIsPaused(){
+        return isPaused;
+    }
     public boolean isBombAtPosition(int x, int y) {
         return this.player1.hasBombAtPosition(x, y) || this.player2.hasBombAtPosition(x, y);
     }
