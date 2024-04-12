@@ -319,9 +319,7 @@ public class MainWindow extends JFrame {
     private void confirmExitandSave() {
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
-            //here should be function to save the game, which I'll think about later
             game.saveGame(player1,player2,player1.getScore(), player2.getScore(), game.getRoundsToWin());
-            game.cntGame++;
             returnToMainMenu();
         }
     }

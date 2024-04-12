@@ -38,7 +38,6 @@ public class Game {
     private Player winner;
     private Cell[][] space = new Cell[MAP_SIZE][MAP_SIZE];
     private boolean isPaused;
-    public int cntGame = 1;
 
     private ArrayList<Monster> monsters;
 
@@ -319,7 +318,7 @@ public class Game {
         //added counter to monitor the saved files, however at this point it 
         //doesn't create the new files one after another but rewrites the existing one
         // has to be changed
-        try (FileWriter writer = new FileWriter("src/blitzstrike/res/gamestate" + cntGame + ".txt")) {
+        try (FileWriter writer = new FileWriter("src/blitzstrike/res/gamestate_" + player1.getName() +"_"+ player2.getName()+ ".txt")) {
             writer.write("Player1Name:" + player1.getName() + "\n");
             writer.write("Player2Name:" + player2.getName() + "\n");
             writer.write("Player1Score:" + player1Score + "\n");
