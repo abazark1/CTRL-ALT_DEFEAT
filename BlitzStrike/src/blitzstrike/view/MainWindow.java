@@ -284,7 +284,7 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (view != null) {
-                    System.out.println("I am repainting");
+//                    System.out.println("I am repainting");
                     toggleStatsPanelVisibility(true);
                     view.repaint();
                 }
