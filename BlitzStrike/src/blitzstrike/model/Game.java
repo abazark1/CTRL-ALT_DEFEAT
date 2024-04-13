@@ -99,8 +99,14 @@ public class Game {
                     case '1':
                         cell = new Empty(position);
                         space[row][column] = cell;
-                        Monster monster = new BasicMonster(1.0, position, this.space);
+                        Monster monster = new BasicMonster(position, this.space, this);
                         this.monsters.add(monster);
+                        break;
+                    case '2':
+                        cell = new Empty(position);
+                        space[row][column] = cell;
+                        Monster monster2 = new Monster2(position, this.space, this);
+                        this.monsters.add(monster2);
                         break;
                     default:
                         cell = new Empty(position);
@@ -155,8 +161,13 @@ public class Game {
                             space[y][x] = new Empty(position);
                             break;
                         case '1':
-                            Monster monster = new BasicMonster(1.0, position, space);
+                            Monster monster = new BasicMonster(position, space, this);
                             monsters.add(monster);
+                            space[y][x] = new Empty(position);
+                            break;
+                        case '2':
+                            Monster monster2 = new Monster2(position, space, this);
+                            monsters.add(monster2);
                             space[y][x] = new Empty(position);
                             break;
                         case ' ':
@@ -482,9 +493,9 @@ public class Game {
 
     // Main Window must check endRound and endGame and based on them call JDialog.
     public void handleDeathOfThePlayer() {
-        System.out.println("Is game ended " + this.endGame);
-        System.out.println("Is round ended " + this.endRound);
-        System.out.println(this.player1Score + "/" + this.player2Score);
+//        System.out.println("Is game ended " + this.endGame);
+//        System.out.println("Is round ended " + this.endRound);
+//        System.out.println(this.player1Score + "/" + this.player2Score);
         if (isOneOfThePlayersDead() && !this.endRound && !this.endGame) {
             if (this.player1.isAlive() && !this.player2.isAlive()) {
                 if (Duration.between(this.player2.getDeathTime(), LocalTime.now()).getSeconds() >= Bomb.BOMB_COUNTDOWN) {

@@ -130,6 +130,7 @@ public class Player {
     }
 
     public void die() {
+        System.out.println(this.name + " has died");
         this.alive = false;
         this.deathTime = LocalTime.now();
         removePlayerFromMap();
