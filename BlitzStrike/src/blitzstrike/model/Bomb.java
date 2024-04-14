@@ -101,5 +101,8 @@ public class Bomb {
     public Position getPosition() {
         return this.position;
     }
-
+    
+    public Player getOwner(){
+        return this.owner;
+    }
 }

@@ -108,6 +108,12 @@ public class Game {
                         Monster monster2 = new Monster2(position, this.space, this);
                         this.monsters.add(monster2);
                         break;
+                    case '3':
+                        cell = new Empty(position);
+                        space[row][column] = cell;
+                        Monster monster3 = new Monster3(position, this.space, this, player1, player2);
+                        this.monsters.add(monster3);
+                        break;
                     default:
                         cell = new Empty(position);
                         space[row][column] = cell;
@@ -170,6 +176,11 @@ public class Game {
                             monsters.add(monster2);
                             space[y][x] = new Empty(position);
                             break;
+                        case '3':
+                            Monster monster3 = new Monster3(position, space, this, player1, player2);
+                            monsters.add(monster3);
+                            space[y][x] = new Empty(position);
+                            break;
                         case ' ':
                             space[y][x] = new Empty(position);
                             break;
@@ -221,12 +232,12 @@ public class Game {
     }
 
     public void movePlayer1(Direction d) {
-        player1.movePlayer(d, player2, monsters);
+        player1.movePlayer(d, player2);
         handleCollision();
     }
 
     public void movePlayer2(Direction d) {
-        player2.movePlayer(d, player1, monsters);
+        player2.movePlayer(d, player1);
         handleCollision();
     }
 
