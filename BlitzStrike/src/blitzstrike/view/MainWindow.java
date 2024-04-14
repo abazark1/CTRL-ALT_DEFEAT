@@ -208,13 +208,13 @@ public class MainWindow extends JFrame {
                 int keyCode = e.getKeyCode();
                 switch (keyCode) {
                     case KeyEvent.VK_W ->
-                        player1.movePlayer(UP, player2, game.getMonsters());
+                        player1.movePlayer(UP, player2);
                     case KeyEvent.VK_S ->
-                        player1.movePlayer(DOWN, player2, game.getMonsters());
+                        player1.movePlayer(DOWN, player2);
                     case KeyEvent.VK_A ->
-                        player1.movePlayer(LEFT, player2, game.getMonsters());
+                        player1.movePlayer(LEFT, player2);
                     case KeyEvent.VK_D ->
-                        player1.movePlayer(RIGHT, player2, game.getMonsters());
+                        player1.movePlayer(RIGHT, player2);
                     case KeyEvent.VK_SPACE ->
                         player1.placeBomb();
                 }
@@ -231,13 +231,13 @@ public class MainWindow extends JFrame {
                 int keyCode = e.getKeyCode();
                 switch (keyCode) {
                     case KeyEvent.VK_UP ->
-                        player2.movePlayer(UP, player1, game.getMonsters());
+                        player2.movePlayer(UP, player1);
                     case KeyEvent.VK_DOWN ->
-                        player2.movePlayer(DOWN, player1, game.getMonsters());
+                        player2.movePlayer(DOWN, player1);
                     case KeyEvent.VK_LEFT ->
-                        player2.movePlayer(LEFT, player1, game.getMonsters());
+                        player2.movePlayer(LEFT, player1);
                     case KeyEvent.VK_RIGHT ->
-                        player2.movePlayer(RIGHT, player1, game.getMonsters());
+                        player2.movePlayer(RIGHT, player1);
                     case KeyEvent.VK_ENTER ->
                         player2.placeBomb();
                 }

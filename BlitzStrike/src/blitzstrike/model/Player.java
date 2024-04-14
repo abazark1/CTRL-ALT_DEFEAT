@@ -88,8 +88,8 @@ public class Player {
         System.out.println("I've placed an obstacle");
     }
 
-    public void movePlayer(Direction direction, Player player2, ArrayList<Monster> monsters) {
-        if (isAlive() && isValidPosition(direction, player2, monsters)) {
+    public void movePlayer(Direction direction, Player player2) {
+        if (isAlive() && isValidPosition(direction, player2)) {
             this.position = this.position.translate(direction);
         }
 
@@ -136,12 +136,18 @@ public class Player {
         removePlayerFromMap();
     }
 
-    public boolean isValidPosition(Direction direction, Player player2, ArrayList<Monster> monsters) {
+    public boolean isValidPosition(Direction direction, Player player2) {
         Position newPosition = this.position.translate(direction);
 
         if (!this.space[newPosition.getY()][newPosition.getX()].isWalkable()) {
             return false;
-        } else if (player2.getPosition().equals(newPosition)) {
+        } 
+        
+        if (player2.getPosition().equals(newPosition)) {
+            return false;
+        }
+        
+        if (hasBombAtPosition(newPosition.getX(), newPosition.getY())){
             return false;
         }
         return true;

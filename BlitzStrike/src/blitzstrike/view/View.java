@@ -75,29 +75,18 @@ public class View extends JPanel {
                 if (b != null) {
                     if (b.isDestroyed()) {
                         Effect effect = b.getEffect();
-//                        System.out.println("Empty? " + effect.isEmpty());
-//                        System.out.println("Curse? " + effect.isCurse());
-//                        System.out.println("Powerup? " + effect.isPowerup());
                         if (effect.isPowerup()) {
-//                            System.out.println("YES IT IS POWER UP");
                             img = powerUp;
                         } else if (effect.isCurse()) {
-//                            System.out.println("YES IT IS CURSE");
                             img = curse;
                         } else if (effect.isEmpty()) {
-//                            System.out.println("YES IT IS EMPTY CELL");
                             img = emptyeffect;
                         }
                     } else {
                         img = box;
                     }
                 } else {
-                    if (game.isBombAtPosition(x, y)) {
-//                        if(game.isExplosionInProgress()){
-//                            drawExplosion(gr, game.getBomb(x, y), scaled_size);
-//                        }
-                        img = bomb;
-                    }
+                    
                     Monster m = game.getMonster(x, y);
                     Player p1 = game.getPlayer1(x, y);
                     Player p2 = game.getPlayer2(x, y);
@@ -105,7 +94,19 @@ public class View extends JPanel {
                     Empty e = game.getEmpty(x, y);
 
                     if (m != null) {
-                        img = monster1;
+                        switch(m.monsterType){
+                            case BASIC:
+                                img = monster1;
+                                break;
+                            case MONSTER2:
+                                img = monster2;
+                                break;
+                            case MONSTER3:
+                                img = monster3;
+                                break;
+                               
+                        }
+                        //img = mo {nster1;
                     } else if (p1 != null) {
                         img = player1;
                     } else if (p2 != null) {
@@ -116,36 +117,48 @@ public class View extends JPanel {
                         img = empty;
                     }
                 }
-
+                
                 if (img != null) {
                     gr.drawImage(img, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
                 }
-                //placing bomb
+                
                 for (Bomb bomb1 : game.getPlayer11().getBombs()) {
                     gr.drawImage(this.bomb, bomb1.getPosition().getX() * scaled_size, bomb1.getPosition().getY() * scaled_size, scaled_size, scaled_size, null);
+                    
                 }
                 for (Bomb bomb2 : game.getPlayer22().getBombs()) {
                     gr.drawImage(this.bomb, bomb2.getPosition().getX() * scaled_size, bomb2.getPosition().getY() * scaled_size, scaled_size, scaled_size, null);
+//                    if(bomb2.getExploding()){
+//                        for(int d = -game.getPlayer22().getBlastRange(); d <= game.getPlayer22().getBlastRange(); d++){
+//                            gr.drawImage(this.explosion, (bomb2.getPosition().getX() + d) * scaled_size, bomb2.getPosition().getY() * scaled_size, scaled_size, scaled_size, null);
+//                            gr.drawImage(this.explosion, bomb2.getPosition().getX() * scaled_size, (bomb2.getPosition().getY() + d) * scaled_size, scaled_size, scaled_size, null);
+//                        }
+//                    }
                 }
+                
+                if (game.isBombAtPosition(x, y)) {
+                    Bomb bomb1 = game.getBomb(x, y);
+                    if (bomb1 != null){
+                        img = explosion;
+                        int blastRange = bomb1.getOwner().getBlastRange();
+                        for (int dx = -blastRange; dx <= blastRange; dx++) {
+                            drawImage(gr, explosion, x + dx, y, scaled_size); // Draw horizontally
+                        }
+                        for (int dy = -blastRange; dy <= blastRange; dy++) {
+                            drawImage(gr, explosion, x, y + dy, scaled_size); // Draw vertically
+                        }
+                    } 
+                }  
             }
         }
-        //g.drawImage(buffer, 0, 0, null);
     }
 
-    public void drawExplosion(Graphics2D gr, Bomb bomb, int scaled_size) {
-        int bombX = bomb.getPosition().getX();
-        int bombY = bomb.getPosition().getY();
-
-        for (int dx = -2; dx <= 2; dx++) {
-            for (int dy = -2; dy <= 2; dy++) {
-                if (Math.abs(dx) + Math.abs(dy) <= 2) {
-                    int x = bombX + dx;
-                    int y = bombY + dy;
-                    if (x >= 0 && x < game.MAP_SIZE && y >= 0 && y < game.MAP_SIZE) {
-                        gr.drawImage(explosion, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
-                    }
-                }
-            }
+    private void drawImage(Graphics2D gr, Image img, int x, int y, int scaled_size) {
+        if (x >= 0 && x < game.MAP_SIZE && y >= 0 && y < game.MAP_SIZE) {
+            //System.out.println("Drawing: x " + x + " and y " + y);
+            //System.out.println(img);
+            gr.drawImage(img, x * scaled_size, y * scaled_size, scaled_size, scaled_size, null);
+            //gr.fillRect(x * scaled_size, y * scaled_size, scaled_size, scaled_size);
         }
     }
 }
