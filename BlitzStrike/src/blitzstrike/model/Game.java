@@ -309,7 +309,7 @@ public class Game {
 
     public void saveGame(Player player1, Player player2, int player1score, int player2score, int roundsToWin/*, Timer timer*/) {
         StringBuilder mapBuilder = new StringBuilder();
-        //pauseGame();
+        pauseGame();
         // Save map state
         for (int y = 0; y < MAP_SIZE; y++) {
             for (int x = 0; x < MAP_SIZE; x++) {
@@ -330,11 +330,8 @@ public class Game {
             }
             mapBuilder.append("\n");
         }
-
-        //added counter to monitor the saved files, however at this point it 
-        //doesn't create the new files one after another but rewrites the existing one
-        // has to be changed
-        try (FileWriter writer = new FileWriter(player1.getName() + "_" + player2.getName() + "_" + player1Score + "_" + player2Score + "_" + roundsToWin + ".txt")) {
+        
+        try (FileWriter writer = new FileWriter("src/blitzstrike/res/"+ player1.getName() + "_" + player2.getName() + "_" + player1Score + "_" + player2Score + "_" + roundsToWin + ".txt")) {
             writer.write("Player1Name:" + player1.getName() + "\n");
             writer.write("Player2Name:" + player2.getName() + "\n");
             writer.write("Player1Score:" + player1Score + "\n");
