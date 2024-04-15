@@ -68,6 +68,7 @@ public class MainWindow extends JFrame {
     private Timer backgroundTimer;
     private static final int BACKGROUND = 300;
     final JPanel mMenu;
+    public JPanel playerPanel;
     private JPanel statsPanel;
     public KeyAdapter player1KeyListener;
     public KeyAdapter player2KeyListener;
@@ -334,16 +335,24 @@ public class MainWindow extends JFrame {
     }
 
     private void confirmExitandSave() {
+        game.pauseGame();
+        monsterMoveTimer.stop();
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
+        
         if (result == JOptionPane.YES_OPTION) {
             game.saveGame(player1, player2, game.getPlayer1Score(), game.getPlayer2Score(), game.getRoundsToWin());
             returnToMainMenu();
+        }else{
+            game.resumeGame();
+            monsterMoveTimer.restart();
         }
+        
     }
 
     //function that removes playing view and returns mainWindow
     public void returnToMainMenu() {
         frame.remove(view);
+        frame.remove(statsPanel);
         toggleStatsPanelVisibility(false);
         frame.add(mMenu);
         frame.revalidate();
@@ -407,7 +416,7 @@ public class MainWindow extends JFrame {
     }
 
     private JPanel createPlayerStatsPanel(Player player, int score) {
-        JPanel playerPanel = new JPanel();
+        playerPanel = new JPanel();
         playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
 
         // Add player picture (replace with your image loading logic)
