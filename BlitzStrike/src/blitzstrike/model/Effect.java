@@ -19,12 +19,12 @@ public abstract class Effect {
 
     protected Effect() {
         this.isCurse = false;
-        this.isCurse = false;
+        this.isEmpty = false;
         this.isPowerup = false;
     }
 
     public boolean isEmpty() {
-        return this.isCurse;
+        return this.isEmpty;
     }
 
     public boolean isPowerup() {
@@ -104,7 +104,7 @@ public abstract class Effect {
 
     private void setEverythingFalse() {
         this.isCurse = false;
-        this.isCurse = false;
+        this.isEmpty = false;
         this.isPowerup = false;
     }
 }
