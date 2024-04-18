@@ -2,8 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package blitzstrike.model;
+package blitzstrike.model.effects;
 
+import blitzstrike.model.effects.powerups.BlastRange;
+import blitzstrike.model.effects.powerups.BombIncrease;
+import blitzstrike.model.Player;
+import blitzstrike.model.effects.curses.BombRangeCurse;
+import blitzstrike.model.effects.curses.ImmediateBombCurse;
+import blitzstrike.model.effects.curses.NoBombCurse;
+import blitzstrike.model.effects.curses.SpeedCurse;
 import java.util.Random;
 
 /**
@@ -42,7 +49,7 @@ public abstract class Effect {
     public void setIsPowerup() {
         this.isPowerup = true;
     }
-    
+
     public void setIsCurse() {
         this.isCurse = true;
     }
@@ -56,14 +63,12 @@ public abstract class Effect {
         switch (randomNumber) {
             case 0:
                 System.out.println("I dropped Bomb Increase randomly");
-                //effect = BombIncrease.getInstance();
                 effect = new BombIncrease();
                 effect.setEverythingFalse();
                 effect.setIsPowerup();
                 return effect;
             case 1:
                 System.out.println("I dropped Blast range randomly");
-                //effect = BlastRange.getInstance();
                 effect = new BlastRange();
                 effect.setEverythingFalse();
                 effect.setIsPowerup();
@@ -94,7 +99,6 @@ public abstract class Effect {
                 return effect;
             default:
                 System.out.println("I dropped Empty effect randomly");
-                //effect = EmptyEffect.getInstance();
                 effect = new EmptyEffect();
                 effect.setEverythingFalse();
                 effect.setIsEmpty();

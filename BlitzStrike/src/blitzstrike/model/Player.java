@@ -4,6 +4,8 @@
  */
 package blitzstrike.model;
 
+import blitzstrike.model.effects.Effect;
+import blitzstrike.model.effects.curses.Curse;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,12 +17,17 @@ import java.util.List;
  */
 public class Player {
 
+    public static final int STANDARD_BOMB_RANGE = 3;
+    public static final int STANDARD_BOMB_NUMBER = 1;
+    public static final double STANDARD_PLAYERS_SPEED = 1.0;
+    public static final int STANDARD_OBSTACLE_NUMBER = 0;
+
     private String name;
     private Position position;
     private boolean alive;
     private List<Bomb> bombs;
     private List<Position> obstacles;
-    private int blastRange;
+    private int bombRange;
     private double speed;
     private int maxBombNumber;
     private boolean isInvincible;
@@ -29,13 +36,14 @@ public class Player {
     private LocalTime ghostTimer;
     private boolean isDetonatorOn;
     private int maxNumberOfObstacles;
-    private LocalTime blastRangeDecreaseTimer;
-    private LocalTime speedDecreaseTimer;
+//    private LocalTime bombRangeCurseStartTime;
+    private LocalTime speedCurseStartTime;
     private boolean noBombCurse;
-    private LocalTime noBombCurseTimer;
+    private LocalTime noBombCurseStartTime;
     private boolean placeBombImmediatelyCurse;
-    private LocalTime immediateBombCurseTimer;
+    private LocalTime immediateBombCurseStartTime;
     private LocalTime deathTime;
+    private List<Curse> curses;
 
     private Cell[][] space;
 
@@ -43,14 +51,15 @@ public class Player {
         this.name = name;
         this.bombs = new ArrayList<>();
         this.obstacles = new ArrayList<>();
+        this.curses = new ArrayList<>();
         this.alive = true;
-        this.blastRange = 3;
-        this.speed = 1.0;
-        this.maxBombNumber = 1;
+        this.bombRange = STANDARD_BOMB_RANGE;
+        this.speed = STANDARD_PLAYERS_SPEED;
+        this.maxBombNumber = STANDARD_BOMB_NUMBER;
         this.isInvincible = false;
         this.isGhost = false;
         this.isDetonatorOn = false;
-        this.maxNumberOfObstacles = 0;
+        this.maxNumberOfObstacles = STANDARD_OBSTACLE_NUMBER;
         this.noBombCurse = false;
         this.placeBombImmediatelyCurse = false;
     }
@@ -76,10 +85,48 @@ public class Player {
     }
 
     public void placeBomb() {
-        if (isAlive() && this.getBombs().size() < maxBombNumber) {
+        if (isAlive() && this.getBombs().size() < maxBombNumber && !this.noBombCurse) {
             Bomb bomb = new Bomb(this.position, this, this.space);
             this.bombs.add(bomb);
             System.out.println("I've placed a bomb");
+        }
+    }
+
+    /**
+     * Sets bomb range to the standard value
+     */
+    public void resetBombRange() {
+        this.bombRange = STANDARD_BOMB_RANGE;
+    }
+
+    /**
+     * Adds curse to the ArrayList
+     *
+     * @param curse to be added to the ArrayList
+     */
+    public void addCurse(Curse curse) {
+        this.curses.add(curse);
+    }
+
+    /**
+     * Removes terminated curses from the ArrayList
+     */
+    public void removeTerminatedCurses() {
+        Iterator<Curse> cursesIterator = this.curses.iterator();
+        while (cursesIterator.hasNext()) {
+            Curse c = cursesIterator.next();
+            if (c.isTerminated()) {
+                cursesIterator.remove();
+            }
+        }
+    }
+
+    /**
+     * Removes the terminated effects from the ArrayList
+     */
+    public void handleCurseRemoval() {
+        for (Curse c : this.curses) {
+            c.terminateEffect(this);
         }
     }
 
@@ -141,13 +188,13 @@ public class Player {
 
         if (!this.space[newPosition.getY()][newPosition.getX()].isWalkable()) {
             return false;
-        } 
-        
+        }
+
         if (player2.getPosition().equals(newPosition)) {
             return false;
         }
-        
-        if (hasBombAtPosition(newPosition.getX(), newPosition.getY())){
+
+        if (hasBombAtPosition(newPosition.getX(), newPosition.getY())) {
             return false;
         }
         return true;
@@ -162,14 +209,14 @@ public class Player {
     }
 
     public LocalTime getImmediateBombCurseTimer() {
-        return this.immediateBombCurseTimer;
+        return this.immediateBombCurseStartTime;
     }
 
     public void setImmediateBombCurseTimer(LocalTime time) {
         if (time != null) {
-            this.immediateBombCurseTimer = time;
+            this.immediateBombCurseStartTime = time;
         } else {
-            this.immediateBombCurseTimer = null;
+            this.immediateBombCurseStartTime = null;
         }
     }
 
@@ -178,14 +225,14 @@ public class Player {
     }
 
     public LocalTime getNoBombCurseTimer() {
-        return this.noBombCurseTimer;
+        return this.noBombCurseStartTime;
     }
 
     public void setNoBombCurseTimer(LocalTime time) {
         if (time != null) {
-            this.immediateBombCurseTimer = time;
+            this.immediateBombCurseStartTime = time;
         } else {
-            this.immediateBombCurseTimer = null;
+            this.immediateBombCurseStartTime = null;
         }
     }
 
@@ -194,34 +241,29 @@ public class Player {
     }
 
     public void setBombRangeCurse(int value) {
-        this.blastRange = value;
+        this.bombRange = value;
     }
 
-    public LocalTime getBombRangeCurseTimer() {
-        return this.blastRangeDecreaseTimer;
-    }
-
-    public void setBombRangeCurseTimer(LocalTime time) {
-        if (time != null) {
-            this.immediateBombCurseTimer = time;
-        } else {
-            this.immediateBombCurseTimer = null;
-        }
-    }
-
+//    public LocalTime getBombRangeCurseTimer() {
+//        return this.bombRangeCurseStartTime;
+//    }
+//
+//    public void setBombRangeCurseStartTime() {
+//        this.bombRangeCurseStartTime = LocalTime.now();
+//    }
     public void setSpeedCurse(double value) {
         this.speed = value;
     }
 
     public LocalTime getSpeedCurseTimer() {
-        return this.speedDecreaseTimer;
+        return this.speedCurseStartTime;
     }
 
     public void setSpeedCurseTimer(LocalTime time) {
         if (time != null) {
-            this.immediateBombCurseTimer = time;
+            this.immediateBombCurseStartTime = time;
         } else {
-            this.immediateBombCurseTimer = null;
+            this.immediateBombCurseStartTime = null;
         }
     }
 
@@ -238,13 +280,13 @@ public class Player {
     }
 
     public int getBlastRange() {
-        return this.blastRange;
+        return this.bombRange;
     }
 
     public void setBlastRange(int newBlastRange) {
-        this.blastRange = newBlastRange;
+        this.bombRange = newBlastRange;
     }
-    
+
     public String getName() {
         return this.name;
     }
@@ -254,7 +296,7 @@ public class Player {
         this.bombs = new ArrayList<>();
         this.obstacles = new ArrayList<>();
         this.alive = true;
-        this.blastRange = 3;
+        this.bombRange = 3;
         this.speed = 1.0;
         this.maxBombNumber = 1;
         this.isInvincible = false;

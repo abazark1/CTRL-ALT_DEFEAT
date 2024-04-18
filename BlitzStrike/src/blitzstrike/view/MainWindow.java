@@ -301,6 +301,8 @@ public class MainWindow extends JFrame {
                         game.handleCollision();
                         game.handleDeathOfThePlayer();
                         game.handleBattleRoyale();
+                        game.handleCurseTermination();
+                        game.removeTerminatedCurses();
                     }
                 } else {
                     toggleStatsPanelVisibility(false);
