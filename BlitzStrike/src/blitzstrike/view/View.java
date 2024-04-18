@@ -104,6 +104,9 @@ public class View extends JPanel {
                             case MONSTER3:
                                 img = monster3;
                                 break;
+                            case MONSTER4:
+                                img = monster4;
+                                break;
                                
                         }
                         //img = mo {nster1;
