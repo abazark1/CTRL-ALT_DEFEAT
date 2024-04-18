@@ -21,7 +21,7 @@ import java.util.Iterator;
 public class Game {
 
     public static final int MAP_SIZE = 15;
-    public static final int INITIAL_BATTLE_ROYALE_DURATION = 180; // seconds. Needed for battle royale BUT NOT NOW!!!
+    public static final int INITIAL_BATTLE_ROYALE_DURATION = 20;
     public boolean endGame;
     public boolean endRound;
 
@@ -29,6 +29,7 @@ public class Game {
     private LocalTime startingTime;
 
     private int currentBattleRoyaleDuration;
+    private int currentBattleRoyaleTime;
     private int currentLayerOfBattleRoyale;
 
     private Player player1;
@@ -55,11 +56,16 @@ public class Game {
         this.isExplosionInProgress = false;
         this.endGame = false;
         this.endRound = false;
-        this.currentLayerOfBattleRoyale = 0;
+        this.currentLayerOfBattleRoyale = 1;
         this.currentBattleRoyaleDuration = INITIAL_BATTLE_ROYALE_DURATION;
+        this.currentBattleRoyaleTime = currentBattleRoyaleDuration;
     }
 
     public Game() {
+    }
+
+    public int getCurrentBattleRoyaleTime() {
+        return this.currentBattleRoyaleTime;
     }
 
     // basically, to refresh everything based on the file.
@@ -545,19 +551,20 @@ public class Game {
             for (int j = 0; j < MAP_SIZE; j++) {
                 if (isEdge(i, j)) {
                     crushByWalls(i, j);
-                    turnIntoWalls(i ,j);
+                    turnIntoWalls(i, j);
                 }
             }
         }
     }
-    
+
     /**
      * Unalives living entities in the cell at the given indices
+     *
      * @param i
-     * @param j 
+     * @param j
      */
-    private void crushByWalls(int i, int j){
-        if (this.player1.getPosition().getX() == i && this.player1.getPosition().getY() == j && this.player2.getPosition().getX() == i && this.player2.getPosition().getY() == j){
+    private void crushByWalls(int i, int j) {
+        if (this.player1.getPosition().getX() == i && this.player1.getPosition().getY() == j && this.player2.getPosition().getX() == i && this.player2.getPosition().getY() == j) {
             this.player1.die();
             this.player2.die();
         } else if (this.player1.getPosition().getX() == i && this.player1.getPosition().getY() == j) {
@@ -571,22 +578,26 @@ public class Game {
             }
         }
     }
-    
+
     /**
      * Turns the cell at the given indices into a wall
+     *
      * @param i
-     * @param j 
+     * @param j
      */
-    private void turnIntoWalls(int i, int j){
+    private void turnIntoWalls(int i, int j) {
         this.space[i][j] = new Wall(new Position(i, j));
     }
 
     /**
      * Decreases currentBattleRoyaleDuration by one
      */
-    public void decreaseBattleRoyaleTime(){
-        this.currentBattleRoyaleDuration--;
+    public void decreaseBattleRoyaleTime() {
+        if (this.currentBattleRoyaleTime > 0) {
+            this.currentBattleRoyaleTime--;
+        }
     }
+
     /**
      * Handles battle royale when the time comes
      */
@@ -595,7 +606,10 @@ public class Game {
             System.out.println("Shrink happens");
             shrinkMap();
             this.currentLayerOfBattleRoyale++;
-            this.currentBattleRoyaleDuration /= 2;
+            if (this.currentBattleRoyaleDuration > 5) {
+                this.currentBattleRoyaleDuration *= 0.75;
+                this.currentBattleRoyaleTime = this.currentBattleRoyaleDuration;
+            }
             this.startingTime = LocalTime.now();
         }
     }

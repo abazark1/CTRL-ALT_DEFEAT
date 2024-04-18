@@ -75,6 +75,8 @@ public class MainWindow extends JFrame {
     public KeyAdapter player1KeyListener;
     public KeyAdapter player2KeyListener;
 
+    private JLabel battleRoyalCountDownTime;
+
     public MainWindow() throws IOException {
 
         //public void loadMainWindow(){
@@ -293,13 +295,13 @@ public class MainWindow extends JFrame {
                     view.repaint();
                 }
                 if (game != null) {
-//                    if (!game.isGameOrRoundEnded()) {
-                    game.handleBombExplosion();
-                    game.removeDeadMonsters();
-                    game.handleCollision();
-                    game.handleDeathOfThePlayer();
-                    game.handleBattleRoyale();
-//                    }
+                    if (!game.isGameOrRoundEnded()) {
+                        game.handleBombExplosion();
+                        game.removeDeadMonsters();
+                        game.handleCollision();
+                        game.handleDeathOfThePlayer();
+                        game.handleBattleRoyale();
+                    }
                 } else {
                     toggleStatsPanelVisibility(false);
                 }
@@ -309,16 +311,16 @@ public class MainWindow extends JFrame {
     }
 
     /**
-     * The method to start count down for Battle Royale
+     * The method to start count down for Battle Royale, it decreases the time
+     * every second by one second
      */
     private void startBattleRoyaleTimer() {
         battleRoyaleTimer = new Timer(ONE_SECOND, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Move monsters
                 if (game != null && !game.isGameOrRoundEnded()) {
                     game.decreaseBattleRoyaleTime();
-
+                    battleRoyalCountDownTime.setText(Integer.toString(game.getCurrentBattleRoyaleTime()));
                 }
             }
         });
@@ -556,6 +558,10 @@ public class MainWindow extends JFrame {
                 statsPanel.add(createPlayerStatsPanel(player1, game.getPlayer1Score()));
                 statsPanel.add(createPlayerStatsPanel(player2, game.getPlayer2Score()));
                 statsPanel.add(new JLabel("Round: 1")); // to be changed for num games
+
+                battleRoyalCountDownTime = new JLabel(Integer.toString(game.getCurrentBattleRoyaleTime()));
+                statsPanel.add(battleRoyalCountDownTime);
+
                 frame.revalidate();
                 frame.repaint();
                 gameSetupDialog.setVisible(false);
