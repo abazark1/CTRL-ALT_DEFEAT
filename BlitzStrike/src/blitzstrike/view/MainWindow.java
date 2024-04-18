@@ -63,15 +63,19 @@ public class MainWindow extends JFrame {
     private JFrame frame;
 
     private Timer monsterMoveTimer;
-    private static final int MONSTER_MOVE = 1000;
+    private Timer battleRoyaleTimer;
+    private static final int ONE_SECOND = 1000;
 
     private Timer backgroundTimer;
     private static final int BACKGROUND = 300;
+
     final JPanel mMenu;
     public JPanel playerPanel;
     private JPanel statsPanel;
     public KeyAdapter player1KeyListener;
     public KeyAdapter player2KeyListener;
+
+    private JLabel battleRoyalCountDownTime;
 
     public MainWindow() throws IOException {
 
@@ -202,6 +206,7 @@ public class MainWindow extends JFrame {
 
         startMoveMonsterTimer();
         startBackgroundTimer();
+        startBattleRoyaleTimer();
 
         player1KeyListener = new KeyAdapter() {
             @Override
@@ -264,7 +269,7 @@ public class MainWindow extends JFrame {
 
     //for continuous movement of monsters
     private void startMoveMonsterTimer() {
-        monsterMoveTimer = new Timer(MONSTER_MOVE, new ActionListener() {
+        monsterMoveTimer = new Timer(ONE_SECOND, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Move monsters
@@ -290,18 +295,38 @@ public class MainWindow extends JFrame {
                     view.repaint();
                 }
                 if (game != null) {
-//                    if (!game.isGameOrRoundEnded()) {
+                    if (!game.isGameOrRoundEnded()) {
                         game.handleBombExplosion();
                         game.removeDeadMonsters();
                         game.handleCollision();
                         game.handleDeathOfThePlayer();
-//                    }
+                        game.handleBattleRoyale();
+                    }
                 } else {
                     toggleStatsPanelVisibility(false);
                 }
             }
         });
         backgroundTimer.start();
+    }
+
+    /**
+     * The method to start count down for Battle Royale, it decreases the time
+     * every second by one second
+     */
+    private void startBattleRoyaleTimer() {
+        battleRoyaleTimer = new Timer(ONE_SECOND, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (game != null && !game.isGameOrRoundEnded()) {
+                    game.decreaseBattleRoyaleTime();
+                    battleRoyalCountDownTime.setText(Integer.toString(game.getCurrentBattleRoyaleTime()));
+                }
+            }
+        });
+        battleRoyaleTimer.start();
+        // repainting if monster has caught up to a player, so player should be removed from the map
+        //view.repaint();
     }
 
     private JButton createButton(String label) {
@@ -338,15 +363,15 @@ public class MainWindow extends JFrame {
         game.pauseGame();
         monsterMoveTimer.stop();
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
-        
+
         if (result == JOptionPane.YES_OPTION) {
             game.saveGame(player1, player2, game.getPlayer1Score(), game.getPlayer2Score(), game.getRoundsToWin());
             returnToMainMenu();
-        }else{
+        } else {
             game.resumeGame();
             monsterMoveTimer.restart();
         }
-        
+
     }
 
     //function that removes playing view and returns mainWindow
@@ -484,8 +509,6 @@ public class MainWindow extends JFrame {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                /*
                 boolean allFieldsAreGood = true;
 
                 String player1Name = player1NameField.getText().trim();
@@ -521,12 +544,9 @@ public class MainWindow extends JFrame {
                     player2 = new Player(player2Name);
 
                     game = new Game(filePath, player1, player2, numGames);
-                 */
-                player1 = new Player(player1NameField.getText());
-                player2 = new Player(player2NameField.getText());
-                game = new Game("src/blitzstrike/res/map1.txt", player1, player2, 0);
-                game.loadMap();
-                game.setRoundsToWin(Integer.parseInt(numGamesField.getText()));
+
+                    game.loadMap();
+                
                 try {
                     view = new View(game);
                 } catch (IOException ex) {
@@ -538,12 +558,16 @@ public class MainWindow extends JFrame {
                 statsPanel.add(createPlayerStatsPanel(player1, game.getPlayer1Score()));
                 statsPanel.add(createPlayerStatsPanel(player2, game.getPlayer2Score()));
                 statsPanel.add(new JLabel("Round: 1")); // to be changed for num games
+
+                battleRoyalCountDownTime = new JLabel(Integer.toString(game.getCurrentBattleRoyaleTime()));
+                statsPanel.add(battleRoyalCountDownTime);
+
                 frame.revalidate();
                 frame.repaint();
                 gameSetupDialog.setVisible(false);
                 gameSetupDialog.dispose();
             }
-//            }
+            }
         }
         );
         mainPanel.add(startButton);

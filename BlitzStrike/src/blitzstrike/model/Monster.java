@@ -42,7 +42,7 @@ public class Monster {
         return this.alive;
     }
 
-    public void getExploded() {
+    public void die() {
         this.alive = false;
     }
 
