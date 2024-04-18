@@ -546,7 +546,7 @@ public class MainWindow extends JFrame {
                     game = new Game(filePath, player1, player2, numGames);
 
                     game.loadMap();
-                }
+                
                 try {
                     view = new View(game);
                 } catch (IOException ex) {
@@ -567,7 +567,7 @@ public class MainWindow extends JFrame {
                 gameSetupDialog.setVisible(false);
                 gameSetupDialog.dispose();
             }
-//            }
+            }
         }
         );
         mainPanel.add(startButton);
