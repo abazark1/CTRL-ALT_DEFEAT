@@ -138,7 +138,7 @@ public class Bomb {
 
         for (Monster monster : monsters) {
             if (monster.getPosition().equals(affectedPos)) {
-                monster.getExploded();
+                monster.die();
                 System.out.println("Monster died from the explosion at " + affectedPos.getX() + " " + affectedPos.getY());
             }
         }

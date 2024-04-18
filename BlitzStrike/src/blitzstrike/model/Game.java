@@ -13,7 +13,6 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Timer;
 
 /**
  *
@@ -22,12 +21,15 @@ import java.util.Timer;
 public class Game {
 
     public static final int MAP_SIZE = 15;
-    public static final int GAME_DURATION = 180; // seconds. Needed for battle royale BUT NOT NOW!!!
+    public static final int INITIAL_BATTLE_ROYALE_DURATION = 180; // seconds. Needed for battle royale BUT NOT NOW!!!
     public boolean endGame;
     public boolean endRound;
 
     private int roundsToWin;
     private LocalTime startingTime;
+
+    private int currentBattleRoyaleDuration;
+    private int currentLayerOfBattleRoyale;
 
     private Player player1;
     private Player player2;
@@ -53,6 +55,8 @@ public class Game {
         this.isExplosionInProgress = false;
         this.endGame = false;
         this.endRound = false;
+        this.currentLayerOfBattleRoyale = 0;
+        this.currentBattleRoyaleDuration = INITIAL_BATTLE_ROYALE_DURATION;
     }
 
     public Game() {
@@ -257,13 +261,11 @@ public class Game {
         for (Monster monster : monsters) {
             if (monster.getPosition().equals(player1.getPosition())) {
                 player1.die();
-                endRound = true;
                 System.out.println(player1.getName() + " has encountered a monster!");
             }
 
             if (player2 != null && monster.getPosition().equals(player2.getPosition())) {
                 player2.die();
-                endRound = true;
                 System.out.println(player2.getName() + " has encountered a monster!");
             }
         }
@@ -330,8 +332,8 @@ public class Game {
             }
             mapBuilder.append("\n");
         }
-        
-        try (FileWriter writer = new FileWriter("src/blitzstrike/res/"+ player1.getName() + "_" + player2.getName() + "_" + player1Score + "_" + player2Score + "_" + roundsToWin + ".txt")) {
+
+        try (FileWriter writer = new FileWriter("src/blitzstrike/res/" + player1.getName() + "_" + player2.getName() + "_" + player1Score + "_" + player2Score + "_" + roundsToWin + ".txt")) {
             writer.write("Player1Name:" + player1.getName() + "\n");
             writer.write("Player2Name:" + player2.getName() + "\n");
             writer.write("Player1Score:" + player1Score + "\n");
@@ -523,4 +525,79 @@ public class Game {
             }
         }
     }
+
+    /**
+     * Returns true if the cell at the given indices is on the edge
+     *
+     * @param i
+     * @param j
+     * @return
+     */
+    private boolean isEdge(int i, int j) {
+        return (i == currentLayerOfBattleRoyale || i == MAP_SIZE - 1 - currentLayerOfBattleRoyale || j == currentLayerOfBattleRoyale || j == MAP_SIZE - 1 - currentLayerOfBattleRoyale);
+    }
+
+    /**
+     * Shrinks the map
+     */
+    private void shrinkMap() {
+        for (int i = 0; i < MAP_SIZE; i++) {
+            for (int j = 0; j < MAP_SIZE; j++) {
+                if (isEdge(i, j)) {
+                    crushByWalls(i, j);
+                    turnIntoWalls(i ,j);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Unalives living entities in the cell at the given indices
+     * @param i
+     * @param j 
+     */
+    private void crushByWalls(int i, int j){
+        if (this.player1.getPosition().getX() == i && this.player1.getPosition().getY() == j && this.player2.getPosition().getX() == i && this.player2.getPosition().getY() == j){
+            this.player1.die();
+            this.player2.die();
+        } else if (this.player1.getPosition().getX() == i && this.player1.getPosition().getY() == j) {
+            this.player1.die();
+        } else if (this.player2.getPosition().getX() == i && this.player2.getPosition().getY() == j) {
+            this.player2.die();
+        }
+        for (Monster monster : monsters) {
+            if (monster.getPosition().getX() == i && monster.getPosition().getY() == j) {
+                monster.die();
+            }
+        }
+    }
+    
+    /**
+     * Turns the cell at the given indices into a wall
+     * @param i
+     * @param j 
+     */
+    private void turnIntoWalls(int i, int j){
+        this.space[i][j] = new Wall(new Position(i, j));
+    }
+
+    /**
+     * Decreases currentBattleRoyaleDuration by one
+     */
+    public void decreaseBattleRoyaleTime(){
+        this.currentBattleRoyaleDuration--;
+    }
+    /**
+     * Handles battle royale when the time comes
+     */
+    public void handleBattleRoyale() {
+        if (Duration.between(this.startingTime, LocalTime.now()).getSeconds() >= currentBattleRoyaleDuration) {
+            System.out.println("Shrink happens");
+            shrinkMap();
+            this.currentLayerOfBattleRoyale++;
+            this.currentBattleRoyaleDuration /= 2;
+            this.startingTime = LocalTime.now();
+        }
+    }
+
 }
