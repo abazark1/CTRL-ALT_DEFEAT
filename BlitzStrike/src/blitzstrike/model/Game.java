@@ -21,7 +21,7 @@ import java.util.Iterator;
 public class Game {
 
     public static final int MAP_SIZE = 15;
-    public static final int INITIAL_BATTLE_ROYALE_DURATION = 20;
+    public static final int INITIAL_BATTLE_ROYALE_DURATION = 180;
     public boolean endGame;
     public boolean endRound;
 
@@ -257,6 +257,22 @@ public class Game {
         }
         handleCollision();
     }
+    
+    /**
+     * Handles the curses of players
+     */
+    public void handleCurseTermination(){
+        this.player1.handleCurseRemoval();
+        this.player2.handleCurseRemoval();
+    }
+    
+    /**
+     * Removes terminated curses from the players
+     */
+    public void removeTerminatedCurses(){
+        this.player1.removeTerminatedCurses();
+        this.player2.removeTerminatedCurses();
+    }
 
     public boolean isGameTotallyFinished() {
         return this.player1Score >= this.roundsToWin || this.player2Score >= this.roundsToWin;
@@ -371,7 +387,6 @@ public class Game {
     }
 
     public void removeDeadMonsters() {
-        // ArrayList<Monster> player1BombsCopy = new ArrayList<>(this.player1.getBombs());
         Iterator<Monster> monsterIterator = this.monsters.iterator();
         while (monsterIterator.hasNext()) {
             Monster monster = monsterIterator.next();
@@ -586,7 +601,7 @@ public class Game {
      * @param j
      */
     private void turnIntoWalls(int i, int j) {
-        this.space[i][j] = new Wall(new Position(i, j));
+        this.space[i][j] = new Wall(new Position(j, i));
     }
 
     /**

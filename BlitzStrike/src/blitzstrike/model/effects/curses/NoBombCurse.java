@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package blitzstrike.model;
+package blitzstrike.model.effects.curses;
 
+import blitzstrike.model.Player;
 import java.time.LocalTime;
 
 /**
@@ -13,7 +14,7 @@ import java.time.LocalTime;
 
 public class NoBombCurse extends Curse {
     
-    NoBombCurse() {
+    public NoBombCurse() {
         super();
         this.duration = 3;
     }
@@ -24,7 +25,7 @@ public class NoBombCurse extends Curse {
     }
     
     @Override
-    public void removeEffect(Player p){
+    public void terminateEffect(Player p){
         long timePassed = LocalTime.now().toSecondOfDay() - p.getNoBombCurseTimer().toSecondOfDay();
         
         if(timePassed >= this.getDuration()){

@@ -37,7 +37,7 @@ public class Bomb {
     public void setExploding() {
         // System.out.println(Duration.between(this.startingTime, LocalTime.now()).getSeconds() >= BOMB_COUNTDOWN);
         this.exploding = Duration.between(this.startingTime, LocalTime.now()).getSeconds() >= BOMB_COUNTDOWN;
-        System.out.println("The bomb is set to exploding");
+//        System.out.println("The bomb is set to exploding");
     }
 
     public boolean getExploding() {
