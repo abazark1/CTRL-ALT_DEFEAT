@@ -37,4 +37,9 @@ public class ImmediateBombCurse extends Curse {
         p.setImmediateBombCurse(true);
         p.setImmediateBombCurseTimer(LocalTime.now());
     }
+
+    @Override
+    protected void resetEffect(Player p) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

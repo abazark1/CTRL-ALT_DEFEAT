@@ -85,7 +85,7 @@ public class Player {
     }
 
     public void placeBomb() {
-        if (isAlive() && this.getBombs().size() < maxBombNumber) {
+        if (isAlive() && this.getBombs().size() < maxBombNumber && !this.noBombCurse) {
             Bomb bomb = new Bomb(this.position, this, this.space);
             this.bombs.add(bomb);
             System.out.println("I've placed a bomb");
@@ -101,6 +101,7 @@ public class Player {
 
     /**
      * Adds curse to the ArrayList
+     *
      * @param curse to be added to the ArrayList
      */
     public void addCurse(Curse curse) {

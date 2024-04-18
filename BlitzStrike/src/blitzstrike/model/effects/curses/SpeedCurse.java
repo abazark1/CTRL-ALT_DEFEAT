@@ -37,4 +37,9 @@ public class SpeedCurse extends Curse {
         p.setSpeedCurse(0.8);
         p.setSpeedCurseTimer(LocalTime.now());
     }
+
+    @Override
+    protected void resetEffect(Player p) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

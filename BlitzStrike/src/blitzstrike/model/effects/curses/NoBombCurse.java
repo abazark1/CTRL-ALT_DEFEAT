@@ -11,31 +11,30 @@ import java.time.LocalTime;
  *
  * @author medina
  */
-
 public class NoBombCurse extends Curse {
     
     public NoBombCurse() {
         super();
-        this.duration = 3;
     }
     
     @Override
-    public void applyEffect(Player p){
+    public void applyEffect(Player p) {
         activateNoBombCurse(p);
+        p.addCurse(this);
+    }
+
+    /**
+     * Activates the no bomb curse
+     *
+     * @param p to whom the no bomb curse should get applied
+     */
+    private void activateNoBombCurse(Player p) {
+        p.setNoBombCurse(true);
+        this.startingTime = LocalTime.now();
     }
     
     @Override
-    public void terminateEffect(Player p){
-        long timePassed = LocalTime.now().toSecondOfDay() - p.getNoBombCurseTimer().toSecondOfDay();
-        
-        if(timePassed >= this.getDuration()){
-            p.setNoBombCurse(false);
-            p.setNoBombCurseTimer(null);
-        }
-    }
-    
-    private void activateNoBombCurse(Player p){
-        p.setNoBombCurse(true);
-        p.setNoBombCurseTimer(LocalTime.now());
+    protected void resetEffect(Player p) {
+        p.setNoBombCurse(false);
     }
 }
