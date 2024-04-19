@@ -81,6 +81,7 @@ public class View extends JPanel {
                             img = curse;
                         } else if (effect.isEmpty()) {
                             img = emptyeffect;
+//                            img = empty;
                         }
                     } else {
                         img = box;
