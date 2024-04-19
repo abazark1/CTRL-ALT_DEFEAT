@@ -5,6 +5,10 @@
  */
 package blitzstrike.model;
 
+import static blitzstrike.model.MonsterType.BASIC;
+import static blitzstrike.model.MonsterType.MONSTER2;
+import static blitzstrike.model.MonsterType.MONSTER3;
+import static blitzstrike.model.MonsterType.MONSTER4;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -358,7 +362,25 @@ public class Game {
                 } else if (player2.getPosition().equals(new Position(x, y))) {
                     mapBuilder.append('b');
                 } else if (isMonsterAtPosition(x, y)) {
-                    mapBuilder.append('1');
+                    Monster m = getMonster(x, y);
+                    //Char monsterString = '';
+                    if (m != null) {
+                        switch(m.monsterType){
+                            case BASIC:
+                                mapBuilder.append('1'); 
+                                break;
+                            case MONSTER2:
+                                mapBuilder.append('2'); 
+                                break;
+                            case MONSTER3:
+                                mapBuilder.append('3'); 
+                                break;
+                            case MONSTER4:
+                                mapBuilder.append('4'); 
+                                break;
+                        }
+                    }
+                    //mapBuilder.append('1');
                 } else {
                     mapBuilder.append(' ');
                 }
