@@ -124,8 +124,8 @@ public class Game {
         }
     }
 
-    public void continueGame() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("gamestate.txt"))) {
+    public void continueGame(String filepath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("Player1Name:")) {
@@ -331,7 +331,7 @@ public class Game {
             mapBuilder.append("\n");
         }
         
-        try (FileWriter writer = new FileWriter("src/blitzstrike/res/"+ player1.getName() + "_" + player2.getName() + "_" + player1Score + "_" + player2Score + "_" + roundsToWin + ".txt")) {
+        try (FileWriter writer = new FileWriter("src/blitzstrike/files/"+ player1.getName() + "_" + player2.getName() + "_" + player1Score + "_" + player2Score + "_" + roundsToWin + ".txt")) {
             writer.write("Player1Name:" + player1.getName() + "\n");
             writer.write("Player2Name:" + player2.getName() + "\n");
             writer.write("Player1Score:" + player1Score + "\n");

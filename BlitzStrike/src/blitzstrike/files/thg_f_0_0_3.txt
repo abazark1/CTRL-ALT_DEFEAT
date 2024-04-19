@@ -1,0 +1,20 @@
+Player1Name:thg
+Player2Name:f
+Player1Score:0
+Player2Score:0
+RoundsToWin:3
+xxxxxxxxxxxxxxx
+x         #  bx
+x#xxxxxxx     x
+x # 1         x
+x  #     x    x
+x   #         x
+x          x  x
+x     x       x
+x     #    x  x
+x     x   xx  x
+x 1x  x      1x
+x     x  x    x
+x     x    x# x
+xa          x#x
+xxxxxxxxxxxxxxx
