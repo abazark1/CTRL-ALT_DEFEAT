@@ -661,7 +661,7 @@ public class Game {
             System.out.println("Shrink happens");
             shrinkMap();
             this.currentLayerOfBattleRoyale++;
-            if (this.currentBattleRoyaleDuration > 5) {
+            if (this.currentBattleRoyaleDuration > 20) {
                 this.currentBattleRoyaleDuration *= 0.75;
                 this.currentBattleRoyaleTime = this.currentBattleRoyaleDuration;
             }

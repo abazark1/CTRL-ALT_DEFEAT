@@ -77,6 +77,8 @@ public class MainWindow extends JFrame {
     public KeyAdapter player2KeyListener;
     public String[] fileList;
     public String fileNamesString;
+    private JLabel player1ScoreLabel;
+    private JLabel player2ScoreLabel;
 
     private JLabel battleRoyalCountDownTime;
 
@@ -333,6 +335,11 @@ public class MainWindow extends JFrame {
                 if (game != null && !game.isGameOrRoundEnded()) {
                     game.decreaseBattleRoyaleTime();
                     battleRoyalCountDownTime.setText(Integer.toString(game.getCurrentBattleRoyaleTime()));
+                    if (game.getCurrentBattleRoyaleTime() <= 5) {
+                        battleRoyalCountDownTime.setForeground(Color.red);
+                    } else {
+                        battleRoyalCountDownTime.setForeground(Color.black);
+                    }
                 }
             }
         });
@@ -512,7 +519,6 @@ public class MainWindow extends JFrame {
 
                     player1 = new Player(player1NameFieldCont.getText());
                     player2 = new Player(player2NameFieldCont.getText());
-//                    game = new Game(filePathCont, player1, player2, 0);
                     game.continueGame(filePathCont);
                     game.setRoundsToWin(Integer.parseInt(numGamesField2.getText()));
                     try {
@@ -523,10 +529,12 @@ public class MainWindow extends JFrame {
                     frame.remove(mMenu);
                     frame.add(view);
                     statsPanel.removeAll();
-                    statsPanel.add(createPlayerStatsPanel(player1, game.getPlayer1Score()));
-                    statsPanel.add(createPlayerStatsPanel(player2, game.getPlayer2Score()));
-                    int sum = Integer.parseInt(pl1ScoreField.getText()) + Integer.parseInt(pl1ScoreField.getText());
-                    statsPanel.add(new JLabel("Round: " + sum)); // to be changed for num games
+                    player1ScoreLabel = new JLabel("Score: " + game.getPlayer1Score());
+                    player2ScoreLabel = new JLabel("Score: " + game.getPlayer2Score());
+                    statsPanel.add(createPlayerStatsPanel(player1, player1ScoreLabel));
+                    statsPanel.add(createPlayerStatsPanel(player2, player2ScoreLabel));
+                    JLabel roundLabel = new JLabel("Rounds of glorious domination required: " + game.getRoundsToWin());
+                    statsPanel.add(roundLabel);
                     frame.revalidate();
                     frame.repaint();
                     continueDialog.setVisible(false);
@@ -556,17 +564,8 @@ public class MainWindow extends JFrame {
     }
 
     public void showRoundEndPopup(String message) {
-//    SwingUtilities.invokeLater(() -> {
-//        JOptionPane.showMessageDialog(this, message, "Round Over", JOptionPane.INFORMATION_MESSAGE);
-//        Game g = new Game();
-//        try {
-//            g.loadNextRound();
-//        } catch (Exception ex) {
-//            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    });
-
         JDialog roundEndDialog = new JDialog(this, "Round Ended", true);
+        roundEndDialog.setUndecorated(true);
         roundEndDialog.setLayout(new FlowLayout());
         roundEndDialog.setSize(400, 200);
         roundEndDialog.setLocationRelativeTo(this); // Center on screen
@@ -579,6 +578,9 @@ public class MainWindow extends JFrame {
         JButton nextRoundButton = new JButton("Go to Next Round");
         nextRoundButton.addActionListener(e -> {
             try {
+                player1ScoreLabel.setText("Score: " + game.getPlayer1Score());
+                player2ScoreLabel.setText("Score: " + game.getPlayer2Score());
+                frame.repaint();
                 roundEndDialog.setVisible(false);
                 roundEndDialog.dispose(); // Close and dispose of the dialog
                 game.loadNextRound();
@@ -615,20 +617,14 @@ public class MainWindow extends JFrame {
         }
     }
 
-    private JPanel createPlayerStatsPanel(Player player, int score) {
+    private JPanel createPlayerStatsPanel(Player player, JLabel playerScoreLabel) {
         playerPanel = new JPanel();
         playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
-
-        // Add player picture (replace with your image loading logic)
-        ImageIcon playerImage = new ImageIcon("blitzstrike/res/monster2.png");
-        JLabel playerImageLabel = new JLabel(playerImage);
-        playerPanel.add(playerImageLabel);
 
         JLabel playerNameLabel = new JLabel(player.getName());
         playerNameLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
         playerPanel.add(playerNameLabel);
 
-        JLabel playerScoreLabel = new JLabel("Score: " + score);
         playerScoreLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
         playerPanel.add(playerScoreLabel);
 
@@ -730,9 +726,13 @@ public class MainWindow extends JFrame {
                     frame.remove(mMenu);
                     frame.add(view);
                     statsPanel.removeAll();
-                    statsPanel.add(createPlayerStatsPanel(player1, game.getPlayer1Score()));
-                    statsPanel.add(createPlayerStatsPanel(player2, game.getPlayer2Score()));
-                    statsPanel.add(new JLabel("Round: 1")); // to be changed for num games
+
+                    player1ScoreLabel = new JLabel("Score: " + game.getPlayer1Score());
+                    player2ScoreLabel = new JLabel("Score: " + game.getPlayer2Score());
+                    statsPanel.add(createPlayerStatsPanel(player1, player1ScoreLabel));
+                    statsPanel.add(createPlayerStatsPanel(player2, player2ScoreLabel));
+                    JLabel roundLabel = new JLabel("Rounds of glorious domination required: " + game.getRoundsToWin());
+                    statsPanel.add(roundLabel);
 
                     battleRoyalCountDownTime = new JLabel(Integer.toString(game.getCurrentBattleRoyaleTime()));
                     statsPanel.add(battleRoyalCountDownTime);
