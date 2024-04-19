@@ -308,11 +308,10 @@ public class MainWindow extends JFrame {
                         game.handleBattleRoyale();
                         game.handleCurseTermination();
                         game.removeTerminatedCurses();
-                    }
-                    else if(game.endRound){
+                        game.handleImmediateBombCurseForBothPlayers();
+                    } else if (game.endRound) {
                         showRoundEndPopup("Round is overr!");
-                    }
-                    else if(game.endGame){
+                    } else if (game.endGame) {
                         showGameEndPopup();
                     }
                 } else {
@@ -396,7 +395,8 @@ public class MainWindow extends JFrame {
         frame.revalidate();
         frame.repaint();
     }
-    public void readFileNames(){
+
+    public void readFileNames() {
         String directoryPath = "src/blitzstrike/files/";
         File directory = new File(directoryPath);
         fileList = directory.list();
@@ -406,7 +406,7 @@ public class MainWindow extends JFrame {
             for (String fileName : fileList) {
                 System.out.println(fileName);
                 stringBuilder.append(fileName).append("\n");
-                
+
             }
         } else {
             System.out.println("The directory is empty or does not exist.");
@@ -414,16 +414,17 @@ public class MainWindow extends JFrame {
         }
         fileNamesString = stringBuilder.toString();
     }
-    public void showContinueDialog(){
+
+    public void showContinueDialog() {
         JDialog continueDialog = new JDialog(this, "Continue", true);
         JPanel mainPanel2 = new JPanel();
         mainPanel2.setLayout(new BoxLayout(mainPanel2, BoxLayout.Y_AXIS));
-        
+
         JLabel gamesLabel = new JLabel("Available games:");
         mainPanel2.add(gamesLabel);
         JLabel nameLabel = new JLabel(fileNamesString);
         mainPanel2.add(nameLabel);
-        
+
         JLabel nameLabelPl1 = new JLabel("Enter 1st players' name:");
         mainPanel2.add(nameLabelPl1);
 
@@ -431,7 +432,7 @@ public class MainWindow extends JFrame {
         mainPanel2.add(player1NameFieldCont);
 
         mainPanel2.add(Box.createHorizontalStrut(10));
-        
+
         JLabel nameLabelPl2 = new JLabel("Enter 2nd players' name:");
         mainPanel2.add(nameLabelPl2);
 
@@ -439,7 +440,7 @@ public class MainWindow extends JFrame {
         mainPanel2.add(player2NameFieldCont);
 
         mainPanel2.add(Box.createHorizontalStrut(10));
-        
+
         JLabel pl1ScoreLabel = new JLabel("Enter 1st player's score:");
         mainPanel2.add(pl1ScoreLabel);
 
@@ -447,7 +448,7 @@ public class MainWindow extends JFrame {
         mainPanel2.add(pl1ScoreField);
 
         mainPanel2.add(Box.createHorizontalStrut(10));
-        
+
         JLabel pl2ScoreLabel = new JLabel("Enter 2nd player's score:");
         mainPanel2.add(pl2ScoreLabel);
 
@@ -455,7 +456,7 @@ public class MainWindow extends JFrame {
         mainPanel2.add(pl2ScoreField);
 
         mainPanel2.add(Box.createHorizontalStrut(10));
-        
+
         JLabel numGamesLabel2 = new JLabel("Enter number of games to win:");
         mainPanel2.add(numGamesLabel2);
 
@@ -463,18 +464,17 @@ public class MainWindow extends JFrame {
         mainPanel2.add(numGamesField2);
 
         mainPanel2.add(Box.createHorizontalStrut(10));
-        
+
         JButton startButton2 = new JButton("START");
         startButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                
                 boolean allFieldsAreGoodCont = true;
 
                 String player1NameCont = player1NameFieldCont.getText().trim();
                 String player2NameCont = player2NameFieldCont.getText().trim();
-                
+
                 Integer pl1ScoreCont = Integer.valueOf(pl1ScoreField.getText());
                 Integer pl2ScoreCont = Integer.valueOf(pl2ScoreField.getText());
                 int numGamesCont = Integer.parseInt(numGamesField2.getText());
@@ -483,8 +483,8 @@ public class MainWindow extends JFrame {
                     JOptionPane.showMessageDialog(continueDialog, "Enter both players' names!", "Missing Information", JOptionPane.ERROR_MESSAGE);
                     allFieldsAreGoodCont = false;
                 }
-                
-                if (pl1ScoreCont==null || pl2ScoreCont==null) {
+
+                if (pl1ScoreCont == null || pl2ScoreCont == null) {
                     JOptionPane.showMessageDialog(continueDialog, "Enter both players' scores!", "Missing Information", JOptionPane.ERROR_MESSAGE);
                     allFieldsAreGoodCont = false;
                 }
@@ -502,14 +502,14 @@ public class MainWindow extends JFrame {
                 }
 
                 if (allFieldsAreGoodCont) {
-                    
-                    String filePathCont = "src/blitzstrike/files/" + player1NameCont+"_"+player2NameCont+"_"+ pl1ScoreCont+"_"+pl2ScoreCont+"_"+ numGamesCont + ".txt";
+
+                    String filePathCont = "src/blitzstrike/files/" + player1NameCont + "_" + player2NameCont + "_" + pl1ScoreCont + "_" + pl2ScoreCont + "_" + numGamesCont + ".txt";
 
                     player1 = new Player(player1NameCont);
                     player2 = new Player(player2NameCont);
 
                     game = new Game(filePathCont, player1, player2, numGamesCont);
-                
+
                     player1 = new Player(player1NameFieldCont.getText());
                     player2 = new Player(player2NameFieldCont.getText());
 //                    game = new Game(filePathCont, player1, player2, 0);
@@ -525,14 +525,14 @@ public class MainWindow extends JFrame {
                     statsPanel.removeAll();
                     statsPanel.add(createPlayerStatsPanel(player1, game.getPlayer1Score()));
                     statsPanel.add(createPlayerStatsPanel(player2, game.getPlayer2Score()));
-                    int sum = Integer.parseInt(pl1ScoreField.getText())+ Integer.parseInt(pl1ScoreField.getText());
-                    statsPanel.add(new JLabel("Round: " + sum )); // to be changed for num games
+                    int sum = Integer.parseInt(pl1ScoreField.getText()) + Integer.parseInt(pl1ScoreField.getText());
+                    statsPanel.add(new JLabel("Round: " + sum)); // to be changed for num games
                     frame.revalidate();
                     frame.repaint();
                     continueDialog.setVisible(false);
                     continueDialog.dispose();
                 }
-        }
+            }
         });
         mainPanel2.add(startButton2);
 
@@ -552,8 +552,9 @@ public class MainWindow extends JFrame {
         monsterMoveTimer.restart();
         frame.addKeyListener(player1KeyListener);
         frame.addKeyListener(player2KeyListener);
-    
+
     }
+
     public void showRoundEndPopup(String message) {
 //    SwingUtilities.invokeLater(() -> {
 //        JOptionPane.showMessageDialog(this, message, "Round Over", JOptionPane.INFORMATION_MESSAGE);
@@ -591,29 +592,29 @@ public class MainWindow extends JFrame {
 
     }
 
-
     private void showGameEndPopup() {
-    if (game.endGame) {
-        JDialog gameEndDialog = new JDialog(this, "Game Ended", true);
-        gameEndDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); // Set the default close operation
-        gameEndDialog.setLayout(new FlowLayout());
-        gameEndDialog.setLocationRelativeTo(this); // Center on screen
+        if (game.endGame) {
+            JDialog gameEndDialog = new JDialog(this, "Game Ended", true);
+            gameEndDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); // Set the default close operation
+            gameEndDialog.setLayout(new FlowLayout());
+            gameEndDialog.setLocationRelativeTo(this); // Center on screen
 
-        JLabel messageLabel = new JLabel("<html><center>Congrats " + game.getWinner().getName() + "</center></html>");
-        gameEndDialog.add(messageLabel);
+            JLabel messageLabel = new JLabel("<html><center>Congrats " + game.getWinner().getName() + "</center></html>");
+            gameEndDialog.add(messageLabel);
 
-        JButton returnButton = new JButton("Return to main menu");
-        returnButton.addActionListener(e -> {
-            gameEndDialog.dispose(); // Close and dispose of the dialog
-            returnToMainMenu();
-            game=null;
-        });
-        gameEndDialog.add(returnButton);
+            JButton returnButton = new JButton("Return to main menu");
+            returnButton.addActionListener(e -> {
+                gameEndDialog.dispose(); // Close and dispose of the dialog
+                returnToMainMenu();
+                game = null;
+            });
+            gameEndDialog.add(returnButton);
 
-        gameEndDialog.pack(); // Pack the dialog instead of setting size
-        gameEndDialog.setVisible(true);
+            gameEndDialog.pack(); // Pack the dialog instead of setting size
+            gameEndDialog.setVisible(true);
+        }
     }
-}
+
     private JPanel createPlayerStatsPanel(Player player, int score) {
         playerPanel = new JPanel();
         playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
@@ -720,27 +721,27 @@ public class MainWindow extends JFrame {
                     game = new Game(filePath, player1, player2, numGames);
 
                     game.loadMap();
-                
-                try {
-                    view = new View(game);
-                } catch (IOException ex) {
-                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+
+                    try {
+                        view = new View(game);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    frame.remove(mMenu);
+                    frame.add(view);
+                    statsPanel.removeAll();
+                    statsPanel.add(createPlayerStatsPanel(player1, game.getPlayer1Score()));
+                    statsPanel.add(createPlayerStatsPanel(player2, game.getPlayer2Score()));
+                    statsPanel.add(new JLabel("Round: 1")); // to be changed for num games
+
+                    battleRoyalCountDownTime = new JLabel(Integer.toString(game.getCurrentBattleRoyaleTime()));
+                    statsPanel.add(battleRoyalCountDownTime);
+
+                    frame.revalidate();
+                    frame.repaint();
+                    gameSetupDialog.setVisible(false);
+                    gameSetupDialog.dispose();
                 }
-                frame.remove(mMenu);
-                frame.add(view);
-                statsPanel.removeAll();
-                statsPanel.add(createPlayerStatsPanel(player1, game.getPlayer1Score()));
-                statsPanel.add(createPlayerStatsPanel(player2, game.getPlayer2Score()));
-                statsPanel.add(new JLabel("Round: 1")); // to be changed for num games
-
-                battleRoyalCountDownTime = new JLabel(Integer.toString(game.getCurrentBattleRoyaleTime()));
-                statsPanel.add(battleRoyalCountDownTime);
-
-                frame.revalidate();
-                frame.repaint();
-                gameSetupDialog.setVisible(false);
-                gameSetupDialog.dispose();
-            }
             }
         }
         );

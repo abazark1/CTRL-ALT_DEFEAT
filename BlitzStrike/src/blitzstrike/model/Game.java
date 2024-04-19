@@ -272,19 +272,19 @@ public class Game {
         }
         handleCollision();
     }
-    
+
     /**
      * Handles the curses of players
      */
-    public void handleCurseTermination(){
+    public void handleCurseTermination() {
         this.player1.handleCurseRemoval();
         this.player2.handleCurseRemoval();
     }
-    
+
     /**
      * Removes terminated curses from the players
      */
-    public void removeTerminatedCurses(){
+    public void removeTerminatedCurses() {
         this.player1.removeTerminatedCurses();
         this.player2.removeTerminatedCurses();
     }
@@ -365,18 +365,18 @@ public class Game {
                     Monster m = getMonster(x, y);
                     //Char monsterString = '';
                     if (m != null) {
-                        switch(m.monsterType){
+                        switch (m.monsterType) {
                             case BASIC:
-                                mapBuilder.append('1'); 
+                                mapBuilder.append('1');
                                 break;
                             case MONSTER2:
-                                mapBuilder.append('2'); 
+                                mapBuilder.append('2');
                                 break;
                             case MONSTER3:
-                                mapBuilder.append('3'); 
+                                mapBuilder.append('3');
                                 break;
                             case MONSTER4:
-                                mapBuilder.append('4'); 
+                                mapBuilder.append('4');
                                 break;
                         }
                     }
@@ -387,8 +387,8 @@ public class Game {
             }
             mapBuilder.append("\n");
         }
-        
-        try (FileWriter writer = new FileWriter("src/blitzstrike/files/"+ player1.getName() + "_" + player2.getName() + "_" + player1Score + "_" + player2Score + "_" + roundsToWin + ".txt")) {
+
+        try (FileWriter writer = new FileWriter("src/blitzstrike/files/" + player1.getName() + "_" + player2.getName() + "_" + player1Score + "_" + player2Score + "_" + roundsToWin + ".txt")) {
             writer.write("Player1Name:" + player1.getName() + "\n");
             writer.write("Player2Name:" + player2.getName() + "\n");
             writer.write("Player1Score:" + player1Score + "\n");
@@ -487,7 +487,7 @@ public class Game {
 
     public Bomb getBomb(int x, int y) {
         if (this.player1.hasBombAtPosition(x, y)) {
-           return  this.player1.getBomb(x, y);
+            return this.player1.getBomb(x, y);
         } else if (this.player2.hasBombAtPosition(x, y)) {
             return this.player2.getBomb(x, y);
         }
@@ -552,6 +552,14 @@ public class Game {
             this.endRound = false;
             loadNextRound();
         }
+    }
+
+    /**
+     * Calls placeBombFromImmediateBombCurse for both players
+     */
+    public void handleImmediateBombCurseForBothPlayers() {
+        this.player1.placeBombFromImmediateBombCurse();
+        this.player2.placeBombFromImmediateBombCurse();
     }
 
     // Main Window must check endRound and endGame and based on them call JDialog.

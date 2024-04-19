@@ -15,31 +15,29 @@ public class ImmediateBombCurse extends Curse {
     
     public ImmediateBombCurse() {
         super();
-        this.duration = 3;
     }
     
     @Override
     public void applyEffect(Player p){
         activateImmediateBomb(p);
+        p.addCurse(this);
     }
     
-    @Override
-    public void terminateEffect(Player p){
-        long timePassed = LocalTime.now().toSecondOfDay() - p.getImmediateBombCurseTimer().toSecondOfDay();
-        
-        if(timePassed >= this.getDuration()){
-            p.setImmediateBombCurse(false);
-            p.setImmediateBombCurseTimer(null);
-        }
-    }
-    
+    /**
+     * Activates the immediate bomb curse to the given player
+     * @param p given player
+     */
     private void activateImmediateBomb(Player p){
         p.setImmediateBombCurse(true);
-        p.setImmediateBombCurseTimer(LocalTime.now());
+        this.startingTime = LocalTime.now();
     }
 
+    /**
+     * Calls the reset method of the given player to reset the effect
+     * @param p given player
+     */
     @Override
     protected void resetEffect(Player p) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        p.setImmediateBombCurse(false);
     }
 }
