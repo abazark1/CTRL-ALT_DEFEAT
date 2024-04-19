@@ -7,37 +7,43 @@ package blitzstrike.model.effects.curses;
 import blitzstrike.model.Player;
 import java.time.LocalTime;
 
-/**
- *
- * @author medina
- */
 public class ImmediateBombCurse extends Curse {
-    
+
+    /**
+     * Public constructor
+     */
     public ImmediateBombCurse() {
         super();
     }
-    
-    @Override
-    public void applyEffect(Player p){
-        activateImmediateBomb(p);
-        p.addCurse(this);
-    }
-    
+
     /**
-     * Activates the immediate bomb curse to the given player
-     * @param p given player
+     * Applies immediate bomb curse to the given player
+     *
+     * @param player is the given player
      */
-    private void activateImmediateBomb(Player p){
-        p.setImmediateBombCurse(true);
-        this.startingTime = LocalTime.now();
+    @Override
+    public void applyEffect(Player player) {
+        activateImmediateBomb(player);
+        player.addCurse(this);
     }
 
     /**
-     * Calls the reset method of the given player to reset the effect
-     * @param p given player
+     * Resets the effect from the immediate bomb curse to the given player
+     *
+     * @param player given player
      */
     @Override
-    protected void resetEffect(Player p) {
-        p.setImmediateBombCurse(false);
+    protected void resetEffect(Player player) {
+        player.setImmediateBombCurse(false);
+    }
+
+    /**
+     * Activates the immediate bomb curse to the given player
+     *
+     * @param player is the given player
+     */
+    private void activateImmediateBomb(Player player) {
+        player.setImmediateBombCurse(true);
+        this.startingTime = LocalTime.now();
     }
 }
