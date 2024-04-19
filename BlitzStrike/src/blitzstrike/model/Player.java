@@ -93,6 +93,16 @@ public class Player {
     }
 
     /**
+     * Places the bomb whenever the bombs are available and if the player is
+     * still alive, if the immediate bomb curse is applied
+     */
+    public void placeBombFromImmediateBombCurse() {
+        if (this.placeBombImmediatelyCurse) {
+            placeBomb();
+        }
+    }
+
+    /**
      * Sets bomb range to the standard value
      */
     public void resetBombRange() {
