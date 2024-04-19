@@ -13,7 +13,6 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Timer;
 
 /**
  *
@@ -22,12 +21,16 @@ import java.util.Timer;
 public class Game {
 
     public static final int MAP_SIZE = 15;
-    public static final int GAME_DURATION = 180; // seconds. Needed for battle royale BUT NOT NOW!!!
+    public static final int INITIAL_BATTLE_ROYALE_DURATION = 180;
     public boolean endGame;
     public boolean endRound;
 
     private int roundsToWin;
     private LocalTime startingTime;
+
+    private int currentBattleRoyaleDuration;
+    private int currentBattleRoyaleTime;
+    private int currentLayerOfBattleRoyale;
 
     private Player player1;
     private Player player2;
@@ -53,9 +56,16 @@ public class Game {
         this.isExplosionInProgress = false;
         this.endGame = false;
         this.endRound = false;
+        this.currentLayerOfBattleRoyale = 1;
+        this.currentBattleRoyaleDuration = INITIAL_BATTLE_ROYALE_DURATION;
+        this.currentBattleRoyaleTime = currentBattleRoyaleDuration;
     }
 
     public Game() {
+    }
+
+    public int getCurrentBattleRoyaleTime() {
+        return this.currentBattleRoyaleTime;
     }
 
     // basically, to refresh everything based on the file.
@@ -113,6 +123,12 @@ public class Game {
                         space[row][column] = cell;
                         Monster monster3 = new Monster3(position, this.space, this, player1, player2);
                         this.monsters.add(monster3);
+                        break;
+                    case '4':
+                        cell = new Empty(position);
+                        space[row][column] = cell;
+                        Monster monster4 = new Monster4(position, this.space, this, player1, player2);
+                        this.monsters.add(monster4);
                         break;
                     default:
                         cell = new Empty(position);
@@ -181,6 +197,11 @@ public class Game {
                             monsters.add(monster3);
                             space[y][x] = new Empty(position);
                             break;
+                        case '4':
+                            Monster monster4 = new Monster4(position, space, this, player1, player2);
+                            monsters.add(monster4);
+                            space[y][x] = new Empty(position);
+                            break;
                         case ' ':
                             space[y][x] = new Empty(position);
                             break;
@@ -247,6 +268,22 @@ public class Game {
         }
         handleCollision();
     }
+    
+    /**
+     * Handles the curses of players
+     */
+    public void handleCurseTermination(){
+        this.player1.handleCurseRemoval();
+        this.player2.handleCurseRemoval();
+    }
+    
+    /**
+     * Removes terminated curses from the players
+     */
+    public void removeTerminatedCurses(){
+        this.player1.removeTerminatedCurses();
+        this.player2.removeTerminatedCurses();
+    }
 
     public boolean isGameTotallyFinished() {
         return this.player1Score >= this.roundsToWin || this.player2Score >= this.roundsToWin;
@@ -257,13 +294,11 @@ public class Game {
         for (Monster monster : monsters) {
             if (monster.getPosition().equals(player1.getPosition())) {
                 player1.die();
-                endRound = true;
                 System.out.println(player1.getName() + " has encountered a monster!");
             }
 
             if (player2 != null && monster.getPosition().equals(player2.getPosition())) {
                 player2.die();
-                endRound = true;
                 System.out.println(player2.getName() + " has encountered a monster!");
             }
         }
@@ -363,7 +398,6 @@ public class Game {
     }
 
     public void removeDeadMonsters() {
-        // ArrayList<Monster> player1BombsCopy = new ArrayList<>(this.player1.getBombs());
         Iterator<Monster> monsterIterator = this.monsters.iterator();
         while (monsterIterator.hasNext()) {
             Monster monster = monsterIterator.next();
@@ -523,4 +557,87 @@ public class Game {
             }
         }
     }
+
+    /**
+     * Returns true if the cell at the given indices is on the edge
+     *
+     * @param i
+     * @param j
+     * @return
+     */
+    private boolean isEdge(int i, int j) {
+        return (i == currentLayerOfBattleRoyale || i == MAP_SIZE - 1 - currentLayerOfBattleRoyale || j == currentLayerOfBattleRoyale || j == MAP_SIZE - 1 - currentLayerOfBattleRoyale);
+    }
+
+    /**
+     * Shrinks the map
+     */
+    private void shrinkMap() {
+        for (int i = 0; i < MAP_SIZE; i++) {
+            for (int j = 0; j < MAP_SIZE; j++) {
+                if (isEdge(i, j)) {
+                    crushByWalls(i, j);
+                    turnIntoWalls(i, j);
+                }
+            }
+        }
+    }
+
+    /**
+     * Unalives living entities in the cell at the given indices
+     *
+     * @param i
+     * @param j
+     */
+    private void crushByWalls(int i, int j) {
+        if (this.player1.getPosition().getX() == i && this.player1.getPosition().getY() == j && this.player2.getPosition().getX() == i && this.player2.getPosition().getY() == j) {
+            this.player1.die();
+            this.player2.die();
+        } else if (this.player1.getPosition().getX() == i && this.player1.getPosition().getY() == j) {
+            this.player1.die();
+        } else if (this.player2.getPosition().getX() == i && this.player2.getPosition().getY() == j) {
+            this.player2.die();
+        }
+        for (Monster monster : monsters) {
+            if (monster.getPosition().getX() == i && monster.getPosition().getY() == j) {
+                monster.die();
+            }
+        }
+    }
+
+    /**
+     * Turns the cell at the given indices into a wall
+     *
+     * @param i
+     * @param j
+     */
+    private void turnIntoWalls(int i, int j) {
+        this.space[i][j] = new Wall(new Position(j, i));
+    }
+
+    /**
+     * Decreases currentBattleRoyaleDuration by one
+     */
+    public void decreaseBattleRoyaleTime() {
+        if (this.currentBattleRoyaleTime > 0) {
+            this.currentBattleRoyaleTime--;
+        }
+    }
+
+    /**
+     * Handles battle royale when the time comes
+     */
+    public void handleBattleRoyale() {
+        if (Duration.between(this.startingTime, LocalTime.now()).getSeconds() >= currentBattleRoyaleDuration) {
+            System.out.println("Shrink happens");
+            shrinkMap();
+            this.currentLayerOfBattleRoyale++;
+            if (this.currentBattleRoyaleDuration > 5) {
+                this.currentBattleRoyaleDuration *= 0.75;
+                this.currentBattleRoyaleTime = this.currentBattleRoyaleDuration;
+            }
+            this.startingTime = LocalTime.now();
+        }
+    }
+
 }

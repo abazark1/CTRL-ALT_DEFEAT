@@ -20,13 +20,13 @@ import res.ResourceLoader;
 import java.awt.image.BufferedImage;
 import blitzstrike.model.Cell;
 import blitzstrike.model.Game;
-import blitzstrike.model.Effect;
+import blitzstrike.model.effects.Effect;
 import blitzstrike.model.Monster;
 import blitzstrike.model.Player;
 import blitzstrike.model.Box;
-import blitzstrike.model.PowerUp;
-import blitzstrike.model.Curse;
-import blitzstrike.model.EmptyEffect;
+import blitzstrike.model.effects.powerups.PowerUp;
+import blitzstrike.model.effects.curses.Curse;
+import blitzstrike.model.effects.EmptyEffect;
 import blitzstrike.model.Wall;
 import blitzstrike.model.Empty;
 import blitzstrike.model.Bomb;
@@ -103,6 +103,9 @@ public class View extends JPanel {
                                 break;
                             case MONSTER3:
                                 img = monster3;
+                                break;
+                            case MONSTER4:
+                                img = monster4;
                                 break;
                                
                         }

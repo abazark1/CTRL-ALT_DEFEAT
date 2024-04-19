@@ -2,20 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package blitzstrike.model;
+package blitzstrike.model.effects.powerups;
+
+import blitzstrike.model.Player;
 
 /**
  *
  * @author medina
  */
 //advanced power up
-public class RollerSkate extends PowerUp {
+public class Ghost extends PowerUp {
 
-    private double bonusToSpeed;
+    private int duration;
 
-    private RollerSkate() {
+    private Ghost() {
         super();
-        this.bonusToSpeed = 3;
+        this.duration = 3;
     }
 
     @Override
@@ -23,7 +25,12 @@ public class RollerSkate extends PowerUp {
 
     }
 
-    private void increaseSpeed(Player player) {
+    @Override
+    public void removeEffect(Player player) {
+
+    }
+
+    private void makeGhost(Player player) {
 
     }
 }

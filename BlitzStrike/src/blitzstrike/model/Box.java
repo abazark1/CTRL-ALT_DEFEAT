@@ -4,6 +4,8 @@
  */
 package blitzstrike.model;
 
+import blitzstrike.model.effects.Effect;
+
 /**
  *
  * @author medina

@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package blitzstrike.model;
+package blitzstrike.model.effects.curses;
 
+import blitzstrike.model.Player;
 import java.time.LocalTime;
 
 /**
@@ -12,7 +13,7 @@ import java.time.LocalTime;
  */
 public class SpeedCurse extends Curse {
 
-    SpeedCurse() {
+    public SpeedCurse() {
         super();
         this.duration = 3;
     }
@@ -23,7 +24,7 @@ public class SpeedCurse extends Curse {
     }
 
     @Override
-    public void removeEffect(Player p) {
+    public void terminateEffect(Player p) {
         long timePassed = LocalTime.now().toSecondOfDay() - p.getSpeedCurseTimer().toSecondOfDay();
 
         if (timePassed >= this.getDuration()) {
@@ -35,5 +36,10 @@ public class SpeedCurse extends Curse {
     private void activateSpeedCurse(Player p) {
         p.setSpeedCurse(0.8);
         p.setSpeedCurseTimer(LocalTime.now());
+    }
+
+    @Override
+    protected void resetEffect(Player p) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

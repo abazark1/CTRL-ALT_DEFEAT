@@ -2,7 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package blitzstrike.model;
+package blitzstrike.model.effects.powerups;
+
+import blitzstrike.model.Player;
 
 /**
  *
@@ -11,7 +13,13 @@ package blitzstrike.model;
 
 //advanced power up
 
-public class Detonator extends PowerUp{
+public class Obstacle extends PowerUp{
+    private int numberOfObstacles;
+    
+    private Obstacle(){
+        super();
+        this.numberOfObstacles = 3;
+    }
     
     @Override
     public void applyEffect(Player player){
@@ -23,7 +31,7 @@ public class Detonator extends PowerUp{
         
     }
     
-    private void activateDetonator(Player player){
+    private void increaseObstacles(Player player){
         
     }
 }
