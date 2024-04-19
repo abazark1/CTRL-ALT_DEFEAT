@@ -62,32 +62,20 @@ public abstract class Effect {
         Effect effect;
         switch (randomNumber) {
             case 0:
-//                System.out.println("I dropped Bomb Increase randomly");
-//                effect = new BombIncrease();
-//                effect.setEverythingFalse();
-//                effect.setIsPowerup();
-                System.out.println("I dropped Immediate Bomb CURSE");
-                effect = new ImmediateBombCurse();
+                System.out.println("I dropped Bomb Increase randomly");
+                effect = new BombIncrease();
                 effect.setEverythingFalse();
-                effect.setIsCurse();
+                effect.setIsPowerup();
                 return effect;
             case 1:
-//                System.out.println("I dropped Blast range randomly");
-//                effect = new BlastRange();
-//                effect.setEverythingFalse();
-//                effect.setIsPowerup();
-                System.out.println("I dropped Immediate Bomb CURSE");
-                effect = new ImmediateBombCurse();
+                System.out.println("I dropped Blast range randomly");
+                effect = new BlastRange();
                 effect.setEverythingFalse();
-                effect.setIsCurse();
+                effect.setIsPowerup();
                 return effect;
             case 2:
-//                System.out.println("I dropped Bomb Range CURSE");
-//                effect = new BombRangeCurse();
-//                effect.setEverythingFalse();
-//                effect.setIsCurse();
-                System.out.println("I dropped Immediate Bomb CURSE");
-                effect = new ImmediateBombCurse();
+                System.out.println("I dropped Bomb Range CURSE");
+                effect = new BombRangeCurse();
                 effect.setEverythingFalse();
                 effect.setIsCurse();
                 return effect;
@@ -98,34 +86,22 @@ public abstract class Effect {
                 effect.setIsCurse();
                 return effect;
             case 4:
-//                System.out.println("I dropped No Bomb CURSE");
-//                effect = new NoBombCurse();
-//                effect.setEverythingFalse();
-//                effect.setIsCurse();
-                System.out.println("I dropped Immediate Bomb CURSE");
-                effect = new ImmediateBombCurse();
+                System.out.println("I dropped No Bomb CURSE");
+                effect = new NoBombCurse();
                 effect.setEverythingFalse();
                 effect.setIsCurse();
                 return effect;
             case 5:
-//                System.out.println("I dropped Speed CURSE");
-//                effect = new SpeedCurse();
-//                effect.setEverythingFalse();
-//                effect.setIsCurse();
-                System.out.println("I dropped Immediate Bomb CURSE");
-                effect = new ImmediateBombCurse();
+                System.out.println("I dropped Speed CURSE");
+                effect = new SpeedCurse();
                 effect.setEverythingFalse();
                 effect.setIsCurse();
                 return effect;
             default:
-//                System.out.println("I dropped Empty effect randomly");
-//                effect = new EmptyEffect();
-//                effect.setEverythingFalse();
-//                effect.setIsEmpty();
-                System.out.println("I dropped Immediate Bomb CURSE");
-                effect = new ImmediateBombCurse();
+                System.out.println("I dropped Empty effect randomly");
+                effect = new EmptyEffect();
                 effect.setEverythingFalse();
-                effect.setIsCurse();
+                effect.setIsEmpty();
                 return effect;
         }
     }
