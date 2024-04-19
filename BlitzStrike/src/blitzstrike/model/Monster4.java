@@ -59,11 +59,16 @@ public class Monster4 extends Monster {
                 Direction directionTowardsPlayer = determineDirectionTowardsPosition(nextPositionTowardsPlayer);
 
                 if (rand.nextDouble() < WRONG_DECISION_PROBABILITY) {
-                    System.out.println("Making a wrong decision");
-                    directionTowardsPlayer = makeWrongDecision(directionTowardsPlayer);
+                    Direction newDirection;
+                    do {
+                        System.out.println("Making a wrong decision");
+                        newDirection = makeWrongDecision(directionTowardsPlayer);
+                    } while (!isValidPosition(this.position.translate(newDirection)));
+
+                    directionTowardsPlayer = newDirection;
                 }
-                
-                if (directionTowardsPlayer != null) {
+
+                if (isValidPosition(this.position.translate(directionTowardsPlayer))) {
                     this.position = this.position.translate(directionTowardsPlayer);
                 }
             }
@@ -146,11 +151,13 @@ public class Monster4 extends Monster {
 
     private Direction makeWrongDecision(Direction correctDirection) {
         Direction wrongDirection = correctDirection;
-        while (wrongDirection == correctDirection) {
+        do {
             wrongDirection = Direction.values()[rand.nextInt(Direction.values().length)];
-        }
+        } while (wrongDirection == correctDirection);
+
         return wrongDirection;
     }
+    
     
     private void settleCurrentDirectionRandomlyMonster4() {
         List<Direction> possibleDirections = getPossibleDirections();
