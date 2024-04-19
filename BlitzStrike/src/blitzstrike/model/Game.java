@@ -465,7 +465,7 @@ public class Game {
 
     public Bomb getBomb(int x, int y) {
         if (this.player1.hasBombAtPosition(x, y)) {
-            this.player1.getBomb(x, y);
+           return  this.player1.getBomb(x, y);
         } else if (this.player2.hasBombAtPosition(x, y)) {
             return this.player2.getBomb(x, y);
         }
@@ -520,7 +520,6 @@ public class Game {
             this.endRound = true;
         } else {
             this.winner = this.player1Score > this.player2Score ? this.player1 : this.player2;
-//            this.endRound = true;
             this.endGame = true;
         }
     }

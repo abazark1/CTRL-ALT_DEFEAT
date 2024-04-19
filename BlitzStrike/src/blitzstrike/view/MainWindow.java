@@ -309,6 +309,12 @@ public class MainWindow extends JFrame {
                         game.handleCurseTermination();
                         game.removeTerminatedCurses();
                     }
+                    else if(game.endRound){
+                        showRoundEndPopup("Round is overr!");
+                    }
+                    else if(game.endGame){
+                        showGameEndPopup();
+                    }
                 } else {
                     toggleStatsPanelVisibility(false);
                 }
@@ -585,25 +591,29 @@ public class MainWindow extends JFrame {
 
     }
 
+
     private void showGameEndPopup() {
-        if (game.endGame) {
-            JDialog gameEndDialog = new JDialog(this, "Game End", true);
-            JPanel mPanel = new JPanel();
-            mPanel.setLayout(new BoxLayout(mPanel, BoxLayout.Y_AXIS));
-            JLabel congratsLabel = new JLabel("Congrats!");
-            JLabel winnerNameLabel = new JLabel(game.getWinner().getName());
-            JLabel winnerScoreLabel = new JLabel(Integer.toString(game.getRoundsToWin()));
+    if (game.endGame) {
+        JDialog gameEndDialog = new JDialog(this, "Game Ended", true);
+        gameEndDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); // Set the default close operation
+        gameEndDialog.setLayout(new FlowLayout());
+        gameEndDialog.setLocationRelativeTo(this); // Center on screen
 
-            mPanel.add(congratsLabel);
-            mPanel.add(winnerNameLabel);
-            mPanel.add(winnerScoreLabel);
+        JLabel messageLabel = new JLabel("<html><center>Congrats " + game.getWinner().getName() + "</center></html>");
+        gameEndDialog.add(messageLabel);
 
-            JButton returnButton = new JButton("RETURN");
-            returnButton.addActionListener(e -> returnToMainMenu());
-            mPanel.add(returnButton);
-        }
+        JButton returnButton = new JButton("Return to main menu");
+        returnButton.addActionListener(e -> {
+            gameEndDialog.dispose(); // Close and dispose of the dialog
+            returnToMainMenu();
+            game=null;
+        });
+        gameEndDialog.add(returnButton);
+
+        gameEndDialog.pack(); // Pack the dialog instead of setting size
+        gameEndDialog.setVisible(true);
     }
-
+}
     private JPanel createPlayerStatsPanel(Player player, int score) {
         playerPanel = new JPanel();
         playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));

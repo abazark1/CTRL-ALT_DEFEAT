@@ -292,7 +292,7 @@ public class Player {
     }
 
     public void reset() {
-        this.position = new Position(0, 0);
+        //this.position = new Position(0, 0);
         this.bombs = new ArrayList<>();
         this.obstacles = new ArrayList<>();
         this.alive = true;
