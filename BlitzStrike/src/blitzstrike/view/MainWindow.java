@@ -335,6 +335,11 @@ public class MainWindow extends JFrame {
                 if (game != null && !game.isGameOrRoundEnded()) {
                     game.decreaseBattleRoyaleTime();
                     battleRoyalCountDownTime.setText(Integer.toString(game.getCurrentBattleRoyaleTime()));
+                    if (game.getCurrentBattleRoyaleTime() <= 5) {
+                        battleRoyalCountDownTime.setForeground(Color.red);
+                    } else {
+                        battleRoyalCountDownTime.setForeground(Color.black);
+                    }
                 }
             }
         });
