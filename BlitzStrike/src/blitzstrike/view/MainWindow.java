@@ -528,8 +528,8 @@ public class MainWindow extends JFrame {
                     player2ScoreLabel = new JLabel("Score: " + game.getPlayer2Score());
                     statsPanel.add(createPlayerStatsPanel(player1, player1ScoreLabel));
                     statsPanel.add(createPlayerStatsPanel(player2, player2ScoreLabel));
-                    int sum = Integer.parseInt(pl1ScoreField.getText()) + Integer.parseInt(pl1ScoreField.getText());
-                    statsPanel.add(new JLabel("Round: " + sum)); // to be changed for num games
+                    JLabel roundLabel = new JLabel("Rounds of glorious domination required: " + game.getRoundsToWin());
+                    statsPanel.add(roundLabel);
                     frame.revalidate();
                     frame.repaint();
                     continueDialog.setVisible(false);
@@ -560,6 +560,7 @@ public class MainWindow extends JFrame {
 
     public void showRoundEndPopup(String message) {
         JDialog roundEndDialog = new JDialog(this, "Round Ended", true);
+        roundEndDialog.setUndecorated(true);
         roundEndDialog.setLayout(new FlowLayout());
         roundEndDialog.setSize(400, 200);
         roundEndDialog.setLocationRelativeTo(this); // Center on screen
@@ -725,7 +726,8 @@ public class MainWindow extends JFrame {
                     player2ScoreLabel = new JLabel("Score: " + game.getPlayer2Score());
                     statsPanel.add(createPlayerStatsPanel(player1, player1ScoreLabel));
                     statsPanel.add(createPlayerStatsPanel(player2, player2ScoreLabel));
-                    statsPanel.add(new JLabel("Round: 1")); // to be changed for num games
+                    JLabel roundLabel = new JLabel("Rounds of glorious domination required: " + game.getRoundsToWin());
+                    statsPanel.add(roundLabel);
 
                     battleRoyalCountDownTime = new JLabel(Integer.toString(game.getCurrentBattleRoyaleTime()));
                     statsPanel.add(battleRoyalCountDownTime);
