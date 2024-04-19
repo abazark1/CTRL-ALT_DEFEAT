@@ -1,0 +1,20 @@
+Player1Name:jgh
+Player2Name:yed
+Player1Score:0
+Player2Score:0
+RoundsToWin:2
+xxxxxxxxxxxxxxx
+x         #  bx
+x#xxxxxxx     x
+x #           x
+x  #     x    x
+x   #         x
+x          x  x
+x     x       x
+x     #1   x  x
+x     x   xx  x
+x 1x  x       x
+x     x 1x    x
+x     x    x# x
+xa          x#x
+xxxxxxxxxxxxxxx
