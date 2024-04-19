@@ -15,7 +15,6 @@ public class SpeedCurse extends Curse {
 
     public SpeedCurse() {
         super();
-        this.duration = 3;
     }
 
     @Override

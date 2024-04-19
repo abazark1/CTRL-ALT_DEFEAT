@@ -13,49 +13,42 @@ import java.time.LocalTime;
  */
 public class BombRangeCurse extends Curse {
 
-    // I changed from private to public - aliia
+    /**
+     * Public constructor
+     */
     public BombRangeCurse() {
         super();
     }
 
-    @Override
-    public void applyEffect(Player p) {
-        activateBombRangeCurse(p);
-        p.addCurse(this);
-    }
-
-    
-//    /**
-//     * Checks the time passed and sets isTerminated to true if the time has reached the duration of the effect, false, otherwise
-//     * @param p player to whom the effect belongs
-//     */
-//    @Override
-//    public void terminateEffect(Player p) {
-//        if (this.startingTime != null) {
-//            long timePassed = LocalTime.now().toSecondOfDay() - this.startingTime.toSecondOfDay();
-//            if (timePassed >= this.getDuration()) {
-//                resetEffect(p);
-//                this.isTerminated = true;
-//            }
-//        }
-//    }
-    
     /**
-     * Resets bomb range to the standard value
-     * @param p 
+     * Applies the bomb range curse effect to the given player
+     *
+     * @param player is the given player to apply the bomb range curse to
      */
     @Override
-    protected void resetEffect(Player p){
-        p.resetBombRange();
+    public void applyEffect(Player player) {
+        activateBombRangeCurse(player);
+        player.addCurse(this);
+    }
+
+    /**
+     * Resets bomb range to the standard value for the given player
+     *
+     * @param player is the given player to reset the effect
+     */
+    @Override
+    protected void resetEffect(Player player) {
+        player.resetBombRange();
     }
 
     /**
      * Activates the bomb range curse
+     *
      * @param player to whom the bomb range curse should get applied
      */
-    private void activateBombRangeCurse(Player p) {
+    private void activateBombRangeCurse(Player player) {
         System.out.println("Activated bomb range curse");
-        p.setBombRangeCurse(1);
+        player.setBombRangeCurse(1);
         this.startingTime = LocalTime.now();
     }
 }
