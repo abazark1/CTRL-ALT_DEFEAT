@@ -23,11 +23,10 @@ import java.util.Queue;
 import java.util.Random;
 
 public class Monster4 extends Monster {
-    
+
     private static final double WRONG_DECISION_PROBABILITY = 0.3;
     private Random rand;
     private List<Player> players;
-
 
     public Monster4(Position position, Cell[][] space, Game game, Player pl1, Player pl2) {
         super(position, space, game);
@@ -57,7 +56,7 @@ public class Monster4 extends Monster {
                 System.out.println("Moving towards player: " + closestPlayerIndex);
                 Position nextPositionTowardsPlayer;
                 if (shortestPathToClosestPlayer.size() > 1) {
-                    nextPositionTowardsPlayer = shortestPathToClosestPlayer.get(1); 
+                    nextPositionTowardsPlayer = shortestPathToClosestPlayer.get(1);
                 } else {
                     nextPositionTowardsPlayer = shortestPathToClosestPlayer.get(0);
                 }
@@ -85,7 +84,7 @@ public class Monster4 extends Monster {
 
         updateAlivePlayers();
     }
-    
+
     private Direction determineDirectionTowardsPosition(Position targetPosition) {
         int targetX = targetPosition.getX();
         int targetY = targetPosition.getY();
@@ -104,7 +103,7 @@ public class Monster4 extends Monster {
             return (dy > 0) ? Direction.DOWN : Direction.UP;
         }
     }
-    
+
     private List<Position> calculateShortestPath(Position targetPosition) {
         Queue<Position> queue = new LinkedList<>();
         queue.add(this.position);
@@ -135,8 +134,13 @@ public class Monster4 extends Monster {
         Collections.reverse(shortestPath);
         return shortestPath;
     }
-    
+
     private int determineClosestPlayer(List<List<Position>> shortestPaths) {
+        for (int i = 0; i < this.players.size(); i++) {
+            if (players.get(i).getFollowedByMonsters()) {
+                return i;
+            }
+        }
         int closestPlayerIndex = -1;
         int minPathLength = Integer.MAX_VALUE;
         for (int i = 0; i < shortestPaths.size(); i++) {
@@ -148,7 +152,6 @@ public class Monster4 extends Monster {
         }
         return closestPlayerIndex;
     }
-    
 
     private Direction makeWrongDecision(Direction correctDirection) {
         Direction wrongDirection = correctDirection;
@@ -158,7 +161,6 @@ public class Monster4 extends Monster {
 
         return wrongDirection;
     }
-    
 
     private void updateAlivePlayers() {
         List<Player> alivePlayers = new ArrayList<>();
@@ -170,4 +172,3 @@ public class Monster4 extends Monster {
         players = alivePlayers;
     }
 }
-

@@ -10,7 +10,7 @@ import blitzstrike.model.Player;
 import blitzstrike.model.effects.curses.BombRangeCurse;
 import blitzstrike.model.effects.curses.ImmediateBombCurse;
 import blitzstrike.model.effects.curses.NoBombCurse;
-import blitzstrike.model.effects.curses.SpeedCurse;
+import blitzstrike.model.effects.curses.FollowedByMonsters;
 import java.util.Random;
 
 public abstract class Effect {
@@ -131,10 +131,11 @@ public abstract class Effect {
                 return effect;
             case 5:
                 System.out.println("I dropped Speed CURSE");
-                effect = new SpeedCurse();
+                effect = new FollowedByMonsters();
                 effect.setEverythingFalse();
                 effect.setIsCurse(true);
                 return effect;
+
             default:
                 System.out.println("I dropped Empty effect randomly");
                 effect = new EmptyEffect();

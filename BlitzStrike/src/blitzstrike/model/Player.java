@@ -32,6 +32,7 @@ public class Player {
     private int maxBombNumber;
     private boolean isInvincible;
     private LocalTime invincibleTimer;
+    private boolean followedByMonsters;
     private boolean isGhost;
     private LocalTime ghostTimer;
     private boolean isDetonatorOn;
@@ -62,6 +63,7 @@ public class Player {
         this.maxNumberOfObstacles = STANDARD_OBSTACLE_NUMBER;
         this.noBombCurse = false;
         this.placeBombImmediatelyCurse = false;
+        this.followedByMonsters = false;
     }
 
     public void setPosition(Position position) {
@@ -76,6 +78,10 @@ public class Player {
         return this.bombs;
     }
 
+    public boolean getFollowedByMonsters(){
+        return this.followedByMonsters;
+    }
+    
     public boolean isAlive() {
         return this.alive;
     }
@@ -261,8 +267,8 @@ public class Player {
 //    public void setBombRangeCurseStartTime() {
 //        this.bombRangeCurseStartTime = LocalTime.now();
 //    }
-    public void setSpeedCurse(double value) {
-        this.speed = value;
+    public void setFollowedByMonsters(boolean value) {
+        this.followedByMonsters = value;
     }
 
     public LocalTime getSpeedCurseTimer() {

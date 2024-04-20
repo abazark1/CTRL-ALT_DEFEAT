@@ -79,8 +79,6 @@ public class Monster3 extends Monster {
         players = alivePlayers;
     }
 
-
-
     private Direction determineDirectionTowardsPosition(Position targetPosition) {
         int targetX = targetPosition.getX();
         int targetY = targetPosition.getY();
@@ -100,7 +98,6 @@ public class Monster3 extends Monster {
         }
     }
 
-    
     private List<Position> calculateShortestPath(Position targetPosition) {
         Queue<Position> queue = new LinkedList<>();
         queue.add(this.position);
@@ -132,8 +129,12 @@ public class Monster3 extends Monster {
         return shortestPath;
     }
 
-
     private int determineClosestPlayer(List<List<Position>> shortestPaths) {
+        for (int i = 0; i < this.players.size(); i++) {
+            if (players.get(i).getFollowedByMonsters()) {
+                return i;
+            }
+        }
         int closestPlayerIndex = -1;
         int minPathLength = Integer.MAX_VALUE;
         for (int i = 0; i < shortestPaths.size(); i++) {
