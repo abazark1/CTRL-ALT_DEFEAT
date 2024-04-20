@@ -21,7 +21,7 @@ import java.awt.image.BufferedImage;
 import blitzstrike.model.Cell;
 import blitzstrike.model.Game;
 import blitzstrike.model.effects.Effect;
-import blitzstrike.model.Monster;
+import blitzstrike.model.monsters.Monster;
 import blitzstrike.model.Player;
 import blitzstrike.model.Box;
 import blitzstrike.model.effects.powerups.PowerUp;

@@ -2,100 +2,60 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package blitzstrike.model;
+package blitzstrike.model.monsters;
 
-/**
- *
- * @author aselh
- */
+import blitzstrike.model.Cell;
+import blitzstrike.model.Direction;
+import blitzstrike.model.Game;
+import blitzstrike.model.Box;
+import blitzstrike.model.Empty;
+import blitzstrike.model.Wall;
 import static blitzstrike.model.Game.MAP_SIZE;
+import blitzstrike.model.Position;
+import static blitzstrike.model.monsters.Monster.STANDARD_SPEED;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Monster {
+/**
+ *
+ * @author ebazali
+ */
+public class Monster2 extends Monster {
 
-    public static double STANDARD_SPEED = 1;
-
-    protected double speed;
-    protected boolean alive;
-    protected Position position;
-    protected Cell[][] space = new Cell[MAP_SIZE][MAP_SIZE];
-    protected Direction currentDirection;
-    private Game game;
-    
-    public MonsterType monsterType;
-
-
-    public Monster(Position position, Cell[][] space, Game game) {
-        this.speed = STANDARD_SPEED;
-        this.alive = true;
-        this.position = position;
-        this.space = space;
-        this.currentDirection = Direction.STILL;
-        this.game = game;
-    }
-
-    public void move() {};
-
-    public boolean isAlive() {
-        return this.alive;
-    }
-
-    public void die() {
-        this.alive = false;
-    }
-
-    public void attack(Player p) {
-
-    }
-
-    public boolean isValidPosition(Position p) {
-        return this.space[p.getY()][p.getX()].isWalkable() && !this.game.getPlayer11().hasBombAtPosition(p.getX(), p.getY()) && !this.game.getPlayer22().hasBombAtPosition(p.getX(), p.getY());
-    }
-
-    public Position getPosition() {
-        return this.position;
-    }
-
-    
-}
-
-class BasicMonster extends Monster {
-
-    private int counterUntilChangeDirection;
-    private final int LIMIT_TO_CHANGE_DIRECTION_RANDOMLY = 3;
-
-    public BasicMonster(Position position, Cell[][] space, Game game) {
+    public Monster2(Position position, Cell[][] space, Game game) {
         super(position, space, game);
-        this.counterUntilChangeDirection = 0;
-        this.monsterType = MonsterType.BASIC;
-
+        this.speed = STANDARD_SPEED * 0.8;
+        this.currentDirection = Direction.STILL;
+        this.monsterType = MonsterType.MONSTER2;
     }
 
-    @Override
+    //@Override
     public void move() {
-        System.out.println("Monster 1 is moving");
+        System.out.println("Monster 2 is moving");
         if (this.currentDirection == Direction.STILL) {
-            settleCurrentDirectionRandomly();
+            settleCurrentDirection();
             moveWithCurrentDirection();
         } else {
-            Position newPosition = this.position.translate(currentDirection);
-            if (isValidPosition(newPosition)) {
-                this.position = newPosition;
+            Position nextPosition = position.translate(currentDirection);
+            if (nextPosition.getY() <= 0 || nextPosition.getX() <= 0 || nextPosition.getY() >= MAP_SIZE - 1 || nextPosition.getX() >= MAP_SIZE - 1) {
+                settleCurrentDirection();
+                moveWithCurrentDirection();
             } else {
-                this.counterUntilChangeDirection++;
-                if (this.counterUntilChangeDirection >= LIMIT_TO_CHANGE_DIRECTION_RANDOMLY) {
-                    settleCurrentDirectionRandomly();
-                    moveWithCurrentDirection();
-                    this.counterUntilChangeDirection = 0;
+                if (space[this.position.getY()][this.position.getX()] instanceof Box || space[this.position.getY()][this.position.getX()] instanceof Wall) {
+                    if (space[nextPosition.getY()][nextPosition.getX()] instanceof Empty) {
+                        this.position = nextPosition;
+                        settleCurrentDirection();
+                    } else {
+                        moveWithCurrentDirection();
+                    }
                 } else {
-                    settleCurrentDirection();
                     moveWithCurrentDirection();
                 }
             }
         }
     }
+    
     
     protected void settleCurrentDirectionRandomly() {
         Position newPosUp = position.translate(Direction.UP);
@@ -155,25 +115,3 @@ class BasicMonster extends Monster {
         this.currentDirection = possibleDirections.get(indexOfRandomDirection);
     }
 }
-
-//class Monster3 extends Monster {
-//
-//    @Override
-//    public void move(Direction d) {
-//
-//    }
-//
-//    private Direction checkClosestPlayer(ArrayList<Cell> space) {
-//
-//        return;
-//    }
-//}
-//
-//class Monster4 extends Monster {
-//
-//    @Override
-//    public void move(Direction d) {
-//
-//    }
-//
-//}

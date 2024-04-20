@@ -2,8 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package blitzstrike.model;
+package blitzstrike.model.monsters;
 
+/**
+ *
+ * @author ebazali
+ */
+import blitzstrike.model.Cell;
+import blitzstrike.model.Direction;
+import blitzstrike.model.Game;
+import blitzstrike.model.Player;
+import blitzstrike.model.Position;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,28 +22,26 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Random;
 
-/**
- *
- * @author ebazali
- */
-public class Monster3 extends Monster {
-
-    private Direction currentDirection;
+public class Monster4 extends Monster {
+    
+    private static final double WRONG_DECISION_PROBABILITY = 0.3;
+    private Random rand;
     private List<Player> players;
 
-    public Monster3(Position position, Cell[][] space, Game game, Player pl1, Player pl2) {
+
+    public Monster4(Position position, Cell[][] space, Game game, Player pl1, Player pl2) {
         super(position, space, game);
-        this.currentDirection = Direction.STILL;
-        this.speed = STANDARD_SPEED * 2;
         this.players = new ArrayList<>();
         this.players.add(pl1);
         this.players.add(pl2);
-        this.monsterType = MonsterType.MONSTER3;
+        this.speed = STANDARD_SPEED;
+        this.monsterType = MonsterType.MONSTER4;
+        this.rand = new Random();
     }
 
-    @Override
+    //@Override
     public void move() {
-        System.out.println("Type3 monster should move");
+        System.out.println("Type4 monster should move");
 
         List<List<Position>> shortestPaths = new ArrayList<>();
         for (Player player : players) {
@@ -50,32 +57,35 @@ public class Monster3 extends Monster {
                 System.out.println("Moving towards player: " + closestPlayerIndex);
                 Position nextPositionTowardsPlayer;
                 if (shortestPathToClosestPlayer.size() > 1) {
-                    nextPositionTowardsPlayer = shortestPathToClosestPlayer.get(1); // Get the second position in the path
+                    nextPositionTowardsPlayer = shortestPathToClosestPlayer.get(1); 
                 } else {
-                    nextPositionTowardsPlayer = shortestPathToClosestPlayer.get(0); // Get the only available position
+                    nextPositionTowardsPlayer = shortestPathToClosestPlayer.get(0);
                 }
                 Direction directionTowardsPlayer = determineDirectionTowardsPosition(nextPositionTowardsPlayer);
-                if (directionTowardsPlayer != null) {
+
+                if (rand.nextDouble() < WRONG_DECISION_PROBABILITY) {
+                    Direction newDirection;
+                    do {
+                        System.out.println("Making a wrong decision");
+                        newDirection = makeWrongDecision(directionTowardsPlayer);
+                    } while (!isValidPosition(this.position.translate(newDirection)));
+
+                    directionTowardsPlayer = newDirection;
+                }
+
+                if (isValidPosition(this.position.translate(directionTowardsPlayer))) {
                     this.position = this.position.translate(directionTowardsPlayer);
                 }
             }
         } else {
             System.out.println("Walking randomly");
-            settleCurrentDirectionRandomlyMonster3();
+            settleCurrentDirectionRandomlyMonster4();
             moveWithNewDirection();
         }
 
-        List<Player> alivePlayers = new ArrayList<>();
-        for (Player player : players) {
-            if (player.isAlive()) {
-                alivePlayers.add(player);
-            }
-        }
-        players = alivePlayers;
+        updateAlivePlayers();
     }
-
-
-
+    
     private Direction determineDirectionTowardsPosition(Position targetPosition) {
         int targetX = targetPosition.getX();
         int targetY = targetPosition.getY();
@@ -94,7 +104,6 @@ public class Monster3 extends Monster {
             return (dy > 0) ? Direction.DOWN : Direction.UP;
         }
     }
-
     
     private List<Position> calculateShortestPath(Position targetPosition) {
         Queue<Position> queue = new LinkedList<>();
@@ -126,8 +135,7 @@ public class Monster3 extends Monster {
         Collections.reverse(shortestPath);
         return shortestPath;
     }
-
-
+    
     private int determineClosestPlayer(List<List<Position>> shortestPaths) {
         int closestPlayerIndex = -1;
         int minPathLength = Integer.MAX_VALUE;
@@ -140,38 +148,49 @@ public class Monster3 extends Monster {
         }
         return closestPlayerIndex;
     }
-
-    private void settleCurrentDirectionRandomlyMonster3() {
-        Position newPosUp = position.translate(Direction.UP);
-        Position newPosDown = position.translate(Direction.DOWN);
-        Position newPosLeft = position.translate(Direction.LEFT);
-        Position newPosRight = position.translate(Direction.RIGHT);
-        int numberOfPossibleDirections = 1;
-        List<Direction> possibleDirections = new ArrayList<>();
-        possibleDirections.add(Direction.STILL);
-        if (isValidPosition(newPosUp)) {
-            numberOfPossibleDirections++;
-            possibleDirections.add(Direction.UP);
-        }
-        if (isValidPosition(newPosDown)) {
-            numberOfPossibleDirections++;
-            possibleDirections.add(Direction.DOWN);
-        }
-        if (isValidPosition(newPosLeft)) {
-            numberOfPossibleDirections++;
-            possibleDirections.add(Direction.LEFT);
-        }
-        if (isValidPosition(newPosRight)) {
-            numberOfPossibleDirections++;
-            possibleDirections.add(Direction.RIGHT);
-        }
-        Random rand = new Random();
-        int indexOfRandomDirection = rand.nextInt(numberOfPossibleDirections);
-        this.currentDirection = possibleDirections.get(indexOfRandomDirection);
-    }
     
     private void moveWithNewDirection() {
         Position newPositionWithNewDirection = this.position.translate(currentDirection);
         this.position = newPositionWithNewDirection;
     }
+
+    private Direction makeWrongDecision(Direction correctDirection) {
+        Direction wrongDirection = correctDirection;
+        do {
+            wrongDirection = Direction.values()[rand.nextInt(Direction.values().length)];
+        } while (wrongDirection == correctDirection);
+
+        return wrongDirection;
+    }
+    
+    
+    private void settleCurrentDirectionRandomlyMonster4() {
+        List<Direction> possibleDirections = getPossibleDirections();
+        if (!possibleDirections.isEmpty()) {
+            int indexOfRandomDirection = rand.nextInt(possibleDirections.size());
+            this.currentDirection = possibleDirections.get(indexOfRandomDirection);
+        }
+    }
+
+    private List<Direction> getPossibleDirections() {
+        List<Direction> possibleDirections = new ArrayList<>();
+        for (Direction dir : Direction.values()) {
+            Position newPos = position.translate(dir);
+            if (isValidPosition(newPos)) {
+                possibleDirections.add(dir);
+            }
+        }
+        return possibleDirections;
+    }
+
+    private void updateAlivePlayers() {
+        List<Player> alivePlayers = new ArrayList<>();
+        for (Player player : players) {
+            if (player.isAlive()) {
+                alivePlayers.add(player);
+            }
+        }
+        players = alivePlayers;
+    }
 }
+

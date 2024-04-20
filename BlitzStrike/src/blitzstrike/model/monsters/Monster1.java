@@ -2,10 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package blitzstrike.model;
+package blitzstrike.model.monsters;
 
-import static blitzstrike.model.Game.MAP_SIZE;
-import static blitzstrike.model.Monster.STANDARD_SPEED;
+import blitzstrike.model.Cell;
+import blitzstrike.model.Direction;
+import blitzstrike.model.Game;
+import blitzstrike.model.Position;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -14,42 +16,42 @@ import java.util.Random;
  *
  * @author ebazali
  */
-public class Monster2 extends Monster {
+public class Monster1 extends Monster {
 
-    public Monster2(Position position, Cell[][] space, Game game) {
+    private int counterUntilChangeDirection;
+    private final int LIMIT_TO_CHANGE_DIRECTION_RANDOMLY = 3;
+
+    public Monster1(Position position, Cell[][] space, Game game) {
         super(position, space, game);
-        this.speed = STANDARD_SPEED * 0.8;
-        this.currentDirection = Direction.STILL;
-        this.monsterType = MonsterType.MONSTER2;
+        this.counterUntilChangeDirection = 0;
+        this.monsterType = MonsterType.BASIC;
+
     }
 
-    @Override
+    //@Override
     public void move() {
-        System.out.println("Monster 2 is moving");
+        System.out.println("Monster 1 is moving");
         if (this.currentDirection == Direction.STILL) {
-            settleCurrentDirection();
+            settleCurrentDirectionRandomly();
             moveWithCurrentDirection();
         } else {
-            Position nextPosition = position.translate(currentDirection);
-            if (nextPosition.getY() <= 0 || nextPosition.getX() <= 0 || nextPosition.getY() >= MAP_SIZE - 1 || nextPosition.getX() >= MAP_SIZE - 1) {
-                settleCurrentDirection();
-                moveWithCurrentDirection();
+            Position newPosition = this.position.translate(currentDirection);
+            if (isValidPosition(newPosition)) {
+                this.position = newPosition;
             } else {
-                if (space[this.position.getY()][this.position.getX()] instanceof Box || space[this.position.getY()][this.position.getX()] instanceof Wall) {
-                    if (space[nextPosition.getY()][nextPosition.getX()] instanceof Empty) {
-                        this.position = nextPosition;
-                        settleCurrentDirection();
-                    } else {
-                        moveWithCurrentDirection();
-                    }
+                this.counterUntilChangeDirection++;
+                if (this.counterUntilChangeDirection >= LIMIT_TO_CHANGE_DIRECTION_RANDOMLY) {
+                    settleCurrentDirectionRandomly();
+                    moveWithCurrentDirection();
+                    this.counterUntilChangeDirection = 0;
                 } else {
+                    settleCurrentDirection();
                     moveWithCurrentDirection();
                 }
             }
         }
     }
-    
-    
+
     protected void settleCurrentDirectionRandomly() {
         Position newPosUp = position.translate(Direction.UP);
         Position newPosDown = position.translate(Direction.DOWN);

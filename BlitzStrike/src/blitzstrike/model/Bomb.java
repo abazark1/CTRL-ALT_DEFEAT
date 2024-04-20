@@ -5,6 +5,7 @@
 package blitzstrike.model;
 
 import static blitzstrike.model.Game.MAP_SIZE;
+import blitzstrike.model.monsters.Monster;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;

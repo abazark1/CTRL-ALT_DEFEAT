@@ -5,10 +5,11 @@
  */
 package blitzstrike.model;
 
-import static blitzstrike.model.MonsterType.BASIC;
-import static blitzstrike.model.MonsterType.MONSTER2;
-import static blitzstrike.model.MonsterType.MONSTER3;
-import static blitzstrike.model.MonsterType.MONSTER4;
+import blitzstrike.model.monsters.Monster;
+import blitzstrike.model.monsters.Monster1;
+import blitzstrike.model.monsters.Monster2;
+import blitzstrike.model.monsters.Monster3;
+import blitzstrike.model.monsters.Monster4;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -113,7 +114,7 @@ public class Game {
                     case '1':
                         cell = new Empty(position);
                         space[row][column] = cell;
-                        Monster monster = new BasicMonster(position, this.space, this);
+                        Monster monster = new Monster1(position, this.space, this);
                         this.monsters.add(monster);
                         break;
                     case '2':
@@ -187,7 +188,7 @@ public class Game {
                             space[y][x] = new Empty(position);
                             break;
                         case '1':
-                            Monster monster = new BasicMonster(position, space, this);
+                            Monster monster = new Monster1(position, space, this);
                             monsters.add(monster);
                             space[y][x] = new Empty(position);
                             break;
