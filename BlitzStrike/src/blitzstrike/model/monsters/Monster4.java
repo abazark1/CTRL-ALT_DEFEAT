@@ -39,7 +39,7 @@ public class Monster4 extends Monster {
         this.rand = new Random();
     }
 
-    //@Override
+    @Override
     public void move() {
         System.out.println("Type4 monster should move");
 
@@ -79,8 +79,8 @@ public class Monster4 extends Monster {
             }
         } else {
             System.out.println("Walking randomly");
-            settleCurrentDirectionRandomlyMonster4();
-            moveWithNewDirection();
+            settleCurrentDirectionRandomly();
+            moveWithCurrentDirection();
         }
 
         updateAlivePlayers();
@@ -149,10 +149,6 @@ public class Monster4 extends Monster {
         return closestPlayerIndex;
     }
     
-    private void moveWithNewDirection() {
-        Position newPositionWithNewDirection = this.position.translate(currentDirection);
-        this.position = newPositionWithNewDirection;
-    }
 
     private Direction makeWrongDecision(Direction correctDirection) {
         Direction wrongDirection = correctDirection;
@@ -163,25 +159,6 @@ public class Monster4 extends Monster {
         return wrongDirection;
     }
     
-    
-    private void settleCurrentDirectionRandomlyMonster4() {
-        List<Direction> possibleDirections = getPossibleDirections();
-        if (!possibleDirections.isEmpty()) {
-            int indexOfRandomDirection = rand.nextInt(possibleDirections.size());
-            this.currentDirection = possibleDirections.get(indexOfRandomDirection);
-        }
-    }
-
-    private List<Direction> getPossibleDirections() {
-        List<Direction> possibleDirections = new ArrayList<>();
-        for (Direction dir : Direction.values()) {
-            Position newPos = position.translate(dir);
-            if (isValidPosition(newPos)) {
-                possibleDirections.add(dir);
-            }
-        }
-        return possibleDirections;
-    }
 
     private void updateAlivePlayers() {
         List<Player> alivePlayers = new ArrayList<>();

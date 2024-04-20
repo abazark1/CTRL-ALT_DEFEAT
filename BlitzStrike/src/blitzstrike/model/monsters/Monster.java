@@ -22,6 +22,7 @@ import java.util.Random;
 public abstract class Monster {
 
     public static double STANDARD_SPEED = 1;
+    public MonsterType monsterType;
 
     protected double speed;
     protected boolean alive;
@@ -30,9 +31,6 @@ public abstract class Monster {
     protected Direction currentDirection;
     private Game game;
     
-    public MonsterType monsterType;
-
-
     public Monster(Position position, Cell[][] space, Game game) {
         this.speed = STANDARD_SPEED;
         this.alive = true;
@@ -63,6 +61,54 @@ public abstract class Monster {
     public Position getPosition() {
         return this.position;
     }
-
     
+        protected void settleCurrentDirection() {
+        Position newPosUp = position.translate(Direction.UP);
+        Position newPosDown = position.translate(Direction.DOWN);
+        Position newPosLeft = position.translate(Direction.LEFT);
+        Position newPosRight = position.translate(Direction.RIGHT);
+        List<Direction> possibleDirections = new ArrayList<>();
+        possibleDirections.add(Direction.STILL);
+        if (isValidPosition(newPosUp)) {
+            possibleDirections.add(Direction.UP);
+        }
+        if (isValidPosition(newPosDown)) {
+            possibleDirections.add(Direction.DOWN);
+        }
+        if (isValidPosition(newPosLeft)) {
+            possibleDirections.add(Direction.LEFT);
+        }
+        if (isValidPosition(newPosRight)) {
+            possibleDirections.add(Direction.RIGHT);
+        }
+        Random rand = new Random();
+        int indexOfRandomDirection = rand.nextInt(possibleDirections.size());
+        this.currentDirection = possibleDirections.get(indexOfRandomDirection);
+    }
+        
+        
+    protected void settleCurrentDirectionRandomly() {
+        Random rand = new Random();
+        List<Direction> possibleDirections = getPossibleDirections();
+        if (!possibleDirections.isEmpty()) {
+            int indexOfRandomDirection = rand.nextInt(possibleDirections.size());
+            this.currentDirection = possibleDirections.get(indexOfRandomDirection);
+        }
+    }
+
+    protected List<Direction> getPossibleDirections() {
+        List<Direction> possibleDirections = new ArrayList<>();
+        for (Direction dir : Direction.values()) {
+            Position newPos = position.translate(dir);
+            if (isValidPosition(newPos)) {
+                possibleDirections.add(dir);
+            }
+        }
+        return possibleDirections;
+    }
+    
+    protected void moveWithCurrentDirection() {
+        Position newPositionWithNewDirection = this.position.translate(currentDirection);
+        this.position = newPositionWithNewDirection;
+    }
 }

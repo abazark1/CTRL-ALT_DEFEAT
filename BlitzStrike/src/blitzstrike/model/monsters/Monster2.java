@@ -30,7 +30,7 @@ public class Monster2 extends Monster {
         this.monsterType = MonsterType.MONSTER2;
     }
 
-    //@Override
+    @Override
     public void move() {
         System.out.println("Monster 2 is moving");
         if (this.currentDirection == Direction.STILL) {
@@ -54,64 +54,5 @@ public class Monster2 extends Monster {
                 }
             }
         }
-    }
-    
-    
-    protected void settleCurrentDirectionRandomly() {
-        Position newPosUp = position.translate(Direction.UP);
-        Position newPosDown = position.translate(Direction.DOWN);
-        Position newPosLeft = position.translate(Direction.LEFT);
-        Position newPosRight = position.translate(Direction.RIGHT);
-        int numberOfPossibleDirections = 1;
-        List<Direction> possibleDirections = new ArrayList<>();
-        possibleDirections.add(Direction.STILL);
-        if (isValidPosition(newPosUp)) {
-            numberOfPossibleDirections++;
-            possibleDirections.add(Direction.UP);
-        }
-        if (isValidPosition(newPosDown)) {
-            numberOfPossibleDirections++;
-            possibleDirections.add(Direction.DOWN);
-        }
-        if (isValidPosition(newPosLeft)) {
-            numberOfPossibleDirections++;
-            possibleDirections.add(Direction.LEFT);
-        }
-        if (isValidPosition(newPosRight)) {
-            numberOfPossibleDirections++;
-            possibleDirections.add(Direction.RIGHT);
-        }
-        Random rand = new Random();
-        int indexOfRandomDirection = rand.nextInt(numberOfPossibleDirections);
-        this.currentDirection = possibleDirections.get(indexOfRandomDirection);
-    }
-
-    protected void moveWithCurrentDirection() {
-        Position newPositionWithNewDirection = this.position.translate(currentDirection);
-        this.position = newPositionWithNewDirection;
-    }
-
-    protected void settleCurrentDirection() {
-        Position newPosUp = position.translate(Direction.UP);
-        Position newPosDown = position.translate(Direction.DOWN);
-        Position newPosLeft = position.translate(Direction.LEFT);
-        Position newPosRight = position.translate(Direction.RIGHT);
-        List<Direction> possibleDirections = new ArrayList<>();
-        possibleDirections.add(Direction.STILL);
-        if (isValidPosition(newPosUp)) {
-            possibleDirections.add(Direction.UP);
-        }
-        if (isValidPosition(newPosDown)) {
-            possibleDirections.add(Direction.DOWN);
-        }
-        if (isValidPosition(newPosLeft)) {
-            possibleDirections.add(Direction.LEFT);
-        }
-        if (isValidPosition(newPosRight)) {
-            possibleDirections.add(Direction.RIGHT);
-        }
-        Random rand = new Random();
-        int indexOfRandomDirection = rand.nextInt(possibleDirections.size());
-        this.currentDirection = possibleDirections.get(indexOfRandomDirection);
     }
 }
