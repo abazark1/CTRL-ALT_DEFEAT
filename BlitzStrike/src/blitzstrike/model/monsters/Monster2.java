@@ -34,7 +34,7 @@ public class Monster2 extends Monster {
         updateTarget();
         updateIgnoredPlayer();
         if (this.getIgnoredPlayer() != null) {
-            System.out.println("Monster 2 i ignoring player");
+            //System.out.println("Monster 2 i ignoring player");
 
             settleCurrentDirectionRandomly();
             moveWithCurrentDirection();

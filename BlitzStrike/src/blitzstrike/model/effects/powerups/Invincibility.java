@@ -5,6 +5,7 @@
 package blitzstrike.model.effects.powerups;
 
 import blitzstrike.model.Player;
+import java.time.LocalTime;
 
 /**
  *
@@ -14,24 +15,25 @@ import blitzstrike.model.Player;
 //advanced power up
 
 public class Invincibility extends PowerUp{
-    private int duration;
     
-    private Invincibility(){
+    public Invincibility(){
         super();
-        this.duration = 3;
     }
     
     @Override
     public void applyEffect(Player player){
-        
+        System.out.println(player.getName() + " has just got invincibility");
+        makeInvincible(player);
+        player.addPowerup(this);
     }
     
     @Override
     public void removeEffect(Player player){
-        
+        player.setInvincible(false);
     }
     
     private void makeInvincible(Player player){
-        
+        player.setInvincible(true);
+        this.startingTime = LocalTime.now();
     }
 }
