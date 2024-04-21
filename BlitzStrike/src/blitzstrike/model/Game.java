@@ -289,8 +289,8 @@ public class Game {
         this.player1.removeTerminatedCurses();
         this.player2.removeTerminatedCurses();
     }
-    
-     public void handlePowerupTermination() {
+
+    public void handlePowerupTermination() {
         this.player1.handlePowerupRemoval();
         this.player2.handlePowerupRemoval();
     }
@@ -308,19 +308,19 @@ public class Game {
     public void handleCollision() {
         for (Monster monster : monsters) {
             if (monster.getPosition().equals(player1.getPosition())) {
-                if(player1.isInvincible()){
+                if (player1.isInvincible()) {
                     System.out.println(player1.getName() + " cannot die");
                 } else {
-                     player1.die();
+                    player1.die();
                     System.out.println(player1.getName() + " has encountered a monster!");
                 }
             }
 
             if (player2 != null && monster.getPosition().equals(player2.getPosition())) {
-                if(player2.isInvincible()){
+                if (player2.isInvincible()) {
                     System.out.println(player2.getName() + " cannot die");
                 } else {
-                     player2.die();
+                    player2.die();
                     System.out.println(player2.getName() + " has encountered a monster!");
                 }
             }
@@ -686,6 +686,19 @@ public class Game {
             }
             this.startingTime = LocalTime.now();
         }
+    }
+
+    public boolean canExplode(int x, int y) {
+        if (x < 0 || y < 0 || x >= MAP_SIZE || y >= MAP_SIZE) {
+            return false; // Out of bounds
+        }
+
+        Cell cell = space[y][x];
+        if (cell instanceof Wall) {
+            return false; // Walls block explosion
+        }
+
+        return true; // Empty cells and undestroyed boxes can explode
     }
 
 }
