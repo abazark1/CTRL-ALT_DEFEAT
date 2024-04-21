@@ -153,8 +153,8 @@ public class View extends JPanel {
                 int newY = y + dir[1] * i;
                 if (game.canExplode(newX, newY)) {
                     System.out.println("IN VIEW CLASS: game.canExplode(x,y)" + newX + " " + newY);
-                    //gr.drawImage(explosion, newX * scaled_size, newY * scaled_size, scaled_size, scaled_size, null);
-                    gr.fillRect(newX * scaled_size, newY * scaled_size, scaled_size, scaled_size);
+                    gr.drawImage(explosion, newX * scaled_size, newY * scaled_size, scaled_size, scaled_size, null);
+                    //gr.fillRect(newX * scaled_size, newY * scaled_size, scaled_size, scaled_size);
                 } else {
                     break; // Stop drawing in this direction if explosion is blocked
                 }
