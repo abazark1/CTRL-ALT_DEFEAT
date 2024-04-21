@@ -114,13 +114,13 @@ public class Game {
                     case '1':
                         cell = new Empty(position);
                         space[row][column] = cell;
-                        Monster monster = new Monster1(position, this.space, this);
+                        Monster monster = new Monster1(position, this.space, this, player1, player2);
                         this.monsters.add(monster);
                         break;
                     case '2':
                         cell = new Empty(position);
                         space[row][column] = cell;
-                        Monster monster2 = new Monster2(position, this.space, this);
+                        Monster monster2 = new Monster2(position, this.space, this, player1, player2);
                         this.monsters.add(monster2);
                         break;
                     case '3':
@@ -188,12 +188,12 @@ public class Game {
                             space[y][x] = new Empty(position);
                             break;
                         case '1':
-                            Monster monster = new Monster1(position, space, this);
+                            Monster monster = new Monster1(position, space, this, player1, player2);
                             monsters.add(monster);
                             space[y][x] = new Empty(position);
                             break;
                         case '2':
-                            Monster monster2 = new Monster2(position, space, this);
+                            Monster monster2 = new Monster2(position, space, this, player1, player2);
                             monsters.add(monster2);
                             space[y][x] = new Empty(position);
                             break;

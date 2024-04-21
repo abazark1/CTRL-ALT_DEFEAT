@@ -78,8 +78,22 @@ public class Player {
         return this.bombs;
     }
 
+    /**
+     * Getter to check if the players should get followed by monsters
+     *
+     * @return followedByMonsters value
+     */
     public boolean getFollowedByMonsters(){
         return this.followedByMonsters;
+    }
+    
+    /**
+     * Sets the followedByMonsters value to true or false
+     *
+     * @param value that should the followedByMonsters value
+     */
+    public void setFollowedByMonsters(boolean value) {
+        this.followedByMonsters = value;
     }
     
     public boolean isAlive() {
@@ -267,9 +281,7 @@ public class Player {
 //    public void setBombRangeCurseStartTime() {
 //        this.bombRangeCurseStartTime = LocalTime.now();
 //    }
-    public void setFollowedByMonsters(boolean value) {
-        this.followedByMonsters = value;
-    }
+
 
     public LocalTime getSpeedCurseTimer() {
         return this.speedCurseStartTime;

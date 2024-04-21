@@ -11,46 +11,50 @@ import blitzstrike.model.Box;
 import blitzstrike.model.Empty;
 import blitzstrike.model.Wall;
 import static blitzstrike.model.Game.MAP_SIZE;
+import blitzstrike.model.Player;
 import blitzstrike.model.Position;
 import static blitzstrike.model.monsters.Monster.STANDARD_SPEED;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
-/**
- *
- * @author ebazali
- */
 public class Monster2 extends Monster {
 
-    public Monster2(Position position, Cell[][] space, Game game) {
-        super(position, space, game);
+    public Monster2(Position position, Cell[][] space, Game game, Player pl1, Player pl2) {
+        super(position, space, game, pl1, pl2);
         this.speed = STANDARD_SPEED * 0.8;
         this.currentDirection = Direction.STILL;
         this.monsterType = MonsterType.MONSTER2;
     }
 
+    /**
+     * Moves the monster with its own logic
+     *
+     */
+    
     @Override
     public void move() {
-        System.out.println("Monster 2 is moving");
-        if (this.currentDirection == Direction.STILL) {
-            settleCurrentDirection();
-            moveWithCurrentDirection();
+        //System.out.println("Monster 2 is moving");
+        updateTarget();
+        if (this.getTargetPlayer() != null) {
+            moveToTarget(getTargetPlayer().getPosition());
         } else {
-            Position nextPosition = position.translate(currentDirection);
-            if (nextPosition.getY() <= 0 || nextPosition.getX() <= 0 || nextPosition.getY() >= MAP_SIZE - 1 || nextPosition.getX() >= MAP_SIZE - 1) {
+            if (this.currentDirection == Direction.STILL) {
                 settleCurrentDirection();
                 moveWithCurrentDirection();
             } else {
-                if (space[this.position.getY()][this.position.getX()] instanceof Box || space[this.position.getY()][this.position.getX()] instanceof Wall) {
-                    if (space[nextPosition.getY()][nextPosition.getX()] instanceof Empty) {
-                        this.position = nextPosition;
-                        settleCurrentDirection();
+                Position nextPosition = position.translate(currentDirection);
+                if (nextPosition.getY() <= 0 || nextPosition.getX() <= 0 || nextPosition.getY() >= MAP_SIZE - 1 || nextPosition.getX() >= MAP_SIZE - 1) {
+                    settleCurrentDirection();
+                    moveWithCurrentDirection();
+                } else {
+                    if (space[this.position.getY()][this.position.getX()] instanceof Box || space[this.position.getY()][this.position.getX()] instanceof Wall) {
+                        if (space[nextPosition.getY()][nextPosition.getX()] instanceof Empty) {
+                            this.position = nextPosition;
+                            settleCurrentDirection();
+                        } else {
+                            moveWithCurrentDirection();
+                        }
                     } else {
                         moveWithCurrentDirection();
                     }
-                } else {
-                    moveWithCurrentDirection();
                 }
             }
         }
