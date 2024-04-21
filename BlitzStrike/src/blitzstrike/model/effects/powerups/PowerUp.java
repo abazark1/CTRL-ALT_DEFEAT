@@ -15,7 +15,7 @@ import java.time.LocalTime;
 public abstract class PowerUp extends Effect {
     private boolean isTerminated;
     protected LocalTime startingTime;
-    private static final int invisibilityDuration = 10;
+    private static final int powerupDuration = 10;
 
     protected PowerUp() {
         super();
@@ -36,7 +36,7 @@ public abstract class PowerUp extends Effect {
     public void terminateEffect(Player player) {
         if (this.startingTime != null) {
             long timePassed = LocalTime.now().toSecondOfDay() - this.startingTime.toSecondOfDay();
-            if (timePassed >= invisibilityDuration) {
+            if (timePassed >= powerupDuration) {
                 removeEffect(player);
                 this.isTerminated = true;
             }

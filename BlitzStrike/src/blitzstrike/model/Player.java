@@ -108,6 +108,14 @@ public class Player {
         this.rollerSkateWorking = value;
     }
     
+    public boolean isInvincible(){
+        return this.isInvincible;
+    }
+    
+    public void setInvincible(boolean value){
+        this.isInvincible = value;
+    }
+    
     public boolean isAlive() {
         return this.alive;
     }

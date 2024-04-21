@@ -11,6 +11,7 @@ import blitzstrike.model.effects.curses.BombRangeCurse;
 import blitzstrike.model.effects.curses.ImmediateBombCurse;
 import blitzstrike.model.effects.curses.NoBombCurse;
 import blitzstrike.model.effects.curses.FollowedByMonsters;
+import blitzstrike.model.effects.powerups.Invincibility;
 import blitzstrike.model.effects.powerups.RollerSkate;
 import java.util.Random;
 
@@ -97,7 +98,7 @@ public abstract class Effect {
      */
     static public Effect getRandomEffect() {
         Random rand = new Random();
-        int randomNumber = rand.nextInt(5);
+        int randomNumber = rand.nextInt(9);
         Effect effect;
         switch (randomNumber) {
             case 0:
@@ -118,27 +119,33 @@ public abstract class Effect {
                 effect.setEverythingFalse();
                 effect.setIsCurse(true);
                 return effect;
-//            case 3:
-//                System.out.println("I dropped Immediate Bomb CURSE");
-//                effect = new ImmediateBombCurse();
-//                effect.setEverythingFalse();
-//                effect.setIsCurse(true);
-//                return effect;
-//            case 4:
-//                System.out.println("I dropped No Bomb CURSE");
-//                effect = new NoBombCurse();
-//                effect.setEverythingFalse();
-//                effect.setIsCurse(true);
-//                return effect;
-//            case 5:
-//                System.out.println("I dropped Speed CURSE");
-//                effect = new FollowedByMonsters();
-//                effect.setEverythingFalse();
-//                effect.setIsCurse(true);
-//                return effect;
             case 3:
+                System.out.println("I dropped Immediate Bomb CURSE");
+                effect = new ImmediateBombCurse();
+                effect.setEverythingFalse();
+                effect.setIsCurse(true);
+                return effect;
+            case 4:
+                System.out.println("I dropped No Bomb CURSE");
+                effect = new NoBombCurse();
+                effect.setEverythingFalse();
+                effect.setIsCurse(true);
+                return effect;
+            case 5:
+                System.out.println("I dropped Speed CURSE");
+                effect = new FollowedByMonsters();
+                effect.setEverythingFalse();
+                effect.setIsCurse(true);
+                return effect;
+            case 6:
                 System.out.println("I dropped Roller Skate randomly");
                 effect = new RollerSkate();
+                effect.setEverythingFalse();
+                effect.setIsPowerup(true);
+                return effect;
+            case 7:
+                System.out.println("I dropped Invincibility randomly");
+                effect = new Invincibility();
                 effect.setEverythingFalse();
                 effect.setIsPowerup(true);
                 return effect;
