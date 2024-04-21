@@ -181,9 +181,10 @@ public class MainWindow extends JFrame {
         mMenu.add(Box.createVerticalGlue());
         mMenu.add(Box.createVerticalGlue());
         frame.add(mMenu);
-        frame.setPreferredSize(new Dimension(800, 800));
+        frame.setPreferredSize(new Dimension(660, 800));
         frame.setResizable(false);
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         setLocationRelativeTo(null);
 
