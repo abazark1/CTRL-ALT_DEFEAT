@@ -670,4 +670,18 @@ public class Game {
         }
     }
 
+    // In Game class
+    public boolean canExplode(int x, int y) {
+        if (x < 0 || y < 0 || x >= MAP_SIZE || y >= MAP_SIZE) {
+            return false; // Out of bounds
+        }
+
+        Cell cell = space[y][x];
+        if (cell instanceof Wall) {
+            return false; // Walls block explosion
+        }
+
+        return true; // Empty cells and undestroyed boxes can explode
+    }
+
 }
