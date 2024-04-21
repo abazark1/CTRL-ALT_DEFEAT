@@ -310,6 +310,8 @@ public class MainWindow extends JFrame {
                         game.handleBattleRoyale();
                         game.handleCurseTermination();
                         game.removeTerminatedCurses();
+                        game.handlePowerupTermination();
+                        game.removeTerminatedPowerups();
                         game.handleImmediateBombCurseForBothPlayers();
                     } else if (game.endRound) {
                         showRoundEndPopup("Round is overr!");

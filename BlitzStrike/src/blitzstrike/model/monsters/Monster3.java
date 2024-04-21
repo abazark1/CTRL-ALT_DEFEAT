@@ -31,9 +31,16 @@ public class Monster3 extends Monster {
     public void move() {
         //System.out.println("Type3 monster should move");
         updateTarget();
-        if (this.getTargetPlayer() != null) {
+        updateIgnoredPlayer();
+        if (this.getIgnoredPlayer() != null) {
+            System.out.println("Monster 3 i ignoring player");
+
+            settleCurrentDirectionRandomly();
+            moveWithCurrentDirection();
+        }
+        else if (this.getTargetPlayer() != null) {
             moveToTarget(getTargetPlayer().getPosition());
-        } else {
+        }  else {
             List<List<Position>> shortestPaths = new ArrayList<>();
             for (Player player : getPlayers()) {
                 shortestPaths.add(calculateShortestPath(player.getPosition()));

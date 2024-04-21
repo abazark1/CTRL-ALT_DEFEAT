@@ -28,14 +28,20 @@ public class Monster2 extends Monster {
      * Moves the monster with its own logic
      *
      */
-    
     @Override
     public void move() {
         //System.out.println("Monster 2 is moving");
         updateTarget();
-        if (this.getTargetPlayer() != null) {
+        updateIgnoredPlayer();
+        if (this.getIgnoredPlayer() != null) {
+            System.out.println("Monster 2 i ignoring player");
+
+            settleCurrentDirectionRandomly();
+            moveWithCurrentDirection();
+        }
+        else if (this.getTargetPlayer() != null) {
             moveToTarget(getTargetPlayer().getPosition());
-        } else {
+        }  else {
             if (this.currentDirection == Direction.STILL) {
                 settleCurrentDirection();
                 moveWithCurrentDirection();

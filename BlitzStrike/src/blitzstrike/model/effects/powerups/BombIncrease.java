@@ -21,6 +21,9 @@ public class BombIncrease extends PowerUp{
         increaseBombs(player);
     }
     
+    @Override 
+    public void removeEffect(Player player) {}
+    
     private void increaseBombs(Player player){
         int bombs =player.getBombNumber();
         bombs++;

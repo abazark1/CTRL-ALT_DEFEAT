@@ -21,6 +21,8 @@ public class BlastRange extends PowerUp{
         increaseRange(player);
     }
     
+    @Override 
+    public void removeEffect(Player player) {}
     
     private void increaseRange(Player player){
         int range =player.getBlastRange();

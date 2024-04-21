@@ -32,6 +32,7 @@ public abstract class Monster {
     private Game game;
     private List<Player> players;
     private Player targetPlayer;
+    private Player ignoredPlayer;
 
     public Monster(Position position, Cell[][] space, Game game, Player pl1, Player pl2) {
         this.speed = STANDARD_SPEED;
@@ -44,6 +45,7 @@ public abstract class Monster {
         this.players.add(pl1);
         this.players.add(pl2);
         this.targetPlayer = null;
+        this.ignoredPlayer = null;
     }
 
     /**
@@ -106,6 +108,10 @@ public abstract class Monster {
     protected Player getTargetPlayer() {
         return this.targetPlayer;
     }
+    
+    protected Player getIgnoredPlayer() {
+        return this.ignoredPlayer;
+    }
 
     /**
      * Getter of the index of the targeted player
@@ -115,6 +121,15 @@ public abstract class Monster {
     protected int targetPlayer() {
         for (int i = 0; i < this.players.size(); i++) {
             if (players.get(i).getFollowedByMonsters()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    protected int ignorePlayer() {
+        for (int i = 0; i < this.players.size(); i++) {
+            if (players.get(i).getRollerSkate()) {
                 return i;
             }
         }
@@ -269,6 +284,15 @@ public abstract class Monster {
             this.targetPlayer = players.get(index);
         } else {
             this.targetPlayer = null;
+        }
+    }
+    
+    protected void updateIgnoredPlayer() {
+        int index = ignorePlayer();
+        if (index != -1) {
+            this.ignoredPlayer = players.get(index);
+        } else {
+            this.ignoredPlayer = null;
         }
     }
 

@@ -289,6 +289,16 @@ public class Game {
         this.player1.removeTerminatedCurses();
         this.player2.removeTerminatedCurses();
     }
+    
+     public void handlePowerupTermination() {
+        this.player1.handlePowerupRemoval();
+        this.player2.handlePowerupRemoval();
+    }
+
+    public void removeTerminatedPowerups() {
+        this.player1.removeTerminatedPowerUps();
+        this.player2.removeTerminatedPowerUps();
+    }
 
     public boolean isGameTotallyFinished() {
         return this.player1Score >= this.roundsToWin || this.player2Score >= this.roundsToWin;

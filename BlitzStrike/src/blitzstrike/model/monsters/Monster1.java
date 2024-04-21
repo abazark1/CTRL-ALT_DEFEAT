@@ -30,7 +30,14 @@ public class Monster1 extends Monster {
     public void move() {
         //System.out.println("Monster 1 is moving");
         updateTarget();
-        if (this.getTargetPlayer() != null) {
+        updateIgnoredPlayer();
+        if (this.getIgnoredPlayer() != null) {
+            System.out.println("Monster 1 i ignoring player");
+
+            settleCurrentDirectionRandomly();
+            moveWithCurrentDirection();
+        }
+        else if (this.getTargetPlayer() != null) {
             moveToTarget(getTargetPlayer().getPosition());
         } else {
             if (this.currentDirection == Direction.STILL) {

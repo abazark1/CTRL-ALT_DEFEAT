@@ -6,6 +6,7 @@ package blitzstrike.model;
 
 import blitzstrike.model.effects.Effect;
 import blitzstrike.model.effects.curses.Curse;
+import blitzstrike.model.effects.powerups.PowerUp;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -45,14 +46,17 @@ public class Player {
     private LocalTime immediateBombCurseStartTime;
     private LocalTime deathTime;
     private List<Curse> curses;
+    private List<PowerUp> powerups;
 
     private Cell[][] space;
+    private boolean rollerSkateWorking;
 
     public Player(String name) {
         this.name = name;
         this.bombs = new ArrayList<>();
         this.obstacles = new ArrayList<>();
         this.curses = new ArrayList<>();
+        this.powerups = new ArrayList<>();
         this.alive = true;
         this.bombRange = STANDARD_BOMB_RANGE;
         this.speed = STANDARD_PLAYERS_SPEED;
@@ -64,6 +68,7 @@ public class Player {
         this.noBombCurse = false;
         this.placeBombImmediatelyCurse = false;
         this.followedByMonsters = false;
+        this.rollerSkateWorking = false;
     }
 
     public void setPosition(Position position) {
@@ -94,6 +99,13 @@ public class Player {
      */
     public void setFollowedByMonsters(boolean value) {
         this.followedByMonsters = value;
+    }
+    
+    public boolean getRollerSkate(){
+        return this.rollerSkateWorking;
+    }
+    public void setRollerSkate(boolean value) {
+        this.rollerSkateWorking = value;
     }
     
     public boolean isAlive() {
@@ -136,6 +148,26 @@ public class Player {
      */
     public void addCurse(Curse curse) {
         this.curses.add(curse);
+    }
+    
+    public void addPowerup(PowerUp powerup){
+        this.powerups.add(powerup);
+    }
+    
+    public void removeTerminatedPowerUps() {
+        Iterator<PowerUp> powerupsIterator = this.powerups.iterator();
+        while (powerupsIterator.hasNext()) {
+            PowerUp p = powerupsIterator.next();
+            if(p.isTerminated()){
+                powerupsIterator.remove();
+            }
+        }
+    }
+    
+    public void handlePowerupRemoval() {
+        for (PowerUp p : this.powerups) {
+            p.terminateEffect(this);
+        }
     }
 
     /**
