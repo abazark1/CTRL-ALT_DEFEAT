@@ -11,6 +11,7 @@ import blitzstrike.model.effects.curses.BombRangeCurse;
 import blitzstrike.model.effects.curses.ImmediateBombCurse;
 import blitzstrike.model.effects.curses.NoBombCurse;
 import blitzstrike.model.effects.curses.FollowedByMonsters;
+import blitzstrike.model.effects.powerups.Ghost;
 import blitzstrike.model.effects.powerups.Invincibility;
 import blitzstrike.model.effects.powerups.RollerSkate;
 import java.util.Random;
@@ -146,6 +147,12 @@ public abstract class Effect {
             case 7:
                 System.out.println("I dropped Invincibility randomly");
                 effect = new Invincibility();
+                effect.setEverythingFalse();
+                effect.setIsPowerup(true);
+                return effect;
+            case 8:
+                System.out.println("I dropped Ghost randomly");
+                effect = new Ghost();
                 effect.setEverythingFalse();
                 effect.setIsPowerup(true);
                 return effect;
