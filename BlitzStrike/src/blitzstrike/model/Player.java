@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class Player {
 
-    public static final int STANDARD_BOMB_RANGE = 3;
+    public static final int STANDARD_BOMB_RANGE = 4;
     public static final int STANDARD_BOMB_NUMBER = 1;
     public static final double STANDARD_PLAYERS_SPEED = 1.0;
     public static final int STANDARD_OBSTACLE_NUMBER = 0;
@@ -71,6 +71,65 @@ public class Player {
         this.rollerSkateWorking = false;
     }
 
+    public List<Bomb> getBombs() {
+        return this.bombs;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public int getBombNumber() {
+        return this.maxBombNumber;
+    }
+
+    public boolean getRollerSkate() {
+        return this.rollerSkateWorking;
+    }
+
+    public LocalTime getDeathTime() {
+        return this.deathTime;
+    }
+
+    public Bomb getBomb(int x, int y) {
+        for (Bomb bomb : bombs) {
+            Position bombPos = bomb.getPosition();
+            if (bombPos.getX() == x && bombPos.getY() == y) {
+                return bomb;
+            }
+        }
+        return null;
+    }
+
+    public int getBlastRange() {
+        return this.bombRange;
+    }
+
+    public Position getPosition() {
+        return this.position;
+    }
+
+    public LocalTime getSpeedCurseTimer() {
+        return this.speedCurseStartTime;
+    }
+
+    public LocalTime getNoBombCurseTimer() {
+        return this.noBombCurseStartTime;
+    }
+
+    public LocalTime getImmediateBombCurseTimer() {
+        return this.immediateBombCurseStartTime;
+    }
+
+    /**
+     * Getter to check if the players should get followed by monsters
+     *
+     * @return followedByMonsters value
+     */
+    public boolean getFollowedByMonsters() {
+        return this.followedByMonsters;
+    }
+
     public void setPosition(Position position) {
         this.position = position;
     }
@@ -79,19 +138,6 @@ public class Player {
         this.space = space;
     }
 
-    public List<Bomb> getBombs() {
-        return this.bombs;
-    }
-
-    /**
-     * Getter to check if the players should get followed by monsters
-     *
-     * @return followedByMonsters value
-     */
-    public boolean getFollowedByMonsters(){
-        return this.followedByMonsters;
-    }
-    
     /**
      * Sets the followedByMonsters value to true or false
      *
@@ -100,30 +146,91 @@ public class Player {
     public void setFollowedByMonsters(boolean value) {
         this.followedByMonsters = value;
     }
-    
-    public boolean getRollerSkate(){
-        return this.rollerSkateWorking;
-    }
+
     public void setRollerSkate(boolean value) {
         this.rollerSkateWorking = value;
     }
-    
-    public boolean isInvincible(){
-        return this.isInvincible;
-    }
-    
-    public void setInvincible(boolean value){
+
+    public void setInvincible(boolean value) {
         this.isInvincible = value;
     }
-    
+
+    public void setImmediateBombCurse(boolean value) {
+        this.placeBombImmediatelyCurse = value;
+    }
+
+    public void setImmediateBombCurseTimer(LocalTime time) {
+        if (time != null) {
+            this.immediateBombCurseStartTime = time;
+        } else {
+            this.immediateBombCurseStartTime = null;
+        }
+    }
+
+    public void setNoBombCurse(boolean value) {
+        this.noBombCurse = value;
+    }
+
+    public void setNoBombCurseTimer(LocalTime time) {
+        if (time != null) {
+            this.immediateBombCurseStartTime = time;
+        } else {
+            this.immediateBombCurseStartTime = null;
+        }
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setBombRangeCurse(int value) {
+        this.bombRange = value;
+    }
+
+//    public LocalTime getBombRangeCurseTimer() {
+//        return this.bombRangeCurseStartTime;
+//    }
+//
+//    public void setBombRangeCurseStartTime() {
+//        this.bombRangeCurseStartTime = LocalTime.now();
+//    }
+    public void setSpeedCurseTimer(LocalTime time) {
+        if (time != null) {
+            this.immediateBombCurseStartTime = time;
+        } else {
+            this.immediateBombCurseStartTime = null;
+        }
+    }
+
+    public void setBombNumber(int newBombNumber) {
+        this.maxBombNumber = newBombNumber;
+    }
+
+    public void setBlastRange(int newBlastRange) {
+        this.bombRange = newBlastRange;
+    }
+
+    public void setBombs(ArrayList<Bomb> bombs) {
+        this.bombs = bombs;
+    }
+
     public boolean isAlive() {
         return this.alive;
     }
 
-    public LocalTime getDeathTime() {
-        return this.deathTime;
+    public boolean isInvincible() {
+        return this.isInvincible;
     }
 
+    //////////////////OPERATIONS////////////////////////////////////////////////
+    /**
+     * Places a bomb on the player's current position if the player is alive,
+     * has not reached the maximum number of bombs they can place, and is not
+     * affected by the no-bomb curse.
+     *
+     * When a bomb is placed, it's added to the player's list of bombs. The game
+     * will process this bomb's explosion when its countdown finishes.
+     */
     public void placeBomb() {
         if (isAlive() && this.getBombs().size() < maxBombNumber && !this.noBombCurse) {
             Bomb bomb = new Bomb(this.position, this, this.space);
@@ -157,21 +264,31 @@ public class Player {
     public void addCurse(Curse curse) {
         this.curses.add(curse);
     }
-    
-    public void addPowerup(PowerUp powerup){
+
+    /**
+     * Adds powerup to the ArrayList
+     *
+     * @param powerup to be added to the ArrayList
+     */
+    public void addPowerup(PowerUp powerup) {
         this.powerups.add(powerup);
     }
-    
+
+    /**
+     * Removes used powerups from the list
+     *
+     * @param
+     */
     public void removeTerminatedPowerUps() {
         Iterator<PowerUp> powerupsIterator = this.powerups.iterator();
         while (powerupsIterator.hasNext()) {
             PowerUp p = powerupsIterator.next();
-            if(p.isTerminated()){
+            if (p.isTerminated()) {
                 powerupsIterator.remove();
             }
         }
     }
-    
+
     public void handlePowerupRemoval() {
         for (PowerUp p : this.powerups) {
             p.terminateEffect(this);
@@ -200,11 +317,21 @@ public class Player {
         }
     }
 
+    /**
+     * For the player to place obstacle after obtaining the powerup
+     *
+     * @param
+     */
     public void placeObstacle() {
         this.obstacles.add(this.position);
         System.out.println("I've placed an obstacle");
     }
 
+    /**
+     * Method to control the movements of the players
+     *
+     * @param direction, player
+     */
     public void movePlayer(Direction direction, Player player2) {
         if (isAlive() && isValidPosition(direction, player2)) {
             this.position = this.position.translate(direction);
@@ -212,7 +339,14 @@ public class Player {
 
     }
 
-    // check if the player has a bomb on certain field
+    /**
+     * Checks if the player has a bomb at the specified coordinates.
+     *
+     * @param x The x-coordinate of the position to check.
+     * @param y The y-coordinate of the position to check.
+     * @return true if there is a bomb at the specified position, false
+     * otherwise.
+     */
     public boolean hasBombAtPosition(int x, int y) {
         for (Bomb bomb : bombs) {
             Position bombPos = bomb.getPosition();
@@ -221,20 +355,12 @@ public class Player {
         return false;
     }
 
-    public Bomb getBomb(int x, int y) {
-        for (Bomb bomb : bombs) {
-            Position bombPos = bomb.getPosition();
-            if (bombPos.getX() == x && bombPos.getY() == y) {
-                return bomb;
-            }
-        }
-        return null;
-    }
-
-    public void setBombs(ArrayList<Bomb> bombs) {
-        this.bombs = bombs;
-    }
-
+    /**
+     * Removes a bomb from the player's list of bombs. The bomb to be removed is
+     * identified by its position.
+     *
+     * @param bomb The bomb to be removed.
+     */
     public void removeBomb(Bomb bomb) {
         Iterator<Bomb> bombIterator = this.bombs.iterator();
         while (bombIterator.hasNext()) {
@@ -246,6 +372,10 @@ public class Player {
         }
     }
 
+    /**
+     * Marks the player as dead and logs their death time. Also triggers the
+     * removal of the player from the map.
+     */
     public void die() {
         System.out.println(this.name + " has died");
         this.alive = false;
@@ -253,6 +383,15 @@ public class Player {
         removePlayerFromMap();
     }
 
+    /**
+     * Validates if the position in the given direction is walkable. The
+     * validation checks for obstacles, other players, and bombs in the new
+     * position.
+     *
+     * @param direction The direction the player wants to move to.
+     * @param player2 The other player in the game.
+     * @return true if the position is walkable, false otherwise.
+     */
     public boolean isValidPosition(Direction direction, Player player2) {
         Position newPosition = this.position.translate(direction);
 
@@ -270,95 +409,19 @@ public class Player {
         return true;
     }
 
+    /**
+     * Applies an effect to the player.
+     *
+     * @param effect The effect to be applied.
+     */
     public void activateEffect(Effect effect) {
         effect.applyEffect(this);
     }
 
-    public void setImmediateBombCurse(boolean value) {
-        this.placeBombImmediatelyCurse = value;
-    }
-
-    public LocalTime getImmediateBombCurseTimer() {
-        return this.immediateBombCurseStartTime;
-    }
-
-    public void setImmediateBombCurseTimer(LocalTime time) {
-        if (time != null) {
-            this.immediateBombCurseStartTime = time;
-        } else {
-            this.immediateBombCurseStartTime = null;
-        }
-    }
-
-    public void setNoBombCurse(boolean value) {
-        this.noBombCurse = value;
-    }
-
-    public LocalTime getNoBombCurseTimer() {
-        return this.noBombCurseStartTime;
-    }
-
-    public void setNoBombCurseTimer(LocalTime time) {
-        if (time != null) {
-            this.immediateBombCurseStartTime = time;
-        } else {
-            this.immediateBombCurseStartTime = null;
-        }
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setBombRangeCurse(int value) {
-        this.bombRange = value;
-    }
-
-//    public LocalTime getBombRangeCurseTimer() {
-//        return this.bombRangeCurseStartTime;
-//    }
-//
-//    public void setBombRangeCurseStartTime() {
-//        this.bombRangeCurseStartTime = LocalTime.now();
-//    }
-
-
-    public LocalTime getSpeedCurseTimer() {
-        return this.speedCurseStartTime;
-    }
-
-    public void setSpeedCurseTimer(LocalTime time) {
-        if (time != null) {
-            this.immediateBombCurseStartTime = time;
-        } else {
-            this.immediateBombCurseStartTime = null;
-        }
-    }
-
-    public Position getPosition() {
-        return this.position;
-    }
-
-    public int getBombNumber() {
-        return this.maxBombNumber;
-    }
-
-    public void setBombNumber(int newBombNumber) {
-        this.maxBombNumber = newBombNumber;
-    }
-
-    public int getBlastRange() {
-        return this.bombRange;
-    }
-
-    public void setBlastRange(int newBlastRange) {
-        this.bombRange = newBlastRange;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
+    /**
+     * Resets the player's state for a new round. It clears any bombs,
+     * obstacles, and re-initializes player's attributes.
+     */
     public void reset() {
         //this.position = new Position(0, 0);
         this.bombs = new ArrayList<>();
@@ -375,6 +438,10 @@ public class Player {
         this.placeBombImmediatelyCurse = false;
     }
 
+    /**
+     * Removes the player from the game map by setting their current cell to
+     * empty. Also moves the player's position off the grid.
+     */
     private void removePlayerFromMap() {
         Position playerPosition = this.position;
         space[playerPosition.getY()][playerPosition.getX()] = new Empty(playerPosition);
