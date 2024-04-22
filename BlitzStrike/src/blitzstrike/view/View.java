@@ -148,7 +148,7 @@ public class View extends JPanel {
         int y = bombPos.getY();
         int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
         for (int[] dir : directions) {
-            for (int i = 1; i <= blastRange; i++) {
+            for (int i = 1; i < blastRange; i++) {
                 int newX = x + dir[0] * i;
                 int newY = y + dir[1] * i;
                 if (game.canExplode(newX, newY)) {

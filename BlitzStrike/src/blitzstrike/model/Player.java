@@ -154,6 +154,11 @@ public class Player {
     public void setInvincible(boolean value) {
         this.isInvincible = value;
     }
+    
+    public void setGhost(boolean value){
+        this.isGhost = value;
+    }
+    
 
     public void setImmediateBombCurse(boolean value) {
         this.placeBombImmediatelyCurse = value;
@@ -220,6 +225,10 @@ public class Player {
 
     public boolean isInvincible() {
         return this.isInvincible;
+    }
+    
+    public boolean isGhost(){
+        return this.isGhost;
     }
 
     //////////////////OPERATIONS////////////////////////////////////////////////
@@ -427,7 +436,7 @@ public class Player {
         this.bombs = new ArrayList<>();
         this.obstacles = new ArrayList<>();
         this.alive = true;
-        this.bombRange = 3;
+        this.bombRange = 4;
         this.speed = 1.0;
         this.maxBombNumber = 1;
         this.isInvincible = false;
