@@ -10,10 +10,6 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-/**
- *
- * @author artur
- */
 public class Bomb {
 
     public static final int BOMB_COUNTDOWN = 3;
@@ -31,6 +27,19 @@ public class Bomb {
         this.exploding = false;
     }
 
+    // getters
+    public Position getPosition() {
+        return this.position;
+    }
+
+    public Player getOwner() {
+        return this.owner;
+    }
+
+    public boolean getExploding() {
+        return this.exploding;
+    }
+
     /**
      * It sets true if the time to explode has been reached, false, otherwise
      *
@@ -39,10 +48,6 @@ public class Bomb {
         // System.out.println(Duration.between(this.startingTime, LocalTime.now()).getSeconds() >= BOMB_COUNTDOWN);
         this.exploding = Duration.between(this.startingTime, LocalTime.now()).getSeconds() >= BOMB_COUNTDOWN;
 //        System.out.println("The bomb is set to exploding");
-    }
-
-    public boolean getExploding() {
-        return this.exploding;
     }
 
     /**
@@ -165,12 +170,4 @@ public class Bomb {
         return position.getX() < 0 || position.getX() >= MAP_SIZE || position.getY() < 0 || position.getY() >= MAP_SIZE;
     }
 
-    // getter
-    public Position getPosition() {
-        return this.position;
-    }
-
-    public Player getOwner() {
-        return this.owner;
-    }
 }
