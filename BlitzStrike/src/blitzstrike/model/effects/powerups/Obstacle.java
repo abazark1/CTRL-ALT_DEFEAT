@@ -6,32 +6,36 @@ package blitzstrike.model.effects.powerups;
 
 import blitzstrike.model.Player;
 
-/**
- *
- * @author medina
- */
+public class Obstacle extends PowerUp {
 
-//advanced power up
+    public static final int NUMBER_OF_OBSTACLES = 3;
 
-public class Obstacle extends PowerUp{
-    private int numberOfObstacles;
-    
-    private Obstacle(){
-        super();
-        this.numberOfObstacles = 3;
-    }
-    
+    /**
+     * Applies the obstacle power up to the given player
+     *
+     * @param player is the given player
+     */
     @Override
-    public void applyEffect(Player player){
-        
+    public void applyEffect(Player player) {
+
     }
-    
+
+    /**
+     * Removes the obstacle power up from the given player
+     *
+     * @param player is the given player
+     */
     @Override
-    public void removeEffect(Player player){
-        
+    public void removeEffect(Player player) {
+
     }
-    
-    private void increaseObstacles(Player player){
-        
+
+    /**
+     * Increases the max number of obstacles to the given player
+     *
+     * @param player is the given player
+     */
+    private void increaseObstacles(Player player) {
+
     }
 }

@@ -7,32 +7,36 @@ package blitzstrike.model.effects.powerups;
 import blitzstrike.model.Player;
 import java.time.LocalTime;
 
-/**
- *
- * @author medina
- */
+public class Invincibility extends PowerUp {
 
-//advanced power up
-
-public class Invincibility extends PowerUp{
-    
-    public Invincibility(){
-        super();
-    }
-    
+    /**
+     * Applies the invincibility power up to the given player
+     *
+     * @param player is the given player
+     */
     @Override
-    public void applyEffect(Player player){
+    public void applyEffect(Player player) {
         System.out.println(player.getName() + " has just got invincibility");
         makeInvincible(player);
         player.addPowerup(this);
     }
-    
+
+    /**
+     * Removes invincibility from the given player
+     *
+     * @param player is the given player
+     */
     @Override
-    public void removeEffect(Player player){
+    public void removeEffect(Player player) {
         player.setInvincible(false);
     }
-    
-    private void makeInvincible(Player player){
+
+    /**
+     * Makes a given player invincible
+     *
+     * @param player is the given player
+     */
+    private void makeInvincible(Player player) {
         player.setInvincible(true);
         this.startingTime = LocalTime.now();
     }

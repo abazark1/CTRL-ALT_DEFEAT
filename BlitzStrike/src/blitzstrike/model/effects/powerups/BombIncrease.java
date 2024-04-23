@@ -6,28 +6,37 @@ package blitzstrike.model.effects.powerups;
 
 import blitzstrike.model.Player;
 
-/**
- *
- * @author medina
- */
+public class BombIncrease extends PowerUp {
 
-//basic power up
-
-public class BombIncrease extends PowerUp{
-    
+    /**
+     * Applies the bomb increase power up to the given player
+     *
+     * @param player is the given player
+     */
     @Override
-    public void applyEffect(Player player){
+    public void applyEffect(Player player) {
         System.out.println(player.getName() + " has just got bomb increase!");
         increaseBombs(player);
     }
-    
-    @Override 
-    public void removeEffect(Player player) {}
-    
-    private void increaseBombs(Player player){
-        int bombs =player.getBombNumber();
+
+    /**
+     * Overrides the abstract method, but since the blast range doesn't get
+     * removed, the method doesn't do anything
+     *
+     * @param player is the given player
+     */
+    @Override
+    public void removeEffect(Player player) {
+    }
+
+    /**
+     * Increases the max number of bombs for the given player
+     *
+     * @param player is the given player
+     */
+    private void increaseBombs(Player player) {
+        int bombs = player.getBombNumber();
         bombs++;
         player.setBombNumber(bombs);
     }
 }
-

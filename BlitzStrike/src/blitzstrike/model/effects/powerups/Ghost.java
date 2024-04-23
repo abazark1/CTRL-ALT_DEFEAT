@@ -7,20 +7,13 @@ package blitzstrike.model.effects.powerups;
 import blitzstrike.model.Player;
 import java.time.LocalTime;
 
-/**
- *
- * @author medina
- */
-//advanced power up
 public class Ghost extends PowerUp {
 
-    private int duration;
-
-    public Ghost() {
-        super();
-        //this.duration = 5;
-    }
-
+    /**
+     * Applies the ghost power up to the given player
+     *
+     * @param player is the given player
+     */
     @Override
     public void applyEffect(Player player) {
         System.out.println(player.getName() + " has just got Ghost powerup");
@@ -28,15 +21,25 @@ public class Ghost extends PowerUp {
         player.addPowerup(this);
     }
 
+    /**
+     * Removes the ghost power up from the given player
+     *
+     * @param player is the given player
+     */
     @Override
     public void removeEffect(Player player) {
         player.setGhost(false);
 
     }
 
+    /**
+     * Turns a given player into a ghost and sets the starting time
+     *
+     * @param player is the given player
+     */
     private void makeGhost(Player player) {
         player.setGhost(true);
         this.startingTime = LocalTime.now();
-        
+
     }
 }

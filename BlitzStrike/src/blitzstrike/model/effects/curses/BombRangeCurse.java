@@ -7,10 +7,6 @@ package blitzstrike.model.effects.curses;
 import blitzstrike.model.Player;
 import java.time.LocalTime;
 
-/**
- *
- * @author medina
- */
 public class BombRangeCurse extends Curse {
 
     /**
