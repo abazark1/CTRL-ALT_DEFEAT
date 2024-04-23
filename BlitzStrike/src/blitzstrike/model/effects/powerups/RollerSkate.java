@@ -7,18 +7,13 @@ package blitzstrike.model.effects.powerups;
 import blitzstrike.model.Player;
 import java.time.LocalTime;
 
-/**
- *
- * @author medina
- */
-//advanced power up
 public class RollerSkate extends PowerUp {
-    
 
-    public RollerSkate() {
-        super();
-    }
-
+    /**
+     * Applies the rollerskate power up to the given player
+     *
+     * @param player is the given player
+     */
     @Override
     public void applyEffect(Player player) {
         System.out.println(player.getName() + " has just got roler skate!");
@@ -26,13 +21,23 @@ public class RollerSkate extends PowerUp {
         player.addPowerup(this);
     }
 
+    /**
+     * Removes the roller skate effect from the given player
+     *
+     * @param player is the given player
+     */
+    @Override
+    public void removeEffect(Player player) {
+        player.setRollerSkate(false);
+    }
+
+    /**
+     * Activates roller skate effect to the given player
+     *
+     * @param player is the given player
+     */
     private void activateRollerSkate(Player player) {
         player.setRollerSkate(true);
         this.startingTime = LocalTime.now();
-    }
-    
-    @Override
-    public void removeEffect(Player player){
-        player.setRollerSkate(false);
     }
 }

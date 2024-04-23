@@ -6,26 +6,34 @@ package blitzstrike.model.effects.powerups;
 
 import blitzstrike.model.Player;
 
-/**
- *
- * @author medina
- */
+public class Detonator extends PowerUp {
 
-//advanced power up
+    /**
+     * Applies the detonator power up to the given player
+     *
+     * @param player is the given player
+     */
+    @Override
+    public void applyEffect(Player player) {
 
-public class Detonator extends PowerUp{
-    
-    @Override
-    public void applyEffect(Player player){
-        
     }
-    
+
+    /**
+     * Removes the detonator power up from the given player
+     *
+     * @param player is the given player
+     */
     @Override
-    public void removeEffect(Player player){
-        
+    public void removeEffect(Player player) {
+
     }
-    
-    private void activateDetonator(Player player){
-        
+
+    /**
+     * Activates the detonator to the given player
+     *
+     * @param player is the given player
+     */
+    private void activateDetonator(Player player) {
+
     }
 }
