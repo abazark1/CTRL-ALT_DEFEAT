@@ -231,6 +231,8 @@ public class MainWindow extends JFrame {
                         player1.movePlayer(RIGHT, player2);
                     case KeyEvent.VK_SPACE ->
                         player1.placeBomb();
+                    case KeyEvent.VK_ALT ->
+                        player1.placeObstacle();
                 }
 
                 if (view != null) {
@@ -254,6 +256,8 @@ public class MainWindow extends JFrame {
                         player2.movePlayer(RIGHT, player1);
                     case KeyEvent.VK_ENTER ->
                         player2.placeBomb();
+                    case KeyEvent.VK_SHIFT ->
+                        player2.placeObstacle();
                 }
                 if (view != null) {
                     view.repaint();

@@ -13,6 +13,7 @@ import blitzstrike.model.effects.curses.NoBombCurse;
 import blitzstrike.model.effects.curses.FollowedByMonsters;
 import blitzstrike.model.effects.powerups.Ghost;
 import blitzstrike.model.effects.powerups.Invincibility;
+import blitzstrike.model.effects.powerups.Obstacle;
 import blitzstrike.model.effects.powerups.RollerSkate;
 import java.util.Random;
 
@@ -99,7 +100,7 @@ public abstract class Effect {
      */
     static public Effect getRandomEffect() {
         Random rand = new Random();
-        int randomNumber = rand.nextInt(9);
+        int randomNumber = rand.nextInt(10);
         Effect effect;
         switch (randomNumber) {
             case 0:
@@ -153,6 +154,13 @@ public abstract class Effect {
             case 8:
                 System.out.println("I dropped Ghost randomly");
                 effect = new Ghost();
+                effect.setEverythingFalse();
+                effect.setIsPowerup(true);
+                return effect;
+            
+            case 9:
+                System.out.println("I dropped Obstacle pUp randomly");
+                effect = new Obstacle();
                 effect.setEverythingFalse();
                 effect.setIsPowerup(true);
                 return effect;

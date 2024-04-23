@@ -17,7 +17,10 @@ public class Obstacle extends PowerUp {
      */
     @Override
     public void applyEffect(Player player) {
-
+        System.out.println(player.getName() + " has just got obstacle powerUp!");
+        increaseObstacles(player);
+        player.addPowerup(this);
+        player.setIsObstacleOn(true);
     }
 
     /**
@@ -36,6 +39,9 @@ public class Obstacle extends PowerUp {
      * @param player is the given player
      */
     private void increaseObstacles(Player player) {
-
+         
+        int maxNum = player.getMaxNumberOfObstacles();
+        maxNum = maxNum + NUMBER_OF_OBSTACLES;
+        player.setMaxNumberOfObstacles(maxNum);
     }
 }

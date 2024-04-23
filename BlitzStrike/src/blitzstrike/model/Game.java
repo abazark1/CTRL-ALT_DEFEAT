@@ -464,6 +464,16 @@ public class Game {
         }
         return null;
     }
+    
+    public ObstacleBox getObstacle(int x, int y) {
+        if (this.player1.hasObstacleAtPosition(x, y)) {
+            return this.player1.getObstacle(x, y);
+        } else if (this.player2.hasObstacleAtPosition(x, y)) {
+            return this.player2.getObstacle(x, y);
+        }
+        return null;
+    }
+    
 
     public Empty getEmpty(int x, int y) {
         Cell cell = space[y][x];
