@@ -25,11 +25,12 @@ import blitzstrike.model.Box;
 import blitzstrike.model.Wall;
 import blitzstrike.model.Empty;
 import blitzstrike.model.Bomb;
+import blitzstrike.model.ObstacleBox;
 
 public class View extends JPanel {
 
     private final Game game;
-    private final Image player1, player2, monster1, monster2, monster3, monster4, bomb, powerUp, curse, box, wall, empty, explosion, emptyeffect;
+    private final Image player1, player2, monster1, monster2, monster3, monster4, bomb, powerUp, curse, box, wall, empty, explosion, emptyeffect, obstacle;
     private double scale;
     private int scaled_size;
     private final int tile_size = 42;
@@ -50,6 +51,7 @@ public class View extends JPanel {
         powerUp = ResourceLoader.loadImage("blitzstrike/res/powerup.png");
         curse = ResourceLoader.loadImage("blitzstrike/res/curse.png");
         box = ResourceLoader.loadImage("blitzstrike/res/box.png");
+        obstacle = ResourceLoader.loadImage("blitzstrike/res/box.png");
         wall = ResourceLoader.loadImage("blitzstrike/res/wall.png");
         empty = ResourceLoader.loadImage("blitzstrike/res/empty.png");
         explosion = ResourceLoader.loadImage("blitzstrike/res/explosion.png");
@@ -128,7 +130,14 @@ public class View extends JPanel {
                 for (Bomb bomb2 : game.getPlayer22().getBombs()) {
                     gr.drawImage(this.bomb, bomb2.getPosition().getX() * scaled_size, bomb2.getPosition().getY() * scaled_size, scaled_size, scaled_size, null);
                 }
+                for (ObstacleBox obst1 : game.getPlayer11().getObstacles()) {
+                    gr.drawImage(this.obstacle, obst1.getPosition().getX() * scaled_size, obst1.getPosition().getY() * scaled_size, scaled_size, scaled_size, null);
 
+                }
+                for (ObstacleBox obst2 : game.getPlayer22().getObstacles()) {
+                    gr.drawImage(this.obstacle, obst2.getPosition().getX() * scaled_size, obst2.getPosition().getY() * scaled_size, scaled_size, scaled_size, null);
+
+                }
                 if (game.isBombAtPosition(x, y)) {
                     Bomb bomb = game.getBomb(x, y);
                     if (bomb != null) {
