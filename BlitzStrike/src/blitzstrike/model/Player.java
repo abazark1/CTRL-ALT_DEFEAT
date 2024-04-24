@@ -441,16 +441,32 @@ public class Player {
     public boolean isValidPosition(Direction direction, Player player2) {
         Position newPosition = this.position.translate(direction);
 
-        if (!this.space[newPosition.getY()][newPosition.getX()].isWalkable()) {
-            return false;
+        if(this.isGhost())
+        {
+            if (player2.getPosition().equals(newPosition)) {
+                return false;
+            }
+            if (!this.space[newPosition.getY()][newPosition.getX()].isWalkable()) {
+                return true;
+            }
+            
+            if (hasBombAtPosition(newPosition.getX(), newPosition.getY())) {
+                return true;
+            }
+            
         }
+        else{
+            if (!this.space[newPosition.getY()][newPosition.getX()].isWalkable()) {
+                return false;
+            }
 
-        if (player2.getPosition().equals(newPosition)) {
-            return false;
-        }
+            if (player2.getPosition().equals(newPosition)) {
+                return false;
+            }
 
-        if (hasBombAtPosition(newPosition.getX(), newPosition.getY())) {
-            return false;
+            if (hasBombAtPosition(newPosition.getX(), newPosition.getY())) {
+                return false;
+            }
         }
         return true;
     }
