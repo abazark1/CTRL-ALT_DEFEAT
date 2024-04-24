@@ -318,9 +318,9 @@ public class MainWindow extends JFrame {
                         game.handlePowerupTermination();
                         game.removeTerminatedPowerups();
                         game.handleImmediateBombCurseForBothPlayers();
-                    } else if (game.endRound) {
+                    } else if (game.getEndRound()) {
                         showRoundEndPopup("Round is overr!");
-                    } else if (game.endGame) {
+                    } else if (game.getEndGame()) {
                         showGameEndPopup();
                     }
                 } else {
@@ -602,7 +602,7 @@ public class MainWindow extends JFrame {
     }
 
     private void showGameEndPopup() {
-        if (game.endGame) {
+        if (game.getEndGame()) {
             JDialog gameEndDialog = new JDialog(this, "Game Ended", true);
             gameEndDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); // Set the default close operation
             gameEndDialog.setLayout(new FlowLayout());
