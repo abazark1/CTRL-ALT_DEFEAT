@@ -31,23 +31,8 @@ build:
   script:
     - mvn compile
 
-test:
-  stage: test
-  script:
-    - mvn test
 
-# Documentation
-pages:
-  stage: deploy
-  script:
-    - mvn javadoc:javadoc
-    - cp -r target/site/apidocs/. public/
-  artifacts:
-    paths:
-      - public
-    expire_in: 1 day
-  only:
-    - master
+
 
 # stages:          # List of stages for jobs, and their order of execution
 #   - build
