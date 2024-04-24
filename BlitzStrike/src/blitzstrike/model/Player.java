@@ -12,10 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- *
- * @author artur
- */
+
 public class Player {
 
     public static final int STANDARD_BOMB_RANGE = 4;
@@ -134,12 +131,12 @@ public class Player {
         return this.immediateBombCurseStartTime;
     }
 
-    /**
+    /*
      * Getter to check if the players should get followed by monsters
      *
      * @return followedByMonsters value
      */
-    public boolean getFollowedByMonsters() {
+     public boolean getFollowedByMonsters() {
         return this.followedByMonsters;
     }
     public int getMaxNumberOfObstacles(){
@@ -158,7 +155,7 @@ public class Player {
         this.space = space;
     }
 
-    /**
+    /*
      * Sets the followedByMonsters value to true or false
      *
      * @param value that should the followedByMonsters value
@@ -257,7 +254,7 @@ public class Player {
         return this.isObstacleOn;
     }
     //////////////////OPERATIONS////////////////////////////////////////////////
-    /**
+    /*
      * Places a bomb on the player's current position if the player is alive,
      * has not reached the maximum number of bombs they can place, and is not
      * affected by the no-bomb curse.
@@ -273,7 +270,7 @@ public class Player {
         }
     }
 
-    /**
+    /*
      * Places the bomb whenever the bombs are available and if the player is
      * still alive, if the immediate bomb curse is applied
      */
@@ -283,15 +280,14 @@ public class Player {
         }
     }
 
-    /**
+    /*
      * Sets bomb range to the standard value
      */
     public void resetBombRange() {
         this.bombRange = STANDARD_BOMB_RANGE;
     }
-
-    /**
-     * Adds curse to the ArrayList
+    /*
+    * Adds curse to the ArrayList
      *
      * @param curse to be added to the ArrayList
      */
@@ -299,7 +295,7 @@ public class Player {
         this.curses.add(curse);
     }
 
-    /**
+    /*
      * Adds powerup to the ArrayList
      *
      * @param powerup to be added to the ArrayList
@@ -308,7 +304,7 @@ public class Player {
         this.powerups.add(powerup);
     }
 
-    /**
+    /*
      * Removes used powerups from the list
      *
      * @param
@@ -329,7 +325,7 @@ public class Player {
         }
     }
 
-    /**
+    /*
      * Removes terminated curses from the ArrayList
      */
     public void removeTerminatedCurses() {
@@ -342,7 +338,7 @@ public class Player {
         }
     }
 
-    /**
+    /*
      * Removes the terminated effects from the ArrayList
      */
     public void handleCurseRemoval() {
@@ -351,7 +347,7 @@ public class Player {
         }
     }
 
-    /**
+    /*
      * For the player to place obstacle after obtaining the powerup
      *
      * @param
@@ -365,7 +361,7 @@ public class Player {
         }
     }
 
-    /**
+    /*
      * Method to control the movements of the players
      *
      * @param direction, player
@@ -377,7 +373,7 @@ public class Player {
 
     }
 
-    /**
+    /*
      * Checks if the player has a bomb at the specified coordinates.
      *
      * @param x The x-coordinate of the position to check.
@@ -401,7 +397,7 @@ public class Player {
         return false;
     }
 
-    /**
+    /*
      * Removes a bomb from the player's list of bombs. The bomb to be removed is
      * identified by its position.
      *
@@ -418,7 +414,7 @@ public class Player {
         }
     }
 
-    /**
+    /*
      * Marks the player as dead and logs their death time. Also triggers the
      * removal of the player from the map.
      */
@@ -428,8 +424,7 @@ public class Player {
         this.deathTime = LocalTime.now();
         removePlayerFromMap();
     }
-
-    /**
+    /*
      * Validates if the position in the given direction is walkable. The
      * validation checks for obstacles, other players, and bombs in the new
      * position.
@@ -441,21 +436,37 @@ public class Player {
     public boolean isValidPosition(Direction direction, Player player2) {
         Position newPosition = this.position.translate(direction);
 
-        if (!this.space[newPosition.getY()][newPosition.getX()].isWalkable()) {
-            return false;
+        if(this.isGhost())
+        {
+            if (player2.getPosition().equals(newPosition)) {
+                return false;
+            }
+            if (!this.space[newPosition.getY()][newPosition.getX()].isWalkable()) {
+                return true;
+            }
+            
+            if (hasBombAtPosition(newPosition.getX(), newPosition.getY())) {
+                return true;
+            }
+            
         }
+        else{
+            if (!this.space[newPosition.getY()][newPosition.getX()].isWalkable()) {
+                return false;
+            }
 
-        if (player2.getPosition().equals(newPosition)) {
-            return false;
-        }
+            if (player2.getPosition().equals(newPosition)) {
+                return false;
+            }
 
-        if (hasBombAtPosition(newPosition.getX(), newPosition.getY())) {
-            return false;
+            if (hasBombAtPosition(newPosition.getX(), newPosition.getY())) {
+                return false;
+            }
         }
         return true;
     }
 
-    /**
+    /*
      * Applies an effect to the player.
      *
      * @param effect The effect to be applied.
@@ -464,7 +475,7 @@ public class Player {
         effect.applyEffect(this);
     }
 
-    /**
+    /*
      * Resets the player's state for a new round. It clears any bombs,
      * obstacles, and re-initializes player's attributes.
      */
@@ -484,7 +495,7 @@ public class Player {
         this.placeBombImmediatelyCurse = false;
     }
 
-    /**
+    /*
      * Removes the player from the game map by setting their current cell to
      * empty. Also moves the player's position off the grid.
      */

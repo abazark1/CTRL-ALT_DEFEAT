@@ -303,7 +303,62 @@ public class Game {
     public boolean isGameTotallyFinished() {
         return this.player1Score >= this.roundsToWin || this.player2Score >= this.roundsToWin;
     }
+    
+     /*
+     * Checks if the cell at the specified coordinates is a Wall.
+     *
+     * @param x The x-coordinate of the cell.
+     * @param y The y-coordinate of the cell.
+     * @return true if the cell is a Wall, false otherwise.
+     */
+    public boolean isWall(int x, int y) {
+        if (x >= 0 && x < MAP_SIZE && y >= 0 && y < MAP_SIZE) {
+            return space[y][x] instanceof Wall;
+        }
+        return false; // Return false if the coordinates are out of bounds.
+    }
 
+     /*
+     * Checks if the cell at the specified coordinates is a Box.
+     *
+     * @param x The x-coordinate of the cell.
+     * @param y The y-coordinate of the cell.
+     * @return true if the cell is a Wall, false otherwise.
+     */
+    public boolean isBox(int x, int y) {
+        if (x >= 0 && x < MAP_SIZE && y >= 0 && y < MAP_SIZE) {
+            return space[y][x] instanceof Box;
+        }
+        return false; // Return false if the coordinates are out of bounds.
+    }
+    
+    /*
+     * Checks if either player is positioned on a cell that is a Wall or Box and
+     * handles their ghost condition. If a player is on a Wall or Box and is not
+     * in a ghost state, the player will "die". The ghost state allows players
+     * to pass through walls and boxes without dying. 
+     */
+    public void handleGhostCondition() {
+        if (isWall(player1.getPosition().getX(), player1.getPosition().getY()) || isBox(player1.getPosition().getX(), player1.getPosition().getY())) {
+
+            System.out.println("PLAYER1 POSITION IS WALL OR BOX");
+            if (!player1.isGhost()) {
+                player1.die();
+                System.out.println("Player 1 die is called because its on the wall or box");
+            }
+
+        }
+        if (isWall(player2.getPosition().getX(), player2.getPosition().getY()) ||  isBox(player2.getPosition().getX(), player2.getPosition().getY())) {
+
+            System.out.println("PLAYER2 POSITION IS WALL OR BOX");
+
+            if (!player2.isGhost()) {
+                player2.die();
+                System.out.println("Player 2 die is called because its on the wall or box");
+            }
+        }
+    }
+    
     // collision of monsters and players & players and effects
     public void handleCollision() {
         for (Monster monster : monsters) {
