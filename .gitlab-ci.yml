@@ -28,6 +28,7 @@ before_script:
 build-program:
   stage: build
   script:
+    - cd BlitzStrike
     - ant compile
     - ant jar
   artifacts:
