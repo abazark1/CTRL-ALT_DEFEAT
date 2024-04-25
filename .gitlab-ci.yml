@@ -28,9 +28,8 @@ before_script:
 build-program:
   stage: build
   script:
-    - cd BlitzStrike
-    - ant compile
-    - ant jar
+    - ant -buildfile BlitzStrike/build.xml compile
+    - ant -buildfile BlitzStrike/build.xml jar
   artifacts:
     paths:
       - dist/program.jar
