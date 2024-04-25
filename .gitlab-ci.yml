@@ -23,7 +23,8 @@ stages:          # List of stages for jobs, and their order of execution
 
 before_script:
   - apt-get update -qq
-  - apt-get install -yqq openjdk-20-jdk ant
+  - apt-get install -yqq openjdk-11-jdk ant
+  - java -version
 
 build-program:
   stage: build
