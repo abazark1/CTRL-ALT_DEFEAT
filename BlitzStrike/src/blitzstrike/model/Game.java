@@ -977,65 +977,60 @@ public class Game {
 
     }
 
-    //private methods
-    /**
-     * Turns the cell at the given indices into a wall
+    //private methods    
+     /*
+     * Checks if the cell at the specified coordinates is a Wall.
      *
-     * @param i
-     * @param j
+     * @param x The x-coordinate of the cell.
+     * @param y The y-coordinate of the cell.
+     * @return true if the cell is a Wall, false otherwise.
      */
-    private void turnIntoWalls(int i, int j) {
-        this.space[i][j] = new Wall(new Position(j, i));
+    public boolean isWall(int x, int y) {
+        if (x >= 0 && x < MAP_SIZE && y >= 0 && y < MAP_SIZE) {
+            return space[y][x] instanceof Wall;
+        }
+        return false; // Return false if the coordinates are out of bounds.
     }
 
-    /**
-     * Unalives living entities in the cell at the given indices
+     /*
+     * Checks if the cell at the specified coordinates is a Box.
      *
-     * @param i
-     * @param j
+     * @param x The x-coordinate of the cell.
+     * @param y The y-coordinate of the cell.
+     * @return true if the cell is a Wall, false otherwise.
      */
-    private void crushByWalls(int i, int j) {
-        if (this.player1.getPosition().getX() == i && this.player1.getPosition().getY() == j && this.player2.getPosition().getX() == i && this.player2.getPosition().getY() == j) {
-            this.player1.die();
-            this.player2.die();
-        } else if (this.player1.getPosition().getX() == i && this.player1.getPosition().getY() == j) {
-            this.player1.die();
-        } else if (this.player2.getPosition().getX() == i && this.player2.getPosition().getY() == j) {
-            this.player2.die();
+    public boolean isBox(int x, int y) {
+        if (x >= 0 && x < MAP_SIZE && y >= 0 && y < MAP_SIZE) {
+            return space[y][x] instanceof Box;
         }
-        for (Monster monster : monsters) {
-            if (monster.getPosition().getX() == i && monster.getPosition().getY() == j) {
-                monster.die();
+        return false; // Return false if the coordinates are out of bounds.
+    }
+    
+    /*
+     * Checks if either player is positioned on a cell that is a Wall or Box and
+     * handles their ghost condition. If a player is on a Wall or Box and is not
+     * in a ghost state, the player will "die". The ghost state allows players
+     * to pass through walls and boxes without dying. 
+     */
+    public void handleGhostCondition() {
+        if (isWall(player1.getPosition().getX(), player1.getPosition().getY()) || isBox(player1.getPosition().getX(), player1.getPosition().getY())) {
+
+            System.out.println("PLAYER1 POSITION IS WALL OR BOX");
+            if (!player1.isGhost()) {
+                player1.die();
+                System.out.println("Player 1 die is called because its on the wall or box");
+            }
+
+        }
+        if (isWall(player2.getPosition().getX(), player2.getPosition().getY()) ||  isBox(player2.getPosition().getX(), player2.getPosition().getY())) {
+
+            System.out.println("PLAYER2 POSITION IS WALL OR BOX");
+
+            if (!player2.isGhost()) {
+                player2.die();
+                System.out.println("Player 2 die is called because its on the wall or box");
             }
         }
     }
-
-    /**
-     * Shrinks the map
-     */
-    private void shrinkMap() {
-        for (int i = 0; i < MAP_SIZE; i++) {
-            for (int j = 0; j < MAP_SIZE; j++) {
-                if (isEdge(i, j)) {
-                    crushByWalls(i, j);
-                    turnIntoWalls(i, j);
-                }
-            }
-        }
-    }
-
-    /**
-     * Handles the completion of a round and determines if the game is totally
-     * finished. If the game is not totally finished, it sets the end of the
-     * round flag to true. If the game is totally finished, it determines the
-     * winner based on the scores and sets the end of the game flag to true.
-     */
-    private void handleFinishRoundAndGame() {
-        if (!isGameTotallyFinished()) {
-            this.endRound = true;
-        } else {
-            this.winner = this.player1Score > this.player2Score ? this.player1 : this.player2;
-            this.endGame = true;
-        }
-    }
+    
 }
