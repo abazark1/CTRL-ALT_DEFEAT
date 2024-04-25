@@ -5,50 +5,49 @@
 package blitzstrike.model;
 
 public class ObstacleBox extends Cell {
-    
-    
-    public ObstacleBox(Position position){
+
+    public ObstacleBox(Position position) {
         super(position);
         this.destroyable = true;
         this.mineable = false;
         this.walkable = false;
     }
-    
+
     /**
-     * Method to reset the fields
-     * if the obstacleBox is destroyed
+     * Method to reset the fields if the obstacleBox is destroyed
      */
-    public void getDestroyed(){
+    public void getDestroyed() {
         this.destroyed = true;
         this.walkable = true;
         this.destroyable = false;
         this.mineable = true;
         System.out.println("I'm destroyed");
     }
-    
+
     /**
      * Returns true if the obstacle is destroyed, otherwise false
+     *
      * @return destroyed (boolean)
      */
-    @Override
-    public boolean isDestroyed(){
+    public boolean isDestroyed() {
         return this.destroyed;
     }
-    
+
     /**
      * Returns true if the obstacle is destroyable, otherwise false
+     *
      * @return destroyable (boolean)
      */
-    public boolean isDestoyable(){
+    public boolean isDestoyable() {
         return this.destroyable;
     }
-    
+
     /**
      * Returns the position of an obstacle
+     *
      * @return position value
      */
     public Position getPosition() {
         return this.position;
     }
 }
-

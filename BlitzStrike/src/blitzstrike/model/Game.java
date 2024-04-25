@@ -24,17 +24,17 @@ public class Game {
     public static final int MAP_SIZE = 15;
     public static final int INITIAL_BATTLE_ROYALE_DURATION = 180;
 
+    private boolean endGame;
+    private boolean endRound;
+    private boolean isPaused;
+    // to check if there's any explosion for View class
+    private boolean isExplosionInProgress;
     private int roundsToWin;
     private int currentBattleRoyaleDuration;
     private int currentBattleRoyaleTime;
     private int currentLayerOfBattleRoyale;
     private int player1Score;
     private int player2Score;
-    // to check if there's any explosion for View class
-    private boolean isExplosionInProgress;
-    private boolean isPaused;
-    private boolean endGame;
-    private boolean endRound;
     private Player player1;
     private Player player2;
     private Player winner;
@@ -43,9 +43,7 @@ public class Game {
     private ArrayList<Monster> monsters;
     private Cell[][] space = new Cell[MAP_SIZE][MAP_SIZE];
 
-    /**
-     * Public constructors
-     */
+    ////////////////////////////////////////////Public constructors//////////////////////////
     public Game() {
     }
 
@@ -63,7 +61,7 @@ public class Game {
         this.currentBattleRoyaleTime = currentBattleRoyaleDuration;
     }
 
-    //getters and setters
+    ///////////////////////////////////////////getters and setters//////////////////////////////////////
     /**
      * Returns true if the round is ended, otherwise false
      *
@@ -115,7 +113,7 @@ public class Game {
      * @return player1 value
      */
     public Player getPlayer11() {
-        return this.player1;
+        return player1;
     }
 
     /**
@@ -124,7 +122,7 @@ public class Game {
      * @return player2 value
      */
     public Player getPlayer22() {
-        return this.player2;
+        return player2;
     }
 
     /**
@@ -133,7 +131,7 @@ public class Game {
      * @return isPaused value
      */
     public boolean getIsPaused() {
-        return this.isPaused;
+        return isPaused;
     }
 
     /**
@@ -142,15 +140,17 @@ public class Game {
      * @return final winner value
      */
     public Player getWinner() {
+        //final winner
         return this.winner;
     }
 
     /**
      * Getter
      *
-     * @return roundsToWin value
+     * @return final winner value
      */
     public int getRoundsToWin() {
+        //final winner
         return this.roundsToWin;
     }
 
@@ -172,7 +172,7 @@ public class Game {
         this.roundsToWin = rToWin;
     }
 
-    //public methods
+    ////////////////////////////////////public methods//////////////////////////////
     /**
      * Method to check if there is a box on a cell
      *
@@ -308,17 +308,6 @@ public class Game {
     }
 
     /**
-     * Returns true if the cell at the given indices is on the edge
-     *
-     * @param i
-     * @param j
-     * @return
-     */
-    private boolean isEdge(int i, int j) {
-        return (i == currentLayerOfBattleRoyale || i == MAP_SIZE - 1 - currentLayerOfBattleRoyale || j == currentLayerOfBattleRoyale || j == MAP_SIZE - 1 - currentLayerOfBattleRoyale);
-    }
-
-    /**
      * Returns true if it's either end of the round or the entire game
      *
      * @return
@@ -346,32 +335,6 @@ public class Game {
      */
     public boolean isPlayerDead() {
         return false;
-    }
-
-    /**
-     * Checks if there is a monster at the specified position.
-     *
-     * @param x The x-coordinate of the position to check.
-     * @param y The y-coordinate of the position to check.
-     * @return true if there is a monster at the specified position, otherwise
-     * false.
-     */
-    private boolean isMonsterAtPosition(int x, int y) {
-        for (Monster monster : monsters) {
-            if (monster.getPosition().equals(new Position(x, y))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Checks if at least one of the players is dead.
-     *
-     * @return true if at least one of the players is dead, otherwise false.
-     */
-    private boolean isOneOfThePlayersDead() {
-        return !player1.isAlive() || !player2.isAlive();
     }
 
     /**
@@ -458,7 +421,7 @@ public class Game {
      * space accordingly.
      */
     public void handleCollision() {
-        // collision of monsters and players
+        // collision of monsters and players 
         for (Monster monster : monsters) {
             if (monster.getPosition().equals(player1.getPosition())) {
                 if (player1.isInvincible()) {
@@ -511,7 +474,6 @@ public class Game {
                 b.handleExplosion(player1, player2, monsters);
             }
         }
-
         //player2 bombs
         ArrayList<Bomb> player2BombsCopy = new ArrayList<>(this.player2.getBombs());
         Iterator<Bomb> bombIterator2 = player2BombsCopy.iterator();
@@ -525,133 +487,59 @@ public class Game {
         }
     }
 
-    /**
-     * Loads the next round of the game by reloading the map and resetting both
-     * players. This method is typically called when transitioning to a new
-     * round of the game.
-     */
-    public void loadNextRound() {
-        loadMap();
-        this.player1.reset();
-        this.player2.reset();
-    }
-
-    /**
-     * Restarts the game by resetting both players, reloading the map, resetting
-     * scores, and updating the starting time and game status.
-     */
-    public void restartgame() {
-
-        player1.reset();
-        player2.reset();
-        loadMap();
-        player1Score = 0;
-        player2Score = 0;
-        startingTime = LocalTime.now();
-        endGame = false;
-    }
-
-    /**
-     * Pauses the game by setting the game state to paused.
-     */
-    public void pauseGame() {
-        isPaused = true;
-    }
-
-    /**
-     * Resumes the game by setting the game state to not paused.
-     */
-    public void resumeGame() {
-        isPaused = false;
-    }
-
-    /**
-     * Saves the current game state to a file. The saved data includes player
-     * information, scores, rounds to win, and the current map state. The game
-     * is paused during the saving process to ensure data integrity.
+    /*
+     * Checks if the cell at the specified coordinates is a Wall.
      *
-     * @param player1 The first player.
-     * @param player2 The second player.
-     * @param player1score The score of the first player.
-     * @param player2score The score of the second player.
-     * @param roundsToWin The number of rounds required to win the game.
+     * @param x The x-coordinate of the cell.
+     * @param y The y-coordinate of the cell.
+     * @return true if the cell is a Wall, false otherwise.
      */
-    public void saveGame(Player player1, Player player2, int player1score, int player2score, int roundsToWin/*, Timer timer*/) {
-        StringBuilder mapBuilder = new StringBuilder();
-        pauseGame();
-        // Save map state
-        for (int y = 0; y < MAP_SIZE; y++) {
-            for (int x = 0; x < MAP_SIZE; x++) {
-                Cell cell = space[y][x];
-                if (cell instanceof Wall) {
-                    mapBuilder.append('x');
-                } else if (cell instanceof Box) {
-                    mapBuilder.append('#');
-                } else if (player1.getPosition().equals(new Position(x, y))) {
-                    mapBuilder.append('a');
-                } else if (player2.getPosition().equals(new Position(x, y))) {
-                    mapBuilder.append('b');
-                } else if (isMonsterAtPosition(x, y)) {
-                    Monster m = getMonster(x, y);
-                    //Char monsterString = '';
-                    if (m != null) {
-                        switch (m.monsterType) {
-                            case BASIC:
-                                mapBuilder.append('1');
-                                break;
-                            case MONSTER2:
-                                mapBuilder.append('2');
-                                break;
-                            case MONSTER3:
-                                mapBuilder.append('3');
-                                break;
-                            case MONSTER4:
-                                mapBuilder.append('4');
-                                break;
-                        }
-                    }
-                    //mapBuilder.append('1');
-                } else {
-                    mapBuilder.append(' ');
-                }
-            }
-            mapBuilder.append("\n");
+    public boolean isWall(int x, int y) {
+        if (x >= 0 && x < MAP_SIZE && y >= 0 && y < MAP_SIZE) {
+            return space[y][x] instanceof Wall;
         }
-
-        try (FileWriter writer = new FileWriter("src/blitzstrike/files/" + player1.getName() + "_" + player2.getName() + "_" + player1Score + "_" + player2Score + "_" + roundsToWin + ".txt")) {
-            writer.write("Player1Name:" + player1.getName() + "\n");
-            writer.write("Player2Name:" + player2.getName() + "\n");
-            writer.write("Player1Score:" + player1Score + "\n");
-            writer.write("Player2Score:" + player2Score + "\n");
-            writer.write("RoundsToWin:" + roundsToWin + "\n");
-
-            writer.write(mapBuilder.toString());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        return false; // Return false if the coordinates are out of bounds.
     }
 
-    /**
-     * Reads and returns the content of a file.
+    /*
+     * Checks if the cell at the specified coordinates is a Box.
      *
-     * @return The content of the file as a string.
+     * @param x The x-coordinate of the cell.
+     * @param y The y-coordinate of the cell.
+     * @return true if the cell is a Wall, false otherwise.
      */
-    public String readFile() {
-        StringBuilder sb = new StringBuilder();
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(this.filepath));
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line).append('\n');
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    public boolean isBox(int x, int y) {
+        if (x >= 0 && x < MAP_SIZE && y >= 0 && y < MAP_SIZE) {
+            return space[y][x] instanceof Box;
         }
-        String result = sb.toString();
-        return result;
+        return false; // Return false if the coordinates are out of bounds.
+    }
 
+    /*
+     * Checks if either player is positioned on a cell that is a Wall or Box and
+     * handles their ghost condition. If a player is on a Wall or Box and is not
+     * in a ghost state, the player will "die". The ghost state allows players
+     * to pass through walls and boxes without dying. 
+     */
+    public void handleGhostCondition() {
+        if (isWall(player1.getPosition().getX(), player1.getPosition().getY()) || isBox(player1.getPosition().getX(), player1.getPosition().getY())) {
+
+            System.out.println("PLAYER1 POSITION IS WALL OR BOX");
+            if (!player1.isGhost()) {
+                player1.die();
+                System.out.println("Player 1 die is called because its on the wall or box");
+            }
+
+        }
+        if (isWall(player2.getPosition().getX(), player2.getPosition().getY()) || isBox(player2.getPosition().getX(), player2.getPosition().getY())) {
+
+            System.out.println("PLAYER2 POSITION IS WALL OR BOX");
+
+            if (!player2.isGhost()) {
+                player2.die();
+                System.out.println("Player 2 die is called because its on the wall or box");
+            }
+        }
     }
 
     /**
@@ -720,8 +608,7 @@ public class Game {
     }
 
     /**
-     * Decreases currentBattleRoyaleDuration by one. This method is typically
-     * called in a periodic loop to update the battle royale timer.
+     * Decreases currentBattleRoyaleDuration by one
      */
     public void decreaseBattleRoyaleTime() {
         if (this.currentBattleRoyaleTime > 0) {
@@ -760,66 +647,53 @@ public class Game {
         if (x < 0 || y < 0 || x >= MAP_SIZE || y >= MAP_SIZE) {
             return false; // Out of bounds
         }
+
         Cell cell = space[y][x];
         if (cell instanceof Wall) {
             return false; // Walls block explosion
         }
+
         return true; // Empty cells and undestroyed boxes can explode
     }
 
-    /*
-     * Checks if the cell at the specified coordinates is a Wall.
-     *
-     * @param x The x-coordinate of the cell.
-     * @param y The y-coordinate of the cell.
-     * @return true if the cell is a Wall, false otherwise.
+    /**
+     * Loads the next round of the game by reloading the map and resetting both
+     * players. This method is typically called when transitioning to a new
+     * round of the game.
      */
-    public boolean isWall(int x, int y) {
-        if (x >= 0 && x < MAP_SIZE && y >= 0 && y < MAP_SIZE) {
-            return space[y][x] instanceof Wall;
-        }
-        return false; // Return false if the coordinates are out of bounds.
+    public void loadNextRound() {
+        loadMap();
+        this.player1.reset();
+        this.player2.reset();
     }
 
-    /*
-     * Checks if the cell at the specified coordinates is a Box.
-     *
-     * @param x The x-coordinate of the cell.
-     * @param y The y-coordinate of the cell.
-     * @return true if the cell is a Wall, false otherwise.
+    /**
+     * Restarts the game by resetting both players, reloading the map, resetting
+     * scores, and updating the starting time and game status.
      */
-    public boolean isBox(int x, int y) {
-        if (x >= 0 && x < MAP_SIZE && y >= 0 && y < MAP_SIZE) {
-            return space[y][x] instanceof Box;
-        }
-        return false; // Return false if the coordinates are out of bounds.
+    public void restartgame() {
+
+        player1.reset();
+        player2.reset();
+        loadMap();
+        player1Score = 0;
+        player2Score = 0;
+        startingTime = LocalTime.now();
+        endGame = false;
     }
 
-    /*
-     * Checks if either player is positioned on a cell that is a Wall or Box and
-     * handles their ghost condition. If a player is on a Wall or Box and is not
-     * in a ghost state, the player will "die". The ghost state allows players
-     * to pass through walls and boxes without dying. 
+    /**
+     * Pauses the game by setting the game state to paused.
      */
-    public void handleGhostCondition() {
-        if (isWall(player1.getPosition().getX(), player1.getPosition().getY()) || isBox(player1.getPosition().getX(), player1.getPosition().getY())) {
+    public void pauseGame() {
+        isPaused = true;
+    }
 
-            System.out.println("PLAYER1 POSITION IS WALL OR BOX");
-            if (!player1.isGhost()) {
-                player1.die();
-                System.out.println("Player 1 die is called because its on the wall or box");
-            }
-
-        }
-        if (isWall(player2.getPosition().getX(), player2.getPosition().getY()) || isBox(player2.getPosition().getX(), player2.getPosition().getY())) {
-
-            System.out.println("PLAYER2 POSITION IS WALL OR BOX");
-
-            if (!player2.isGhost()) {
-                player2.die();
-                System.out.println("Player 2 die is called because its on the wall or box");
-            }
-        }
+    /**
+     * Resumes the game by setting the game state to not paused.
+     */
+    public void resumeGame() {
+        isPaused = false;
     }
 
     /**
@@ -977,15 +851,159 @@ public class Game {
 
     }
 
-    //private methods
     /**
-     * Turns the cell at the given indices into a wall
+     * Saves the current game state to a file. The saved data includes player
+     * information, scores, rounds to win, and the current map state. The game
+     * is paused during the saving process to ensure data integrity.
+     *
+     * @param player1 The first player.
+     * @param player2 The second player.
+     * @param player1score The score of the first player.
+     * @param player2score The score of the second player.
+     * @param roundsToWin The number of rounds required to win the game.
+     */
+    public void saveGame(Player player1, Player player2, int player1score, int player2score, int roundsToWin/*, Timer timer*/) {
+        StringBuilder mapBuilder = new StringBuilder();
+        pauseGame();
+        // Save map state
+        for (int y = 0; y < MAP_SIZE; y++) {
+            for (int x = 0; x < MAP_SIZE; x++) {
+                Cell cell = space[y][x];
+                if (cell instanceof Wall) {
+                    mapBuilder.append('x');
+                } else if (cell instanceof Box) {
+                    mapBuilder.append('#');
+                } else if (player1.getPosition().equals(new Position(x, y))) {
+                    mapBuilder.append('a');
+                } else if (player2.getPosition().equals(new Position(x, y))) {
+                    mapBuilder.append('b');
+                } else if (isMonsterAtPosition(x, y)) {
+                    Monster m = getMonster(x, y);
+                    //Char monsterString = '';
+                    if (m != null) {
+                        switch (m.monsterType) {
+                            case BASIC:
+                                mapBuilder.append('1');
+                                break;
+                            case MONSTER2:
+                                mapBuilder.append('2');
+                                break;
+                            case MONSTER3:
+                                mapBuilder.append('3');
+                                break;
+                            case MONSTER4:
+                                mapBuilder.append('4');
+                                break;
+                        }
+                    }
+                    //mapBuilder.append('1');
+                } else {
+                    mapBuilder.append(' ');
+                }
+            }
+            mapBuilder.append("\n");
+        }
+
+        try (FileWriter writer = new FileWriter("src/blitzstrike/files/" + player1.getName() + "_" + player2.getName() + "_" + player1Score + "_" + player2Score + "_" + roundsToWin + ".txt")) {
+            writer.write("Player1Name:" + player1.getName() + "\n");
+            writer.write("Player2Name:" + player2.getName() + "\n");
+            writer.write("Player1Score:" + player1Score + "\n");
+            writer.write("Player2Score:" + player2Score + "\n");
+            writer.write("RoundsToWin:" + roundsToWin + "\n");
+
+            writer.write(mapBuilder.toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Reads and returns the content of a file.
+     *
+     * @return The content of the file as a string.
+     */
+    public String readFile() {
+        StringBuilder sb = new StringBuilder();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(this.filepath));
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append('\n');
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String result = sb.toString();
+        return result;
+
+    }
+
+    /////////////////private methods////////////////////////
+    /**
+     * Returns true if the cell at the given indices is on the edge
      *
      * @param i
      * @param j
      */
-    private void turnIntoWalls(int i, int j) {
-        this.space[i][j] = new Wall(new Position(j, i));
+    private boolean isEdge(int i, int j) {
+        return (i == currentLayerOfBattleRoyale || i == MAP_SIZE - 1 - currentLayerOfBattleRoyale || j == currentLayerOfBattleRoyale || j == MAP_SIZE - 1 - currentLayerOfBattleRoyale);
+    }
+
+    /**
+     * Checks if there is a monster at the specified position.
+     *
+     * @param x The x-coordinate of the position to check.
+     * @param y The y-coordinate of the position to check.
+     * @return true if there is a monster at the specified position, otherwise
+     * false.
+     */
+    private boolean isMonsterAtPosition(int x, int y) {
+        for (Monster monster : monsters) {
+            if (monster.getPosition().equals(new Position(x, y))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if at least one of the players is dead.
+     *
+     * @return true if at least one of the players is dead, otherwise false.
+     */
+    private boolean isOneOfThePlayersDead() {
+        return !player1.isAlive() || !player2.isAlive();
+    }
+
+    /**
+     * Handles the completion of a round and determines if the game is totally
+     * finished. If the game is not totally finished, it sets the end of the
+     * round flag to true. If the game is totally finished, it determines the
+     * winner based on the scores and sets the end of the game flag to true.
+     */
+    private void handleFinishRoundAndGame() {
+        if (!isGameTotallyFinished()) {
+            this.endRound = true;
+        } else {
+            this.winner = this.player1Score > this.player2Score ? this.player1 : this.player2;
+            this.endGame = true;
+        }
+    }
+    
+    /**
+     * Shrinks the map
+     */
+    private void shrinkMap() {
+        for (int i = 0; i < MAP_SIZE; i++) {
+            for (int j = 0; j < MAP_SIZE; j++) {
+                if (isEdge(i, j)) {
+                    crushByWalls(i, j);
+                    turnIntoWalls(i, j);
+                }
+            }
+        }
     }
 
     /**
@@ -1013,30 +1031,7 @@ public class Game {
     /**
      * Shrinks the map
      */
-    private void shrinkMap() {
-        for (int i = 0; i < MAP_SIZE; i++) {
-            for (int j = 0; j < MAP_SIZE; j++) {
-                if (isEdge(i, j)) {
-                    crushByWalls(i, j);
-                    turnIntoWalls(i, j);
-                }
-            }
-        }
+    private void turnIntoWalls(int i, int j) {
+        this.space[i][j] = new Wall(new Position(j, i));
     }
-
-    /**
-     * Handles the completion of a round and determines if the game is totally
-     * finished. If the game is not totally finished, it sets the end of the
-     * round flag to true. If the game is totally finished, it determines the
-     * winner based on the scores and sets the end of the game flag to true.
-     */
-    private void handleFinishRoundAndGame() {
-        if (!isGameTotallyFinished()) {
-            this.endRound = true;
-        } else {
-            this.winner = this.player1Score > this.player2Score ? this.player1 : this.player2;
-            this.endGame = true;
-        }
-    }
-    
 }

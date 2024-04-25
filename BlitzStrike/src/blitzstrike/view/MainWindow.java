@@ -13,10 +13,15 @@ import blitzstrike.model.Game;
 import blitzstrike.model.Player;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import static java.awt.Color.BLACK;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -321,7 +327,7 @@ public class MainWindow extends JFrame {
                         game.removeTerminatedPowerups();
                         game.handleImmediateBombCurseForBothPlayers();
                     } else if (game.getEndRound()) {
-                        showRoundEndPopup("Round is overr!");
+                        showRoundEndPopup("Round is over!");
                     } else if (game.getEndGame()) {
                         showGameEndPopup();
                     }
@@ -605,16 +611,11 @@ public class MainWindow extends JFrame {
 
     }
 
-    /**
-     * Displays a dialog to indicate the end of a game round. Displays the
-     * scores of both players and provides an option to proceed to the next
-     * round.
-     *
-     * @param message The message to be displayed in the dialog.
-     */
-    private void showRoundEndPopup(String message) {
+    /*
+    public void showRoundEndPopup(String message) {
         JDialog roundEndDialog = new JDialog(this, "Round Ended", true);
         roundEndDialog.setUndecorated(true);
+        roundEndDialog.getRootPane().setBorder(BorderFactory.createLineBorder(BLACK, 2));
         roundEndDialog.setLayout(new FlowLayout());
         roundEndDialog.setSize(400, 200);
         roundEndDialog.setLocationRelativeTo(this); // Center on screen
@@ -642,6 +643,50 @@ public class MainWindow extends JFrame {
         roundEndDialog.setVisible(true);
 
     }
+     */
+    public void showRoundEndPopup(String message) {
+        JDialog roundEndDialog = new JDialog(this, "Round Ended", true);
+        roundEndDialog.setUndecorated(true);
+        roundEndDialog.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        roundEndDialog.setSize(400, 200);
+        roundEndDialog.setLocationRelativeTo(this); // Center on screen
+
+        // Create a JPanel with GridBagLayout
+        JPanel contentPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        // Message Label (HTML centering already in place)
+        JLabel messageLabel = new JLabel("<html><center>" + message + "<br>Player 1 Score: " + game.getPlayer1Score() + "<br>Player 2 Score: " + game.getPlayer2Score() + "</center></html>");
+        constraints.fill = GridBagConstraints.BOTH; // Fill both horizontally and vertically
+        constraints.gridy = 0;  // Place in first row
+        constraints.weighty = 1.0;  // Allocate extra vertical space
+        constraints.gridwidth = GridBagConstraints.REMAINDER; // Span all columns
+        contentPanel.add(messageLabel, constraints);
+
+        // Next Round Button
+        JButton nextRoundButton = new JButton("Go to Next Round");
+        nextRoundButton.addActionListener(e -> {
+            try {
+                player1ScoreLabel.setText("Score: " + game.getPlayer1Score());
+                player2ScoreLabel.setText("Score: " + game.getPlayer2Score());
+                frame.repaint();
+                roundEndDialog.setVisible(false);
+                roundEndDialog.dispose(); // Close and dispose of the dialog
+                game.loadNextRound();
+            } catch (Exception ex) {
+                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        roundEndDialog.add(nextRoundButton);
+
+        constraints.gridy = 1;  // Place in second row
+        constraints.weighty = 0.0;  // No extra vertical space for button
+        contentPanel.add(nextRoundButton, constraints);
+
+        roundEndDialog.add(contentPanel);
+
+        roundEndDialog.setVisible(true);
+    }
 
     /**
      * Displays a dialog to indicate the end of the game. Displays a
@@ -651,6 +696,8 @@ public class MainWindow extends JFrame {
     private void showGameEndPopup() {
         if (game.getEndGame()) {
             JDialog gameEndDialog = new JDialog(this, "Game Ended", true);
+            gameEndDialog.setUndecorated(true);
+            gameEndDialog.getRootPane().setBorder(BorderFactory.createLineBorder(BLACK, 2));
             gameEndDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); // Set the default close operation
             gameEndDialog.setLayout(new FlowLayout());
             gameEndDialog.setLocationRelativeTo(this); // Center on screen
