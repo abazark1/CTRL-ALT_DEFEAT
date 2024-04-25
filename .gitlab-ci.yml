@@ -22,8 +22,8 @@ stages:          # List of stages for jobs, and their order of execution
   # - test
 
 before_script:
-  - export JAVA_HOME="C:\\Program Files\\Java\\jdk-20"
-  - export PATH=$JAVA_HOME/bin:$PATH
+  - apt-get update -qq
+  - apt-get install -yqq openjdk-11-jdk ant
   - java -version
 
 build-program:
