@@ -322,9 +322,9 @@ public class MainWindow extends JFrame {
                         game.handlePowerupTermination();
                         game.removeTerminatedPowerups();
                         game.handleImmediateBombCurseForBothPlayers();
-                    } else if (game.getEndRound()) {
-                        showRoundEndPopup("Round is overr!");
-                    } else if (game.getEndGame()) {
+                    } else if (game.endRound) {
+                        showRoundEndPopup("Round is over!");
+                    } else if (game.endGame) {
                         showGameEndPopup();
                     }
                 } else {
@@ -652,7 +652,7 @@ public class MainWindow extends JFrame {
     }
 
     private void showGameEndPopup() {
-        if (game.getEndGame()) {
+        if (game.endGame) {
             JDialog gameEndDialog = new JDialog(this, "Game Ended", true);
             gameEndDialog.setUndecorated(true);
             gameEndDialog.getRootPane().setBorder(BorderFactory.createLineBorder(BLACK, 2));
