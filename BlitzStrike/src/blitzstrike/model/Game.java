@@ -946,7 +946,6 @@ public class Game {
      *
      * @param i
      * @param j
-     * @return
      */
     private boolean isEdge(int i, int j) {
         return (i == currentLayerOfBattleRoyale || i == MAP_SIZE - 1 - currentLayerOfBattleRoyale || j == currentLayerOfBattleRoyale || j == MAP_SIZE - 1 - currentLayerOfBattleRoyale);
@@ -1030,10 +1029,7 @@ public class Game {
     }
 
     /**
-     * Turns the cell at the given indices into a wall
-     *
-     * @param i
-     * @param j
+     * Shrinks the map
      */
     private void turnIntoWalls(int i, int j) {
         this.space[i][j] = new Wall(new Position(j, i));

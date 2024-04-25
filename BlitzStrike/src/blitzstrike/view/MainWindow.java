@@ -5,7 +5,6 @@
  */
 package blitzstrike.view;
 
-import blitzstrike.model.BlitzStrike;
 import static blitzstrike.model.Direction.UP;
 import static blitzstrike.model.Direction.DOWN;
 import static blitzstrike.model.Direction.LEFT;
@@ -36,7 +35,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -48,47 +46,35 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import res.ResourceLoader;
 import javax.swing.Timer;
 
-/**
- *
- * @author medina
- */
 public class MainWindow extends JFrame {
 
-    private Game game;
-    private View view; ///in the class diagram Board board
-    private JLabel timeLabel;
-    public JLabel numGamesLabel;
-    private Player player1;
-    private Player player2;
-
-    private JFrame frame;
-
-    private Timer monsterMoveTimer;
-    private Timer battleRoyaleTimer;
     private static final int ONE_SECOND = 1000;
-
-    private Timer backgroundTimer;
     private static final int BACKGROUND = 300;
 
-    final JPanel mMenu;
-    public JPanel playerPanel;
-    private JPanel statsPanel;
-    public KeyAdapter player1KeyListener;
-    public KeyAdapter player2KeyListener;
-    public String[] fileList;
-    public String fileNamesString;
+    private final JPanel mMenu;
+    private final JPanel statsPanel;
+    private Game game;
+    private View view; ///in the class diagram Board board
+    private String[] fileList;
+    private String fileNamesString;
+    private Player player1;
+    private Player player2;
+    private Timer monsterMoveTimer;
+    private Timer battleRoyaleTimer;
+    private Timer backgroundTimer;
+    private KeyAdapter player1KeyListener;
+    private KeyAdapter player2KeyListener;
+    private JPanel playerPanel;
+    private JFrame frame;
     private JLabel player1ScoreLabel;
     private JLabel player2ScoreLabel;
-
     private JLabel battleRoyalCountDownTime;
+    private JLabel numGamesLabel;
 
     public MainWindow() throws IOException {
-
-        //public void loadMainWindow(){
         frame = new JFrame("BlitzStrike");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JMenuBar menuBar = new JMenuBar();
@@ -99,6 +85,7 @@ public class MainWindow extends JFrame {
         statsPanel.setBackground(Color.LIGHT_GRAY);
         frame.add(statsPanel, BorderLayout.NORTH);
 
+////////////////////////////////////////////////////Menu Bar///////////////////////////////////////////
         JMenuItem resumePause = new JMenuItem("Pause/Resume");
         resumePause.addActionListener(new ActionListener() {
             @Override
@@ -143,14 +130,12 @@ public class MainWindow extends JFrame {
         frame.setJMenuBar(menuBar);
         frame.setVisible(true);
 
+///////////////////////////////////////////////////Start main window///////////////////////////////////////////////
         mMenu = new JPanel() {
             @Override
             public void paintComponent(Graphics gc) {
                 super.paintComponent(gc);
                 try {
-                    //                    Image mMenuImage = ResourceLoader.loadImage("blitzstrike/res/mainMenu.jpg");
-                    //                    gc.drawImage(mMenuImage, 150, 150, null);
-
                     Image mMenuImage = ResourceLoader.loadImage("blitzstrike/res/mainM.png");
                     int x = (getWidth() - mMenuImage.getWidth(null)) / 2;
                     int y = (getHeight() - mMenuImage.getHeight(null)) / 2;
@@ -162,8 +147,6 @@ public class MainWindow extends JFrame {
             }
 
         };
-
-        //mMenu.setLayout(new BorderLayout());
         mMenu.setBackground(Color.BLACK);
         mMenu.setLayout(new BoxLayout(mMenu, BoxLayout.Y_AXIS));
         mMenu.add(Box.createVerticalGlue());
@@ -171,6 +154,7 @@ public class MainWindow extends JFrame {
         mMenu.add(Box.createVerticalGlue());
         mMenu.add(Box.createVerticalGlue());
 
+/////////////////////////////////////////////////////////////Start main window buttons///////////////////////////////////////
         JButton playButton = createButton("PLAY");
         JButton continueButton = createButton("CONTINUE");
         JButton quitButton = createButton("QUIT");
@@ -220,6 +204,7 @@ public class MainWindow extends JFrame {
         startBackgroundTimer();
         startBattleRoyaleTimer();
 
+//////////////////////////////////////////////////////////key adapters///////////////////////////////////////////////////
         player1KeyListener = new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -273,17 +258,33 @@ public class MainWindow extends JFrame {
         frame.addKeyListener(player2KeyListener);
     }
 
+    /////////////////////////////////////////////////getters and setters///////////////////////////////////////////////
+    /**
+     * Returns the background timer used for continuous repaint.
+     *
+     * @return The background timer.
+     */
     public Timer getTimer() {
         return this.backgroundTimer;
     }
 
+    ////////////////////////////////////////////private methods///////////////////////
+    /**
+     * Toggles the visibility of the statistics panel and triggers frame
+     * revalidation and repaint.
+     *
+     * @param visible {@code true} to make the statistics panel visible,
+     * {@code false} to hide it.
+     */
     private void toggleStatsPanelVisibility(boolean visible) {
         statsPanel.setVisible(visible);
         frame.revalidate();
         frame.repaint();
     }
 
-    //for continuous movement of monsters
+    /**
+     * Starts the timer for continuous movement of monsters.
+     */
     private void startMoveMonsterTimer() {
         monsterMoveTimer = new Timer(ONE_SECOND, new ActionListener() {
             @Override
@@ -300,7 +301,10 @@ public class MainWindow extends JFrame {
         //view.repaint();
     }
 
-    // for continuous repaint
+    /**
+     * Starts the background timer for continuous repaint and game logic
+     * updates.
+     */
     private void startBackgroundTimer() {
         backgroundTimer = new Timer(BACKGROUND, new ActionListener() {
             @Override
@@ -359,6 +363,12 @@ public class MainWindow extends JFrame {
         //view.repaint();
     }
 
+    /**
+     * Creates a JButton with the specified label, styling, and size.
+     *
+     * @param label The label text for the button.
+     * @return The created JButton.
+     */
     private JButton createButton(String label) {
         JButton button = new JButton(label);
         Dimension buttonSize = new Dimension(180, 60);
@@ -371,7 +381,12 @@ public class MainWindow extends JFrame {
         return button;
     }
 
-    // Helper method to create a button and add it to the panel
+    /**
+     * Helper method to create a button and add it to the specified panel.
+     *
+     * @param panel The panel to which the button will be added.
+     * @param button The button to be added.
+     */
     private void addButton(JPanel panel, JButton button) {
 
         JPanel buttonPanel = new JPanel();
@@ -382,6 +397,10 @@ public class MainWindow extends JFrame {
 
     }
 
+    /**
+     * Displays a confirmation dialog for exiting the game. Exits the program if
+     * the user confirms.
+     */
     private void confirmExit() {
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
@@ -389,6 +408,12 @@ public class MainWindow extends JFrame {
         }
     }
 
+    /**
+     * Displays a confirmation dialog for exiting the game and saving progress.
+     * Pauses the game and stops the monster move timer before showing the
+     * dialog. Resumes the game and restarts the timer if the user cancels the
+     * exit.
+     */
     private void confirmExitandSave() {
         game.pauseGame();
         monsterMoveTimer.stop();
@@ -404,8 +429,11 @@ public class MainWindow extends JFrame {
 
     }
 
-    //function that removes playing view and returns mainWindow
-    public void returnToMainMenu() {
+    /**
+     * Removes the playing view and returns to the main menu. Removes the
+     * statistics panel and resets its visibility before returning.
+     */
+    private void returnToMainMenu() {
         frame.remove(view);
         frame.remove(statsPanel);
         toggleStatsPanelVisibility(false);
@@ -414,7 +442,12 @@ public class MainWindow extends JFrame {
         frame.repaint();
     }
 
-    public void readFileNames() {
+    /**
+     * Reads file names from a specified directory and sets the string
+     * representation of file names. Sets the fileNamesString field to a string
+     * containing the names of files in the directory.
+     */
+    private void readFileNames() {
         String directoryPath = "src/blitzstrike/files/";
         File directory = new File(directoryPath);
         fileList = directory.list();
@@ -433,7 +466,11 @@ public class MainWindow extends JFrame {
         fileNamesString = stringBuilder.toString();
     }
 
-    public void showContinueDialog() {
+    /**
+     * Displays a dialog for continuing a saved game. Collects player names,
+     * scores, and number of games from user input to resume the game.
+     */
+    private void showContinueDialog() {
         JDialog continueDialog = new JDialog(this, "Continue", true);
         JPanel mainPanel2 = new JPanel();
         mainPanel2.setLayout(new BoxLayout(mainPanel2, BoxLayout.Y_AXIS));
@@ -651,6 +688,11 @@ public class MainWindow extends JFrame {
         roundEndDialog.setVisible(true);
     }
 
+    /**
+     * Displays a dialog to indicate the end of the game. Displays a
+     * congratulatory message to the winner and provides an option to return to
+     * the main menu.
+     */
     private void showGameEndPopup() {
         if (game.getEndGame()) {
             JDialog gameEndDialog = new JDialog(this, "Game Ended", true);
@@ -676,6 +718,13 @@ public class MainWindow extends JFrame {
         }
     }
 
+    /**
+     * Creates a panel to display player statistics including name and score.
+     *
+     * @param player The player whose statistics are to be displayed.
+     * @param playerScoreLabel The label displaying the player's score.
+     * @return The JPanel containing the player's statistics.
+     */
     private JPanel createPlayerStatsPanel(Player player, JLabel playerScoreLabel) {
         playerPanel = new JPanel();
         playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
@@ -690,6 +739,12 @@ public class MainWindow extends JFrame {
         return playerPanel;
     }
 
+    /**
+     * Displays a dialog for setting up a new game. Collects player names, map
+     * selection, and number of games from user input to start the game.
+     *
+     * @param mMenu The main menu panel.
+     */
     private void showGameSetupWindow(JPanel mMenu) {
         JDialog gameSetupDialog = new JDialog(this, "Game Setup", true);
         JPanel mainPanel = new JPanel();
