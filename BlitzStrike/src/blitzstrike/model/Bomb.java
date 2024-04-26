@@ -105,7 +105,17 @@ public class Bomb {
 
         if (cell instanceof Box) {
             // Boxes get destroyed and may reveal a power-up
+            System.out.println("This is Box " + ((Box) cell).getPosition().getX() + " " + ((Box) cell).getPosition().getY());
             ((Box) cell).getDestroyed();
+        }
+        if (cell instanceof ObstacleBox) {
+            System.out.println("This is obstacleBox " + ((ObstacleBox) cell).getPosition().getX() + " " + ((ObstacleBox) cell).getPosition().getY());
+            // obstacles boxes get destroyed 
+            ObstacleBox obsToRemove = ((ObstacleBox) cell);
+            obsToRemove.getDestroyed();
+            this.owner.getObstacles().remove(obsToRemove);
+            space[position.getY()][position.getX()] = new Empty(position);
+            System.out.println(this.owner.getObstacles());
         }
         if (isOutOfBounds(position)) {
             return false;

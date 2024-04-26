@@ -14,14 +14,12 @@ import blitzstrike.model.Player;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import static java.awt.Color.BLACK;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -220,7 +218,7 @@ public class MainWindow extends JFrame {
                         player1.movePlayer(RIGHT, player2);
                     case KeyEvent.VK_SPACE ->
                         player1.placeBomb();
-                    case KeyEvent.VK_ALT ->
+                    case KeyEvent.VK_1->
                         player1.placeObstacle();
                 }
 

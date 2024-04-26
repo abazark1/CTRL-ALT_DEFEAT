@@ -43,5 +43,6 @@ public class Obstacle extends PowerUp {
         int maxNum = player.getMaxNumberOfObstacles();
         maxNum = maxNum + NUMBER_OF_OBSTACLES;
         player.setMaxNumberOfObstacles(maxNum);
+        System.out.println(maxNum);
     }
 }
