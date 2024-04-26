@@ -278,6 +278,9 @@ public class MainWindow extends JFrame {
      */
     private void toggleStatsPanelVisibility(boolean visible) {
         statsPanel.setVisible(visible);
+        if (!visible){
+            statsPanel.removeAll();
+        }
         frame.revalidate();
         frame.repaint();
     }
@@ -435,7 +438,7 @@ public class MainWindow extends JFrame {
      */
     private void returnToMainMenu() {
         frame.remove(view);
-        frame.remove(statsPanel);
+        //frame.remove(statsPanel);
         toggleStatsPanelVisibility(false);
         frame.add(mMenu);
         frame.revalidate();
@@ -576,15 +579,10 @@ public class MainWindow extends JFrame {
                     }
                     frame.remove(mMenu);
                     frame.add(view);
-                    statsPanel.removeAll();
-                    player1ScoreLabel = new JLabel("Score: " + game.getPlayer1Score());
-                    player2ScoreLabel = new JLabel("Score: " + game.getPlayer2Score());
-                    statsPanel.add(createPlayerStatsPanel(player1, player1ScoreLabel));
-                    statsPanel.add(createPlayerStatsPanel(player2, player2ScoreLabel));
-                    JLabel roundLabel = new JLabel("Rounds of glorious domination required: " + game.getRoundsToWin());
-                    statsPanel.add(roundLabel);
-                    frame.revalidate();
-                    frame.repaint();
+                    
+//                    frame.revalidate();
+//                    frame.repaint();
+                    updateStatsPanel();
                     continueDialog.setVisible(false);
                     continueDialog.dispose();
                 }
@@ -609,6 +607,18 @@ public class MainWindow extends JFrame {
         frame.addKeyListener(player1KeyListener);
         frame.addKeyListener(player2KeyListener);
 
+    }
+    
+    public void updateStatsPanel() {
+        statsPanel.removeAll();
+        player1ScoreLabel = new JLabel("Score: " + game.getPlayer1Score());
+        player2ScoreLabel = new JLabel("Score: " + game.getPlayer2Score());
+        statsPanel.add(createPlayerStatsPanel(player1, player1ScoreLabel));
+        statsPanel.add(createPlayerStatsPanel(player2, player2ScoreLabel));
+        JLabel roundLabel = new JLabel("Rounds of glorious domination required: " + game.getRoundsToWin());
+        statsPanel.add(roundLabel);
+        frame.revalidate();
+        frame.repaint();
     }
 
     /*
