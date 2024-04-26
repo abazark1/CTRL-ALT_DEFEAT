@@ -1,0 +1,20 @@
+Player1Name:asel
+Player2Name:asel1
+Player1Score:0
+Player2Score:0
+RoundsToWin:2
+xxxxxxxxxxxxxxx
+x #           x
+x # xx    x   x
+x # x         x
+x   x#  x  x3 x
+x       ### 4bx
+x  #       #  x
+x   xxx       x
+x       2    #x
+x  xxxxx x    x
+x#       # x  x
+x  xx         x
+x       x # # x
+xa  #    1 #  x
+xxxxxxxxxxxxxxx

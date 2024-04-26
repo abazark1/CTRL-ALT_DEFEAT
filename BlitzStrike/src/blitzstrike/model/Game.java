@@ -624,6 +624,10 @@ public class Game {
      * it reduces the duration by 25% and resets the timer.
      */
     public void handleBattleRoyale() {
+
+        if (startingTime == null) {
+            startingTime = LocalTime.now();
+        }
         if (Duration.between(this.startingTime, LocalTime.now()).getSeconds() >= currentBattleRoyaleDuration) {
             System.out.println("Shrink happens");
             shrinkMap();
@@ -632,7 +636,7 @@ public class Game {
                 this.currentBattleRoyaleDuration *= 0.75;
                 this.currentBattleRoyaleTime = this.currentBattleRoyaleDuration;
             }
-            this.startingTime = LocalTime.now();
+            //this.startingTime = LocalTime.now();
         }
     }
 
@@ -777,6 +781,8 @@ public class Game {
      * @param filepath The path to the file containing the saved game state.
      */
     public void continueGame(String filepath) {
+        
+        //this.startingTime = LocalTime.now();
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -799,6 +805,7 @@ public class Game {
 
             //map
             int y = 0;
+            this.startingTime = LocalTime.now();
             while ((line = reader.readLine()) != null && y < MAP_SIZE) {
                 for (int x = 0; x < line.length() && x < MAP_SIZE; x++) {
                     char symbol = line.charAt(x);
@@ -910,6 +917,7 @@ public class Game {
             writer.write("Player1Score:" + player1Score + "\n");
             writer.write("Player2Score:" + player2Score + "\n");
             writer.write("RoundsToWin:" + roundsToWin + "\n");
+            
 
             writer.write(mapBuilder.toString());
 
@@ -991,7 +999,7 @@ public class Game {
             this.endGame = true;
         }
     }
-    
+
     /**
      * Shrinks the map
      */
