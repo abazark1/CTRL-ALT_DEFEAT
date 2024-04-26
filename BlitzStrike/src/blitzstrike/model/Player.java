@@ -12,13 +12,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-
 public class Player {
 
     public static final int STANDARD_BOMB_RANGE = 4;
     public static final int STANDARD_BOMB_NUMBER = 1;
     public static final double STANDARD_PLAYERS_SPEED = 1.0;
-    public static final int STANDARD_OBSTACLE_NUMBER = 0;
+    public int STANDARD_OBSTACLE_NUMBER = 0;
 
     private String name;
     private Position position;
@@ -73,9 +72,11 @@ public class Player {
     public List<Bomb> getBombs() {
         return this.bombs;
     }
+
     public List<ObstacleBox> getObstacles() {
         return this.obstacles;
     }
+
     public String getName() {
         return this.name;
     }
@@ -101,6 +102,7 @@ public class Player {
         }
         return null;
     }
+
     public ObstacleBox getObstacle(int x, int y) {
         for (ObstacleBox obstacle : obstacles) {
             Position obstPos = obstacle.getPosition();
@@ -136,17 +138,18 @@ public class Player {
      *
      * @return followedByMonsters value
      */
-     public boolean getFollowedByMonsters() {
+    public boolean getFollowedByMonsters() {
         return this.followedByMonsters;
     }
-    public int getMaxNumberOfObstacles(){
+
+    public int getMaxNumberOfObstacles() {
         return this.maxNumberOfObstacles;
     }
 
-    public void setMaxNumberOfObstacles(int newNum){
+    public void setMaxNumberOfObstacles(int newNum) {
         this.maxNumberOfObstacles = newNum;
     }
-    
+
     public void setPosition(Position position) {
         this.position = position;
     }
@@ -171,11 +174,12 @@ public class Player {
     public void setInvincible(boolean value) {
         this.isInvincible = value;
     }
-    
-    public void setGhost(boolean value){
+
+    public void setGhost(boolean value) {
         this.isGhost = value;
     }
-    public void setIsObstacleOn(boolean value){
+
+    public void setIsObstacleOn(boolean value) {
         this.isObstacleOn = value;
     }
 
@@ -245,14 +249,15 @@ public class Player {
     public boolean isInvincible() {
         return this.isInvincible;
     }
-    
-    public boolean isGhost(){
+
+    public boolean isGhost() {
         return this.isGhost;
     }
 
-    public boolean isObstacleOn(){
+    public boolean isObstacleOn() {
         return this.isObstacleOn;
     }
+
     //////////////////OPERATIONS////////////////////////////////////////////////
     /*
      * Places a bomb on the player's current position if the player is alive,
@@ -286,6 +291,7 @@ public class Player {
     public void resetBombRange() {
         this.bombRange = STANDARD_BOMB_RANGE;
     }
+
     /*
     * Adds curse to the ArrayList
      *
@@ -353,10 +359,12 @@ public class Player {
      * @param
      */
     public void placeObstacle() {
-        
-        if (isAlive() && this.getObstacles().size() < maxNumberOfObstacles&& this.isObstacleOn()) {
+
+        if (isAlive() && this.getObstacles().size() < maxNumberOfObstacles && this.isObstacleOn()) {
             ObstacleBox obstacleBox = new ObstacleBox(this.position);
             this.obstacles.add(obstacleBox);
+            obstacleBox.walkable = false;
+            this.space[position.getY()][position.getX()] = obstacleBox;     
             System.out.println("I've placed an obstacle");
         }
     }
@@ -388,7 +396,7 @@ public class Player {
         }
         return false;
     }
-    
+
     public boolean hasObstacleAtPosition(int x, int y) {
         for (ObstacleBox obstacle : obstacles) {
             Position obstPos = obstacle.getPosition();
@@ -414,6 +422,17 @@ public class Player {
         }
     }
 
+    public void removeObstacle(ObstacleBox obst) {
+        Iterator<ObstacleBox> obstIterator = this.obstacles.iterator();
+        while (obstIterator.hasNext()) {
+            ObstacleBox o = obstIterator.next();
+            if (o.getPosition().getX() == obst.getPosition().getX() && o.getPosition().getY() == obst.getPosition().getY()) {
+                obstIterator.remove();
+                System.out.println("The bomb at X:" + obst.getPosition().getX() + " Y:" + obst.getPosition().getY() + " was removed");
+            }
+        }
+    }
+
     /*
      * Marks the player as dead and logs their death time. Also triggers the
      * removal of the player from the map.
@@ -424,6 +443,7 @@ public class Player {
         this.deathTime = LocalTime.now();
         removePlayerFromMap();
     }
+
     /*
      * Validates if the position in the given direction is walkable. The
      * validation checks for obstacles, other players, and bombs in the new
@@ -436,21 +456,19 @@ public class Player {
     public boolean isValidPosition(Direction direction, Player player2) {
         Position newPosition = this.position.translate(direction);
 
-        if(this.isGhost())
-        {
+        if (this.isGhost()) {
             if (player2.getPosition().equals(newPosition)) {
                 return false;
             }
             if (!this.space[newPosition.getY()][newPosition.getX()].isWalkable()) {
                 return true;
             }
-            
+
             if (hasBombAtPosition(newPosition.getX(), newPosition.getY())) {
                 return true;
             }
-            
-        }
-        else{
+
+        } else {
             if (!this.space[newPosition.getY()][newPosition.getX()].isWalkable()) {
                 return false;
             }
@@ -460,6 +478,10 @@ public class Player {
             }
 
             if (hasBombAtPosition(newPosition.getX(), newPosition.getY())) {
+                return false;
+            }
+
+            if (hasObstacleAtPosition(newPosition.getX(), newPosition.getY())) {
                 return false;
             }
         }
