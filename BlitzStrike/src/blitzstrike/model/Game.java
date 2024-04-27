@@ -782,6 +782,12 @@ public class Game {
      */
     public void continueGame(String filepath) {
         
+        this.monsters = new ArrayList<>();
+        this.space = new Cell[MAP_SIZE][MAP_SIZE];
+        this.startingTime = LocalTime.now();
+        this.player1.setSpace(this.space);
+        this.player2.setSpace(this.space);
+        
         //this.startingTime = LocalTime.now();
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
@@ -805,7 +811,7 @@ public class Game {
 
             //map
             int y = 0;
-            this.startingTime = LocalTime.now();
+            //this.startingTime = LocalTime.now();
             while ((line = reader.readLine()) != null && y < MAP_SIZE) {
                 for (int x = 0; x < line.length() && x < MAP_SIZE; x++) {
                     char symbol = line.charAt(x);
@@ -917,6 +923,7 @@ public class Game {
             writer.write("Player1Score:" + player1Score + "\n");
             writer.write("Player2Score:" + player2Score + "\n");
             writer.write("RoundsToWin:" + roundsToWin + "\n");
+            writer.write("\n");
             
 
             writer.write(mapBuilder.toString());
