@@ -566,8 +566,8 @@ public class MainWindow extends JFrame {
 
                     game = new Game(filePathCont, player1, player2, numGamesCont);
 
-                    player1 = new Player(player1NameFieldCont.getText());
-                    player2 = new Player(player2NameFieldCont.getText());
+//                    player1 = new Player(player1NameFieldCont.getText());
+//                    player2 = new Player(player2NameFieldCont.getText());
                     game.continueGame(filePathCont);
                     game.setRoundsToWin(Integer.parseInt(numGamesField2.getText()));
                     try {
@@ -577,6 +577,8 @@ public class MainWindow extends JFrame {
                     }
                     frame.remove(mMenu);
                     frame.add(view);
+                    
+                    //statsPanel.removeAll();
                     
 //                    frame.revalidate();
 //                    frame.repaint();
@@ -602,8 +604,8 @@ public class MainWindow extends JFrame {
         //display
         game.resumeGame();
         monsterMoveTimer.restart();
-        frame.addKeyListener(player1KeyListener);
-        frame.addKeyListener(player2KeyListener);
+//        frame.addKeyListener(player1KeyListener);
+//        frame.addKeyListener(player2KeyListener);
 
     }
     
@@ -615,6 +617,8 @@ public class MainWindow extends JFrame {
         statsPanel.add(createPlayerStatsPanel(player2, player2ScoreLabel));
         JLabel roundLabel = new JLabel("Rounds of glorious domination required: " + game.getRoundsToWin());
         statsPanel.add(roundLabel);
+        battleRoyalCountDownTime = new JLabel(Integer.toString(game.getCurrentBattleRoyaleTime()));
+        statsPanel.add(battleRoyalCountDownTime);
         frame.revalidate();
         frame.repaint();
     }
