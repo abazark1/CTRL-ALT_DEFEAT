@@ -564,9 +564,10 @@ public class MainWindow extends JFrame {
                     player2 = new Player(player2NameCont);
 
                     game = new Game(filePathCont, player1, player2, numGamesCont);
+                   // game.loadMap();
 
-                    player1 = new Player(player1NameFieldCont.getText());
-                    player2 = new Player(player2NameFieldCont.getText());
+//                    player1 = new Player(player1NameFieldCont.getText());
+//                    player2 = new Player(player2NameFieldCont.getText());
                     game.continueGame(filePathCont);
                     game.setRoundsToWin(Integer.parseInt(numGamesField2.getText()));
                     try {
@@ -583,6 +584,8 @@ public class MainWindow extends JFrame {
                     statsPanel.add(createPlayerStatsPanel(player2, player2ScoreLabel));
                     JLabel roundLabel = new JLabel("Rounds of glorious domination required: " + game.getRoundsToWin());
                     statsPanel.add(roundLabel);
+                    battleRoyalCountDownTime = new JLabel(Integer.toString(game.getCurrentBattleRoyaleTime()));
+                    statsPanel.add(battleRoyalCountDownTime);
                     frame.revalidate();
                     frame.repaint();
                     continueDialog.setVisible(false);

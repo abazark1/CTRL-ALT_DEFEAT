@@ -782,18 +782,23 @@ public class Game {
      */
     public void continueGame(String filepath) {
         
+        this.monsters = new ArrayList<>();
+        this.space = new Cell[MAP_SIZE][MAP_SIZE];      
+        this.player1.setSpace(this.space);
+        this.player2.setSpace(this.space);
+        
         //this.startingTime = LocalTime.now();
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("Player1Name:")) {
-                    player1.setName(line.substring("Player1Name:".length()));
+                    this.player1.setName(line.substring("Player1Name:".length()));
                 } else if (line.startsWith("Player2Name:")) {
-                    player2.setName(line.substring("Player2Name:".length()));
+                    this.player2.setName(line.substring("Player2Name:".length()));
                 } else if (line.startsWith("Player1Score:")) {
-                    player1Score = Integer.parseInt(line.substring("Player1Score:".length()));
+                    this.player1Score = Integer.parseInt(line.substring("Player1Score:".length()));
                 } else if (line.startsWith("Player2Score:")) {
-                    player2Score = Integer.parseInt(line.substring("Player2Score:".length()));
+                    this.player2Score = Integer.parseInt(line.substring("Player2Score:".length()));
                 } else if (line.startsWith("RoundsToWin:")) {
                     setRoundsToWin(Integer.parseInt(line.substring("RoundsToWin:".length())));
                 } else {
@@ -818,11 +823,11 @@ public class Game {
                             space[y][x] = new Box(position);
                             break;
                         case 'a':
-                            player1.setPosition(position);
+                            this.player1.setPosition(position);
                             space[y][x] = new Empty(position);
                             break;
                         case 'b':
-                            player2.setPosition(position);
+                            this.player2.setPosition(position);
                             space[y][x] = new Empty(position);
                             break;
                         case '1':
@@ -917,6 +922,7 @@ public class Game {
             writer.write("Player1Score:" + player1Score + "\n");
             writer.write("Player2Score:" + player2Score + "\n");
             writer.write("RoundsToWin:" + roundsToWin + "\n");
+            writer.write( "\n");
             
 
             writer.write(mapBuilder.toString());
