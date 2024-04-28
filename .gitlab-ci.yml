@@ -20,7 +20,7 @@ image: mbasso/disl-ci:openjdk-20
 
 stages:          # List of stages for jobs, and their order of execution
   - build
-  # - test
+  - test
 
 # before_script:
 #   - apt-get update -qq
@@ -37,11 +37,11 @@ build-program:
       - dist/program.jar
     expire_in: 3 days
 
-# test-program:
-#   stage: test
-#   script:
-#     - ant compile-test
-#     - ant test
+test-program:
+  stage: test
+  script:
+    - ant compile-test
+    - ant test
 
 
 # build-job:       # This job runs in the build stage, which runs first.
