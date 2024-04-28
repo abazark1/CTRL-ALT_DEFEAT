@@ -40,7 +40,9 @@ build-program:
 junit_setup:
   stage: build 
   script:
-    - apk add junit
+    - apk add openjdk-devel
+    - wget https://repo1.maven.org/maven2/junit/junit/4.14/junit-4.14.jar
+    
 
 test-program:
   stage: test
