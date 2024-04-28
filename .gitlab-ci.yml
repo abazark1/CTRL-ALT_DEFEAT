@@ -40,8 +40,8 @@ build-program:
 test-program:
   stage: test
   script:
-    - ant compile-test
-    - ant test
+    - ant -buildfile BlitzStrike/build.xml compile-test
+    - ant -buildfile BlitzStrike/build.xml test
 
 
 # build-job:       # This job runs in the build stage, which runs first.
