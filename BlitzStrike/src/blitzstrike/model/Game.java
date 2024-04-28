@@ -28,7 +28,6 @@ public class Game {
     private boolean endGame;
     private boolean endRound;
     private boolean isPaused;
-    // to check if there's any explosion for View class
     private boolean isExplosionInProgress;
     private int roundsToWin;
     private int currentBattleRoyaleDuration;
@@ -585,9 +584,6 @@ public class Game {
      * player and calls the method to finish the round and potentially the game.
      */
     public void handleDeathOfThePlayer() {
-//        System.out.println("Is game ended " + this.endGame);
-//        System.out.println("Is round ended " + this.endRound);
-//        System.out.println(this.player1Score + "/" + this.player2Score);
         if (isOneOfThePlayersDead() && !this.endRound && !this.endGame) {
             if (this.player1.isAlive() && !this.player2.isAlive()) {
                 if (Duration.between(this.player2.getDeathTime(), LocalTime.now()).getSeconds() >= Bomb.BOMB_COUNTDOWN) {
@@ -667,54 +663,52 @@ public class Game {
      * round of the game.
      */
     public void loadNextRound() {
-     
-        try {loadMap();
-       
-        this.player1.reset();
-        this.player2.reset();
-        currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
-        }
-        catch (Exception e){
+
+        try {
+            loadMap();
+
+            this.player1.reset();
+            this.player2.reset();
+            currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
+        } catch (Exception e) {
             loadMapforContinue(filepath);
             currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
             this.player1.reset();
             this.player2.reset();
-            
+
         }
     }
-    
-    
 
     /**
      * Restarts the game by resetting both players, reloading the map, resetting
      * scores, and updating the starting time and game status.
+     * It throws exception when the game has already been saved, in this case
+     * we use another method to load the game
      */
     public void restartgame() {
 
-        try{
-        player1.reset();
-        player2.reset();
-        loadMap();
-        player1Score = 0;
-        player2Score = 0;
-        startingTime = LocalTime.now();
-        currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
-        endGame = false;}
-        
-        
-        catch (Exception e){
-            
-        player1.reset();
-        player2.reset();
-        loadMapforContinue(filepath);
-        player1Score = 0;
-        player2Score = 0;
-        startingTime = LocalTime.now();
-        currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
-        endGame = false;
-        
+        try {
+            player1.reset();
+            player2.reset();
+            loadMap();
+            player1Score = 0;
+            player2Score = 0;
+            startingTime = LocalTime.now();
+            currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
+            endGame = false;
+        } catch (Exception e) {
+
+            player1.reset();
+            player2.reset();
+            loadMapforContinue(filepath);
+            player1Score = 0;
+            player2Score = 0;
+            startingTime = LocalTime.now();
+            currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
+            endGame = false;
+
         }
-        
+
     }
 
     /**
@@ -805,20 +799,20 @@ public class Game {
             }
         }
     }
-    
-        /**
-     * Continues the game from a saved state specified by the file path.
+
+    /**
+     * Loads the map for the saved games
      *
      * @param filepath The path to the file containing the saved game state.
      */
     public void loadMapforContinue(String filepath) {
-        
+
         this.monsters = new ArrayList<>();
         this.space = new Cell[MAP_SIZE][MAP_SIZE];
         this.startingTime = LocalTime.now();
         this.player1.setSpace(this.space);
         this.player2.setSpace(this.space);
-        
+
         //this.startingTime = LocalTime.now();
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
@@ -828,7 +822,7 @@ public class Game {
                 } else if (line.startsWith("Player2Name:")) {
                     continue;
                 } else if (line.startsWith("Player1Score:")) {
-                   continue;
+                    continue;
                 } else if (line.startsWith("Player2Score:")) {
                     continue;
                 } else if (line.startsWith("RoundsToWin:")) {
@@ -855,11 +849,11 @@ public class Game {
                             space[y][x] = new Box(position);
                             break;
                         case 'a':
-                            player1.setPosition(new Position(1,13));
+                            player1.setPosition(new Position(1, 13));
                             space[y][x] = new Empty(position);
                             break;
                         case 'b':
-                            player2.setPosition(new Position(13,1));
+                            player2.setPosition(new Position(13, 1));
                             space[y][x] = new Empty(position);
                             break;
                         case '1':
@@ -894,7 +888,6 @@ public class Game {
         }
 
     }
-    
 
     /**
      * Continues the game from a saved state specified by the file path.
@@ -902,13 +895,13 @@ public class Game {
      * @param filepath The path to the file containing the saved game state.
      */
     public void continueGame(String filepath) {
-        
+
         this.monsters = new ArrayList<>();
         this.space = new Cell[MAP_SIZE][MAP_SIZE];
         this.startingTime = LocalTime.now();
         this.player1.setSpace(this.space);
         this.player2.setSpace(this.space);
-        
+
         //this.startingTime = LocalTime.now();
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
@@ -1045,7 +1038,6 @@ public class Game {
             writer.write("Player2Score:" + player2Score + "\n");
             writer.write("RoundsToWin:" + roundsToWin + "\n");
             writer.write("\n");
-            
 
             writer.write(mapBuilder.toString());
 
@@ -1171,20 +1163,19 @@ public class Game {
     private void turnIntoWalls(int i, int j) {
         this.space[i][j] = new Wall(new Position(j, i));
     }
-    
+
     /**
-    * Delete the files of saved games when they end eventually
-    */ 
-    
+     * Delete the files of saved games when they end eventually
+     */
     public void deleteSavedGameFile() {
-    File file = new File(filepath);
-    if (file.exists()) {
-        if (file.delete()) {
-            System.out.println("Saved game file deleted successfully.");
-        } else {
-            System.out.println("Failed to delete the saved game file.");
+        File file = new File(filepath);
+        if (file.exists()) {
+            if (file.delete()) {
+                System.out.println("Saved game file deleted successfully.");
+            } else {
+                System.out.println("Failed to delete the saved game file.");
+            }
         }
     }
-}
 
 }
