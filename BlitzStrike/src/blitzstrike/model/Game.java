@@ -666,10 +666,21 @@ public class Game {
      * round of the game.
      */
     public void loadNextRound() {
-        loadMap();
+     
+        try {loadMap();
+       
         this.player1.reset();
         this.player2.reset();
+        }
+        catch (Exception e){
+            loadMapforContinue(filepath);
+            this.player1.reset();
+            this.player2.reset();
+            
+        }
     }
+    
+    
 
     /**
      * Restarts the game by resetting both players, reloading the map, resetting
@@ -677,13 +688,27 @@ public class Game {
      */
     public void restartgame() {
 
+        try{
         player1.reset();
         player2.reset();
         loadMap();
         player1Score = 0;
         player2Score = 0;
         startingTime = LocalTime.now();
+        endGame = false;}
+        
+        catch (Exception e){
+            
+        player1.reset();
+        player2.reset();
+        loadMapforContinue(filepath);
+        player1Score = 0;
+        player2Score = 0;
+        startingTime = LocalTime.now();
         endGame = false;
+        
+        }
+        
     }
 
     /**
@@ -774,6 +799,96 @@ public class Game {
             }
         }
     }
+    
+        /**
+     * Continues the game from a saved state specified by the file path.
+     *
+     * @param filepath The path to the file containing the saved game state.
+     */
+    public void loadMapforContinue(String filepath) {
+        
+        this.monsters = new ArrayList<>();
+        this.space = new Cell[MAP_SIZE][MAP_SIZE];
+        this.startingTime = LocalTime.now();
+        this.player1.setSpace(this.space);
+        this.player2.setSpace(this.space);
+        
+        //this.startingTime = LocalTime.now();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Player1Name:")) {
+                    continue;
+                } else if (line.startsWith("Player2Name:")) {
+                    continue;
+                } else if (line.startsWith("Player1Score:")) {
+                   continue;
+                } else if (line.startsWith("Player2Score:")) {
+                    continue;
+                } else if (line.startsWith("RoundsToWin:")) {
+                    continue;
+                } else {
+                    // Assuming this line is part of the map
+                    // You'll start processing the map after handling all the metadata
+                    break;
+                }
+            }
+
+            //map
+            int y = 0;
+            //this.startingTime = LocalTime.now();
+            while ((line = reader.readLine()) != null && y < MAP_SIZE) {
+                for (int x = 0; x < line.length() && x < MAP_SIZE; x++) {
+                    char symbol = line.charAt(x);
+                    Position position = new Position(x, y);
+                    switch (symbol) {
+                        case 'x':
+                            space[y][x] = new Wall(position);
+                            break;
+                        case '#':
+                            space[y][x] = new Box(position);
+                            break;
+                        case 'a':
+                            player1.setPosition(new Position(1,13));
+                            space[y][x] = new Empty(position);
+                            break;
+                        case 'b':
+                            player2.setPosition(new Position(13,1));
+                            space[y][x] = new Empty(position);
+                            break;
+                        case '1':
+                            Monster monster = new Monster1(position, space, this, player1, player2);
+                            monsters.add(monster);
+                            space[y][x] = new Empty(position);
+                            break;
+                        case '2':
+                            Monster monster2 = new Monster2(position, space, this, player1, player2);
+                            monsters.add(monster2);
+                            space[y][x] = new Empty(position);
+                            break;
+                        case '3':
+                            Monster monster3 = new Monster3(position, space, this, player1, player2);
+                            monsters.add(monster3);
+                            space[y][x] = new Empty(position);
+                            break;
+                        case '4':
+                            Monster monster4 = new Monster4(position, space, this, player1, player2);
+                            monsters.add(monster4);
+                            space[y][x] = new Empty(position);
+                            break;
+                        case ' ':
+                            space[y][x] = new Empty(position);
+                            break;
+                    }
+                }
+                y++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    
 
     /**
      * Continues the game from a saved state specified by the file path.
