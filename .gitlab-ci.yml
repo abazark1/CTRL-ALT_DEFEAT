@@ -45,10 +45,11 @@ build-program:
 
 test-program:
   stage: test
-  services:
-    - name: tudorfil9/junit_kata_v1
+  # services:
+  #   - name: tudorfil9/junit_kata_v1
   script:
-    - ant -buildfile BlitzStrike/build.xml compile-test
+    - apk add junit
+    - ant compile-test
     - ant -buildfile BlitzStrike/build.xml test
 
 
