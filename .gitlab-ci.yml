@@ -16,16 +16,16 @@
 # This specific template is located at:
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
 
-# image: openjdk:20-jdk
+image: mbasso/disl-ci:openjdk-20
 
 stages:          # List of stages for jobs, and their order of execution
   - build
   # - test
 
-before_script:
-  - apt-get update -qq
-  - apt-get install -yqq openjdk:20-jdk ant
-  - java -version
+# before_script:
+#   - apt-get update -qq
+#   - apt-get install -yqq ant
+#   - java -version
 
 build-program:
   stage: build
