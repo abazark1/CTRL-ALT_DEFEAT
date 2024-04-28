@@ -37,6 +37,11 @@ build-program:
       - dist/program.jar
     expire_in: 3 days
 
+junit_setup:
+  stage: build 
+  script:
+    - apk add junit
+
 test-program:
   stage: test
   script:
