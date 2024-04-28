@@ -11,6 +11,7 @@ import blitzstrike.model.monsters.Monster2;
 import blitzstrike.model.monsters.Monster3;
 import blitzstrike.model.monsters.Monster4;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -1124,6 +1125,7 @@ public class Game {
         } else {
             this.winner = this.player1Score > this.player2Score ? this.player1 : this.player2;
             this.endGame = true;
+            deleteSavedGameFile();
         }
     }
 
@@ -1169,4 +1171,20 @@ public class Game {
     private void turnIntoWalls(int i, int j) {
         this.space[i][j] = new Wall(new Position(j, i));
     }
+    
+    /**
+    * Delete the files of saved games when they end eventually
+    */ 
+    
+    public void deleteSavedGameFile() {
+    File file = new File(filepath);
+    if (file.exists()) {
+        if (file.delete()) {
+            System.out.println("Saved game file deleted successfully.");
+        } else {
+            System.out.println("Failed to delete the saved game file.");
+        }
+    }
+}
+
 }
