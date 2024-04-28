@@ -671,9 +671,11 @@ public class Game {
        
         this.player1.reset();
         this.player2.reset();
+        currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
         }
         catch (Exception e){
             loadMapforContinue(filepath);
+            currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
             this.player1.reset();
             this.player2.reset();
             
@@ -695,7 +697,9 @@ public class Game {
         player1Score = 0;
         player2Score = 0;
         startingTime = LocalTime.now();
+        currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
         endGame = false;}
+        
         
         catch (Exception e){
             
@@ -705,6 +709,7 @@ public class Game {
         player1Score = 0;
         player2Score = 0;
         startingTime = LocalTime.now();
+        currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
         endGame = false;
         
         }
