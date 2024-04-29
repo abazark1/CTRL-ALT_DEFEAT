@@ -20,6 +20,7 @@ image: mbasso/disl-ci:openjdk-20
 
 stages:          # List of stages for jobs, and their order of execution
   - build
+  - test
   - deploy
 
 # before_script:
@@ -33,6 +34,10 @@ build-program:
     - ant -buildfile BlitzStrike/build.xml compile
     - ant -buildfile BlitzStrike/build.xml jar
   
+test-program:
+  stage: test
+  script:
+    - ant -buildfile BlitzStrike/build.xml test
 
 deploy-program:
   stage: deploy
