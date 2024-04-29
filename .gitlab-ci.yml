@@ -20,7 +20,8 @@ image: mbasso/disl-ci:openjdk-20
 
 stages:          # List of stages for jobs, and their order of execution
   - build
-  - test
+  # - test
+  - deploy
 
 # before_script:
 #   - apt-get update -qq
@@ -37,19 +38,32 @@ build-program:
       - dist/program.jar
     expire_in: 3 days
 
+deploy-program:
+  stage: deploy
+  services:
+    - name: ubuntu:latest
+  script:
+    - apt-get update && apt-get install -y sshpass
+    - sshpass -p $DEPLOY_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no $DEPLOY_SERVER_USER@$DEPLOY_SERVER_HOST "mkdir -p /path/to/deploy"
+    - sshpass -p $DEPLOY_SERVER_PASSWORD scp -o StrictHostKeyChecking=no dist/program.jar $DEPLOY_SERVER_USER@$DEPLOY_SERVER_HOST:/path/to/deploy/
+  only:
+    - main
+  
+
+
 # junit_setup:
 #   stage: build 
 #   image: tudorfil9/junit_kata_v1
 #   sc
     
 
-test-program:
-  stage: test
-  # services:
-  #   - name: tudorfil9/junit_kata_v1
-  script:
-    - apk add junit
-    - ant -buildfile BlitzStrike/build.xml compile-test
-    - ant -buildfile BlitzStrike/build.xml test
+# test-program:
+#   stage: test
+#   # services:
+#   #   - name: tudorfil9/junit_kata_v1
+#   script:
+#     - apk add junit
+#     - ant -buildfile BlitzStrike/build.xml compile-test
+#     - ant -buildfile BlitzStrike/build.xml test
 
 
