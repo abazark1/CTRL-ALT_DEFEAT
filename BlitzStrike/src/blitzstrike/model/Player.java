@@ -16,8 +16,7 @@ public class Player {
 
     public static final int STANDARD_BOMB_RANGE = 4;
     public static final int STANDARD_BOMB_NUMBER = 1;
-    public static final double STANDARD_PLAYERS_SPEED = 1.0;
-    public int STANDARD_OBSTACLE_NUMBER = 0;
+    public static final int STANDARD_OBSTACLE_NUMBER = 0;
 
     private String name;
     private Position position;
@@ -25,17 +24,13 @@ public class Player {
     private List<Bomb> bombs;
     private List<ObstacleBox> obstacles;
     private int bombRange;
-    private double speed;
     private int maxBombNumber;
     private boolean isInvincible;
-    private LocalTime invincibleTimer;
     private boolean followedByMonsters;
     private boolean isGhost;
-    private LocalTime ghostTimer;
     private boolean isDetonatorOn;
     private boolean isObstacleOn;
     private int maxNumberOfObstacles;
-//    private LocalTime bombRangeCurseStartTime;
     private LocalTime speedCurseStartTime;
     private boolean noBombCurse;
     private LocalTime noBombCurseStartTime;
@@ -44,6 +39,7 @@ public class Player {
     private LocalTime deathTime;
     private List<Curse> curses;
     private List<PowerUp> powerups;
+    private boolean detonatorWorked;
 
     private Cell[][] space;
     private boolean rollerSkateWorking;
@@ -56,7 +52,6 @@ public class Player {
         this.powerups = new ArrayList<>();
         this.alive = true;
         this.bombRange = STANDARD_BOMB_RANGE;
-        this.speed = STANDARD_PLAYERS_SPEED;
         this.maxBombNumber = STANDARD_BOMB_NUMBER;
         this.isInvincible = false;
         this.isGhost = false;
@@ -183,6 +178,10 @@ public class Player {
         this.isObstacleOn = value;
     }
 
+    public void setIsDetonatorOn(boolean value) {
+        this.isDetonatorOn = value;
+    }
+
     public void setImmediateBombCurse(boolean value) {
         this.placeBombImmediatelyCurse = value;
     }
@@ -215,13 +214,6 @@ public class Player {
         this.bombRange = value;
     }
 
-//    public LocalTime getBombRangeCurseTimer() {
-//        return this.bombRangeCurseStartTime;
-//    }
-//
-//    public void setBombRangeCurseStartTime() {
-//        this.bombRangeCurseStartTime = LocalTime.now();
-//    }
     public void setSpeedCurseTimer(LocalTime time) {
         if (time != null) {
             this.immediateBombCurseStartTime = time;
@@ -258,6 +250,10 @@ public class Player {
         return this.isObstacleOn;
     }
 
+    public boolean isDetonatorOn() {
+        return this.isDetonatorOn;
+    }
+
     //////////////////OPERATIONS////////////////////////////////////////////////
     /*
      * Places a bomb on the player's current position if the player is alive,
@@ -272,6 +268,11 @@ public class Player {
             Bomb bomb = new Bomb(this.position, this, this.space);
             this.bombs.add(bomb);
             System.out.println("I've placed a bomb");
+            if (this.isDetonatorOn){
+                if (this.getBombs().size() >= maxBombNumber){
+                    this.isDetonatorOn = false;
+                }
+            }
         }
     }
 
@@ -507,7 +508,6 @@ public class Player {
         this.obstacles = new ArrayList<>();
         this.alive = true;
         this.bombRange = 4;
-        this.speed = 1.0;
         this.maxBombNumber = 1;
         this.isInvincible = false;
         this.isGhost = false;

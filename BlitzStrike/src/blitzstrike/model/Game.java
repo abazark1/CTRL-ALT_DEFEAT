@@ -23,12 +23,11 @@ import java.util.Iterator;
 public class Game {
 
     public static final int MAP_SIZE = 15;
-    public static final int INITIAL_BATTLE_ROYALE_DURATION = 180;
+    public static final int INITIAL_BATTLE_ROYALE_DURATION = 60;
 
     private boolean endGame;
     private boolean endRound;
     private boolean isPaused;
-    private boolean isExplosionInProgress;
     private int roundsToWin;
     private int currentBattleRoyaleDuration;
     private int currentBattleRoyaleTime;
@@ -53,7 +52,6 @@ public class Game {
         this.player1 = player1;
         this.player2 = player2;
         this.monsters = new ArrayList<>();
-        this.isExplosionInProgress = false;
         this.endGame = false;
         this.endRound = false;
         this.currentLayerOfBattleRoyale = 1;
@@ -464,27 +462,40 @@ public class Game {
      */
     public void handleBombExplosion() {
         //player1 bombs
-        ArrayList<Bomb> player1BombsCopy = new ArrayList<>(this.player1.getBombs());
-        Iterator<Bomb> bombIterator1 = player1BombsCopy.iterator();
-        while (bombIterator1.hasNext()) {
-            Bomb b = bombIterator1.next();
-            b.setExploding();
-            if (b.getExploding()) {
-                System.out.println("Bomb at X: " + b.getPosition().getX() + " Y: " + b.getPosition().getY() + " is exploding!");
-                b.handleExplosion(player1, player2, monsters);
+        if (!this.player1.isDetonatorOn()) {
+            ArrayList<Bomb> player1BombsCopy = new ArrayList<>(this.player1.getBombs());
+            Iterator<Bomb> bombIterator1 = player1BombsCopy.iterator();
+            while (bombIterator1.hasNext()) {
+                Bomb b = bombIterator1.next();
+                b.setExploding();
+                if (b.getExploding()) {
+                    System.out.println("Bomb at X: " + b.getPosition().getX() + " Y: " + b.getPosition().getY() + " is exploding!");
+                    b.handleExplosion(player1, player2, monsters);
+                }
+            }
+        } else {
+            for (Bomb b : this.player1.getBombs()) {
+                b.setStartingTime(LocalTime.now());
             }
         }
         //player2 bombs
-        ArrayList<Bomb> player2BombsCopy = new ArrayList<>(this.player2.getBombs());
-        Iterator<Bomb> bombIterator2 = player2BombsCopy.iterator();
-        while (bombIterator2.hasNext()) {
-            Bomb b = bombIterator2.next();
-            b.setExploding();
-            if (b.getExploding()) {
-                System.out.println("Bomb at X: " + b.getPosition().getX() + " Y: " + b.getPosition().getY() + " is exploding!");
-                b.handleExplosion(player1, player2, monsters);
+        if (!this.player2.isDetonatorOn()) {
+            ArrayList<Bomb> player2BombsCopy = new ArrayList<>(this.player2.getBombs());
+            Iterator<Bomb> bombIterator2 = player2BombsCopy.iterator();
+            while (bombIterator2.hasNext()) {
+                Bomb b = bombIterator2.next();
+                b.setExploding();
+                if (b.getExploding()) {
+                    System.out.println("Bomb at X: " + b.getPosition().getX() + " Y: " + b.getPosition().getY() + " is exploding!");
+                    b.handleExplosion(player1, player2, monsters);
+                }
+            }
+        } else {
+            for (Bomb b : this.player2.getBombs()){
+                b.setStartingTime(LocalTime.now());
             }
         }
+
     }
 
     /*

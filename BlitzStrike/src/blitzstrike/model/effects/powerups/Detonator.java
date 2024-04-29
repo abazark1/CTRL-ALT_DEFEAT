@@ -15,7 +15,7 @@ public class Detonator extends PowerUp {
      */
     @Override
     public void applyEffect(Player player) {
-
+        activateDetonator(player);
     }
 
     /**
@@ -34,6 +34,8 @@ public class Detonator extends PowerUp {
      * @param player is the given player
      */
     private void activateDetonator(Player player) {
-
+        System.out.println("Detonator was activated");
+        player.setIsDetonatorOn(true);
+        
     }
 }

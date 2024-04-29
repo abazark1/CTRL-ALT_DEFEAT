@@ -11,6 +11,7 @@ import blitzstrike.model.effects.curses.BombRangeCurse;
 import blitzstrike.model.effects.curses.ImmediateBombCurse;
 import blitzstrike.model.effects.curses.NoBombCurse;
 import blitzstrike.model.effects.curses.FollowedByMonsters;
+import blitzstrike.model.effects.powerups.Detonator;
 import blitzstrike.model.effects.powerups.Ghost;
 import blitzstrike.model.effects.powerups.Invincibility;
 import blitzstrike.model.effects.powerups.Obstacle;
@@ -102,7 +103,7 @@ public abstract class Effect {
         Random rand = new Random();
         int randomNumber = rand.nextInt(11);
         Effect effect;
-        switch (randomNumber) {
+        switch (randomNumber) {/*
             case 0:
                 //System.out.println("I dropped Bomb Increase randomly");
                 effect = new BombIncrease();
@@ -164,11 +165,16 @@ public abstract class Effect {
                 effect.setEverythingFalse();
                 effect.setIsPowerup(true);
                 return effect;
+             */
             default:
                 //System.out.println("I dropped Empty effect randomly");
-                effect = new EmptyEffect();
+//                effect = new EmptyEffect();
+//                effect.setEverythingFalse();
+//                effect.setIsEmpty(true);
+//                return effect;
+                effect = new Detonator();
                 effect.setEverythingFalse();
-                effect.setIsEmpty(true);
+                effect.setIsPowerup(true);
                 return effect;
         }
     }
