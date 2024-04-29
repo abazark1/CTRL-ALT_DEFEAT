@@ -103,7 +103,7 @@ public abstract class Effect {
         Random rand = new Random();
         int randomNumber = rand.nextInt(11);
         Effect effect;
-        switch (randomNumber) {/*
+        switch (randomNumber) {
             case 0:
                 //System.out.println("I dropped Bomb Increase randomly");
                 effect = new BombIncrease();
@@ -158,23 +158,19 @@ public abstract class Effect {
                 effect.setEverythingFalse();
                 effect.setIsPowerup(true);
                 return effect;
-            
+
             case 9:
                 System.out.println("I dropped Obstacle pUp randomly");
                 effect = new Obstacle();
                 effect.setEverythingFalse();
                 effect.setIsPowerup(true);
                 return effect;
-             */
+
             default:
-                //System.out.println("I dropped Empty effect randomly");
-//                effect = new EmptyEffect();
-//                effect.setEverythingFalse();
-//                effect.setIsEmpty(true);
-//                return effect;
-                effect = new Detonator();
+                System.out.println("I dropped Empty effect randomly");
+                effect = new EmptyEffect();
                 effect.setEverythingFalse();
-                effect.setIsPowerup(true);
+                effect.setIsEmpty(true);
                 return effect;
         }
     }
