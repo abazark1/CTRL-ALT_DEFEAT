@@ -1,15 +1,15 @@
 xxxxxxxxxxxxxxx
 x         #  bx
 x#xxxxxxx     x
-x #    1      x
+x #           x
 x  #     x    x
-x 3 #         x
+x   #         x
 x          x  x
 x     x       x
-x     #  4 x  x
+x     #    x  x
 x     x   xx  x
 x  x  x       x
-x     x  x   2x
+x     x  x    x
 x     x    x# x
 xa          x#x
 xxxxxxxxxxxxxxx
