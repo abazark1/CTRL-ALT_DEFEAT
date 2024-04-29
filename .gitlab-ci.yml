@@ -20,7 +20,6 @@ image: mbasso/disl-ci:openjdk-20
 
 stages:          # List of stages for jobs, and their order of execution
   - build
-  # - test
   - deploy
 
 # before_script:
@@ -33,21 +32,17 @@ build-program:
   script:
     - ant -buildfile BlitzStrike/build.xml compile
     - ant -buildfile BlitzStrike/build.xml jar
-  artifacts:
-    paths:
-      - dist/program.jar
-    expire_in: 3 days
+  
 
 deploy-program:
   stage: deploy
-  services:
-    - name: ubuntu:latest
   script:
-    - apt-get update && apt-get install -y sshpass
-    - sshpass -p $DEPLOY_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no $DEPLOY_SERVER_USER@$DEPLOY_SERVER_HOST "mkdir -p /path/to/deploy"
-    - sshpass -p $DEPLOY_SERVER_PASSWORD scp -o StrictHostKeyChecking=no dist/program.jar $DEPLOY_SERVER_USER@$DEPLOY_SERVER_HOST:/path/to/deploy/
-  only:
-    - main
+    - ant -buildfile BlitzStrike/build.xml compile
+  artifacts:
+    paths:
+      - dist/*.jar
+    expire_in: 3 days
+
   
 
 
