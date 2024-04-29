@@ -364,6 +364,8 @@ public class Player {
         if (isAlive() && this.getObstacles().size() < maxNumberOfObstacles && this.isObstacleOn()) {
             ObstacleBox obstacleBox = new ObstacleBox(this.position);
             this.obstacles.add(obstacleBox);
+            obstacleBox.walkable = false;
+            this.space[position.getY()][position.getX()] = obstacleBox;     
             System.out.println("I've placed an obstacle");
         }
     }
@@ -421,6 +423,17 @@ public class Player {
         }
     }
 
+    public void removeObstacle(ObstacleBox obst) {
+        Iterator<ObstacleBox> obstIterator = this.obstacles.iterator();
+        while (obstIterator.hasNext()) {
+            ObstacleBox o = obstIterator.next();
+            if (o.getPosition().getX() == obst.getPosition().getX() && o.getPosition().getY() == obst.getPosition().getY()) {
+                obstIterator.remove();
+                System.out.println("The bomb at X:" + obst.getPosition().getX() + " Y:" + obst.getPosition().getY() + " was removed");
+            }
+        }
+    }
+
     /*
      * Marks the player as dead and logs their death time. Also triggers the
      * removal of the player from the map.
@@ -466,6 +479,10 @@ public class Player {
             }
 
             if (hasBombAtPosition(newPosition.getX(), newPosition.getY())) {
+                return false;
+            }
+
+            if (hasObstacleAtPosition(newPosition.getX(), newPosition.getY())) {
                 return false;
             }
         }

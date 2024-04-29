@@ -68,7 +68,6 @@ public class View extends JPanel {
             for (int x = 0; x < game.MAP_SIZE; x++) {
                 Image img = null;
                 Box b = game.getBox(x, y);
-
                 if (b != null) {
                     if (b.isDestroyed()) {
                         Effect effect = b.getEffect();
@@ -85,6 +84,7 @@ public class View extends JPanel {
                     }
                 } else {
 
+                    ObstacleBox o = game.getObstacle(x, y);
                     Monster m = game.getMonster(x, y);
                     Player p1 = game.getPlayer1(x, y);
                     Player p2 = game.getPlayer2(x, y);
@@ -107,7 +107,6 @@ public class View extends JPanel {
                                 break;
 
                         }
-                        //img = mo {nster1;
                     } else if (p1 != null) {
                         img = player1;
                     } else if (p2 != null) {
@@ -116,7 +115,8 @@ public class View extends JPanel {
                         img = wall;
                     } else if (e != null) {
                         img = empty;
-                    }
+                    } else if (o != null) {
+                        img = obstacle;}
                 }
 
                 if (img != null) {
@@ -161,7 +161,7 @@ public class View extends JPanel {
                 int newX = x + dir[0] * i;
                 int newY = y + dir[1] * i;
                 if (game.canExplode(newX, newY)) {
-//                    System.out.println("IN VIEW CLASS: game.canExplode(x,y)" + newX + " " + newY);
+                    //System.out.println("IN VIEW CLASS: game.canExplode(x,y)" + newX + " " + newY);
                     gr.drawImage(explosion, newX * scaled_size, newY * scaled_size, scaled_size, scaled_size, null);
                     //gr.fillRect(newX * scaled_size, newY * scaled_size, scaled_size, scaled_size);
                 } else {

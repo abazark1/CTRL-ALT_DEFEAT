@@ -41,4 +41,8 @@ public class Box extends Cell {
     public boolean isDestoyable(){
         return this.destroyable;
     }
+   
+    public Position getPosition() {
+        return this.position;
+    }
 }

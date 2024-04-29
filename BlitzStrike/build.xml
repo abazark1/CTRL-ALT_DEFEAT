@@ -9,6 +9,10 @@
 <!-- in the project's Project Properties dialog box.-->
 <project name="BlitzStrike" default="default" basedir=".">
     <description>Builds, tests, and runs the project BlitzStrike.</description>
+    <path id="classpath">
+        <pathelement location="lib/junit.jar"/>
+        <!-- Add other JAR files if needed -->
+    </path>
     <import file="nbproject/build-impl.xml"/>
     <!--
 

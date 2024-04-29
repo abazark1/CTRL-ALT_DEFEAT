@@ -101,7 +101,7 @@ public abstract class Effect {
      */
     static public Effect getRandomEffect() {
         Random rand = new Random();
-        int randomNumber = rand.nextInt(10);
+        int randomNumber = rand.nextInt(11);
         Effect effect;
         switch (randomNumber) {/*
             case 0:
