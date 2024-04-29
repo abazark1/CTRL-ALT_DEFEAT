@@ -12,12 +12,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-
 public class Player {
 
     public static final int STANDARD_BOMB_RANGE = 4;
     public static final int STANDARD_BOMB_NUMBER = 1;
-    public static final double STANDARD_PLAYERS_SPEED = 1.0;
     public static final int STANDARD_OBSTACLE_NUMBER = 0;
 
     private String name;
@@ -26,17 +24,13 @@ public class Player {
     private List<Bomb> bombs;
     private List<ObstacleBox> obstacles;
     private int bombRange;
-    private double speed;
     private int maxBombNumber;
     private boolean isInvincible;
-    private LocalTime invincibleTimer;
     private boolean followedByMonsters;
     private boolean isGhost;
-    private LocalTime ghostTimer;
     private boolean isDetonatorOn;
     private boolean isObstacleOn;
     private int maxNumberOfObstacles;
-//    private LocalTime bombRangeCurseStartTime;
     private LocalTime speedCurseStartTime;
     private boolean noBombCurse;
     private LocalTime noBombCurseStartTime;
@@ -45,6 +39,7 @@ public class Player {
     private LocalTime deathTime;
     private List<Curse> curses;
     private List<PowerUp> powerups;
+    private boolean detonatorWorked;
 
     private Cell[][] space;
     private boolean rollerSkateWorking;
@@ -57,7 +52,6 @@ public class Player {
         this.powerups = new ArrayList<>();
         this.alive = true;
         this.bombRange = STANDARD_BOMB_RANGE;
-        this.speed = STANDARD_PLAYERS_SPEED;
         this.maxBombNumber = STANDARD_BOMB_NUMBER;
         this.isInvincible = false;
         this.isGhost = false;
@@ -73,9 +67,11 @@ public class Player {
     public List<Bomb> getBombs() {
         return this.bombs;
     }
+
     public List<ObstacleBox> getObstacles() {
         return this.obstacles;
     }
+
     public String getName() {
         return this.name;
     }
@@ -101,6 +97,7 @@ public class Player {
         }
         return null;
     }
+
     public ObstacleBox getObstacle(int x, int y) {
         for (ObstacleBox obstacle : obstacles) {
             Position obstPos = obstacle.getPosition();
@@ -136,17 +133,18 @@ public class Player {
      *
      * @return followedByMonsters value
      */
-     public boolean getFollowedByMonsters() {
+    public boolean getFollowedByMonsters() {
         return this.followedByMonsters;
     }
-    public int getMaxNumberOfObstacles(){
+
+    public int getMaxNumberOfObstacles() {
         return this.maxNumberOfObstacles;
     }
 
-    public void setMaxNumberOfObstacles(int newNum){
+    public void setMaxNumberOfObstacles(int newNum) {
         this.maxNumberOfObstacles = newNum;
     }
-    
+
     public void setPosition(Position position) {
         this.position = position;
     }
@@ -171,12 +169,17 @@ public class Player {
     public void setInvincible(boolean value) {
         this.isInvincible = value;
     }
-    
-    public void setGhost(boolean value){
+
+    public void setGhost(boolean value) {
         this.isGhost = value;
     }
-    public void setIsObstacleOn(boolean value){
+
+    public void setIsObstacleOn(boolean value) {
         this.isObstacleOn = value;
+    }
+
+    public void setIsDetonatorOn(boolean value) {
+        this.isDetonatorOn = value;
     }
 
     public void setImmediateBombCurse(boolean value) {
@@ -211,13 +214,6 @@ public class Player {
         this.bombRange = value;
     }
 
-//    public LocalTime getBombRangeCurseTimer() {
-//        return this.bombRangeCurseStartTime;
-//    }
-//
-//    public void setBombRangeCurseStartTime() {
-//        this.bombRangeCurseStartTime = LocalTime.now();
-//    }
     public void setSpeedCurseTimer(LocalTime time) {
         if (time != null) {
             this.immediateBombCurseStartTime = time;
@@ -245,14 +241,19 @@ public class Player {
     public boolean isInvincible() {
         return this.isInvincible;
     }
-    
-    public boolean isGhost(){
+
+    public boolean isGhost() {
         return this.isGhost;
     }
 
-    public boolean isObstacleOn(){
+    public boolean isObstacleOn() {
         return this.isObstacleOn;
     }
+
+    public boolean isDetonatorOn() {
+        return this.isDetonatorOn;
+    }
+
     //////////////////OPERATIONS////////////////////////////////////////////////
     /*
      * Places a bomb on the player's current position if the player is alive,
@@ -267,6 +268,11 @@ public class Player {
             Bomb bomb = new Bomb(this.position, this, this.space);
             this.bombs.add(bomb);
             System.out.println("I've placed a bomb");
+            if (this.isDetonatorOn){
+                if (this.getBombs().size() >= maxBombNumber){
+                    this.isDetonatorOn = false;
+                }
+            }
         }
     }
 
@@ -286,6 +292,7 @@ public class Player {
     public void resetBombRange() {
         this.bombRange = STANDARD_BOMB_RANGE;
     }
+
     /*
     * Adds curse to the ArrayList
      *
@@ -353,8 +360,8 @@ public class Player {
      * @param
      */
     public void placeObstacle() {
-        
-        if (isAlive() && this.getObstacles().size() < maxNumberOfObstacles&& this.isObstacleOn()) {
+
+        if (isAlive() && this.getObstacles().size() < maxNumberOfObstacles && this.isObstacleOn()) {
             ObstacleBox obstacleBox = new ObstacleBox(this.position);
             this.obstacles.add(obstacleBox);
             System.out.println("I've placed an obstacle");
@@ -388,7 +395,7 @@ public class Player {
         }
         return false;
     }
-    
+
     public boolean hasObstacleAtPosition(int x, int y) {
         for (ObstacleBox obstacle : obstacles) {
             Position obstPos = obstacle.getPosition();
@@ -424,6 +431,7 @@ public class Player {
         this.deathTime = LocalTime.now();
         removePlayerFromMap();
     }
+
     /*
      * Validates if the position in the given direction is walkable. The
      * validation checks for obstacles, other players, and bombs in the new
@@ -436,21 +444,19 @@ public class Player {
     public boolean isValidPosition(Direction direction, Player player2) {
         Position newPosition = this.position.translate(direction);
 
-        if(this.isGhost())
-        {
+        if (this.isGhost()) {
             if (player2.getPosition().equals(newPosition)) {
                 return false;
             }
             if (!this.space[newPosition.getY()][newPosition.getX()].isWalkable()) {
                 return true;
             }
-            
+
             if (hasBombAtPosition(newPosition.getX(), newPosition.getY())) {
                 return true;
             }
-            
-        }
-        else{
+
+        } else {
             if (!this.space[newPosition.getY()][newPosition.getX()].isWalkable()) {
                 return false;
             }
@@ -485,7 +491,6 @@ public class Player {
         this.obstacles = new ArrayList<>();
         this.alive = true;
         this.bombRange = 4;
-        this.speed = 1.0;
         this.maxBombNumber = 1;
         this.isInvincible = false;
         this.isGhost = false;

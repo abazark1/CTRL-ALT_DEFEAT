@@ -49,6 +49,10 @@ public class Bomb {
         this.exploding = Duration.between(this.startingTime, LocalTime.now()).getSeconds() >= BOMB_COUNTDOWN;
 //        System.out.println("The bomb is set to exploding");
     }
+    
+    public void setStartingTime(LocalTime time){
+        this.startingTime = time;
+    }
 
     /**
      * Handles the explosion of a bomb. It triggers the explosion in four
