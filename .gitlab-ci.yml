@@ -49,7 +49,7 @@ test-program:
   #   - name: tudorfil9/junit_kata_v1
   script:
     - apk add junit
-    - ant compile-test
+    - ant -buildfile BlitzStrike/build.xml compile-test
     - ant -buildfile BlitzStrike/build.xml test
 
 
