@@ -37,7 +37,7 @@ build-program:
 deploy-program:
   stage: deploy
   script:
-    - ant -buildfile BlitzStrike/build.xml compile
+    - ant -buildfile BlitzStrike/build.xml deploy
   artifacts:
     paths:
       - dist/*.jar
