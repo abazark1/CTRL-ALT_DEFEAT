@@ -23,7 +23,7 @@ import java.util.Iterator;
 public class Game {
 
     public static final int MAP_SIZE = 15;
-    public static final int INITIAL_BATTLE_ROYALE_DURATION = 60;
+    public static final int INITIAL_BATTLE_ROYALE_DURATION = 5; // 60
 
     private boolean endGame;
     private boolean endRound;
@@ -640,11 +640,11 @@ public class Game {
             System.out.println("Shrink happens");
             shrinkMap();
             this.currentLayerOfBattleRoyale++;
+            this.startingTime = LocalTime.now();
             if (this.currentBattleRoyaleDuration > 20) {
-                this.currentBattleRoyaleDuration *= 0.75;
-                this.currentBattleRoyaleTime = this.currentBattleRoyaleDuration;
+                this.currentBattleRoyaleDuration -= 10;
             }
-            //this.startingTime = LocalTime.now();
+            this.currentBattleRoyaleTime = this.currentBattleRoyaleDuration;
         }
     }
 
