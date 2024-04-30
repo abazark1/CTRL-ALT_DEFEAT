@@ -23,7 +23,7 @@ import java.util.Iterator;
 public class Game {
 
     public static final int MAP_SIZE = 15;
-    public static final int INITIAL_BATTLE_ROYALE_DURATION = 5; // 60
+    public static final int INITIAL_BATTLE_ROYALE_DURATION = 60;
 
     private boolean endGame;
     private boolean endRound;
