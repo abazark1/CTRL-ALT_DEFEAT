@@ -58,6 +58,7 @@ public class MainWindow extends JFrame {
     private View view; ///in the class diagram Board board
     private String[] fileList;
     private String fileNamesString;
+    private String[] fileNamesArray;
     private Player player1;
     private Player player2;
     private Timer monsterMoveTimer;
@@ -84,28 +85,6 @@ public class MainWindow extends JFrame {
         frame.add(statsPanel, BorderLayout.NORTH);
 
 ////////////////////////////////////////////////////Menu Bar///////////////////////////////////////////
-        JMenuItem resumePause = new JMenuItem("Pause/Resume");
-        resumePause.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!game.getIsPaused()) {
-                    game.pauseGame();
-                    //stop monsters from moving
-                    monsterMoveTimer.stop();
-                    frame.removeKeyListener(player1KeyListener);
-                    frame.removeKeyListener(player2KeyListener);
-                } else {
-                    game.resumeGame();
-                    //stop monsters from moving
-                    monsterMoveTimer.restart();
-                    frame.addKeyListener(player1KeyListener);
-                    frame.addKeyListener(player2KeyListener);
-
-                }
-            }
-        });
-        menu.add(resumePause);
-
         JMenuItem restart = new JMenuItem("Restart");
         restart.addActionListener(new ActionListener() {
             @Override
@@ -218,7 +197,7 @@ public class MainWindow extends JFrame {
                         player1.movePlayer(RIGHT, player2);
                     case KeyEvent.VK_SPACE ->
                         player1.placeBomb();
-                    case KeyEvent.VK_1->
+                    case KeyEvent.VK_1 ->
                         player1.placeObstacle();
                 }
 
@@ -276,7 +255,7 @@ public class MainWindow extends JFrame {
      */
     private void toggleStatsPanelVisibility(boolean visible) {
         statsPanel.setVisible(visible);
-        if (!visible){
+        if (!visible) {
             statsPanel.removeAll();
         }
         frame.revalidate();
@@ -457,7 +436,7 @@ public class MainWindow extends JFrame {
             System.out.println("List of files in the directory:");
             for (String fileName : fileList) {
                 System.out.println(fileName);
-                stringBuilder.append(fileName).append("\n");
+                stringBuilder.append(fileName).append(System.lineSeparator());
 
             }
         } else {
@@ -465,6 +444,7 @@ public class MainWindow extends JFrame {
             stringBuilder.append("The directory is empty or does not exist.");
         }
         fileNamesString = stringBuilder.toString();
+        fileNamesArray = fileNamesString.split("\n");
     }
 
     /**
@@ -478,8 +458,10 @@ public class MainWindow extends JFrame {
 
         JLabel gamesLabel = new JLabel("Available games:");
         mainPanel2.add(gamesLabel);
-        JLabel nameLabel = new JLabel(fileNamesString);
-        mainPanel2.add(nameLabel);
+        for (String filename : fileNamesArray) {
+            JLabel nameLabel = new JLabel(filename);
+            mainPanel2.add(nameLabel);
+        }
 
         JLabel nameLabelPl1 = new JLabel("Enter 1st players' name:");
         mainPanel2.add(nameLabelPl1);
@@ -577,13 +559,10 @@ public class MainWindow extends JFrame {
                     }
                     frame.remove(mMenu);
                     frame.add(view);
-                    
-                    //statsPanel.removeAll();
-                    
-//                    frame.revalidate();
-//                    frame.repaint();
                     updateStatsPanel();
                     continueDialog.setVisible(false);
+                    game.resumeGame();
+                    monsterMoveTimer.restart();
                     continueDialog.dispose();
                 }
             }
@@ -592,23 +571,11 @@ public class MainWindow extends JFrame {
 
         mainPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         continueDialog.setContentPane(mainPanel2);
-
         continueDialog.pack();
-
-        continueDialog.setLocationRelativeTo(
-                this);
-
+        continueDialog.setLocationRelativeTo(this);
         continueDialog.setVisible(true);
-        //add button
-        //add errors
-        //display
-        game.resumeGame();
-        monsterMoveTimer.restart();
-//        frame.addKeyListener(player1KeyListener);
-//        frame.addKeyListener(player2KeyListener);
-
     }
-    
+
     public void updateStatsPanel() {
         statsPanel.removeAll();
         player1ScoreLabel = new JLabel("Score: " + game.getPlayer1Score());
