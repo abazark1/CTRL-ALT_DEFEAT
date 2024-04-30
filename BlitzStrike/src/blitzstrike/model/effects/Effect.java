@@ -101,7 +101,7 @@ public abstract class Effect {
      */
     static public Effect getRandomEffect() {
         Random rand = new Random();
-        int randomNumber = rand.nextInt(11);
+        int randomNumber = rand.nextInt(12);
         Effect effect;
         switch (randomNumber) {
             case 0:
@@ -162,6 +162,13 @@ public abstract class Effect {
             case 9:
                 System.out.println("I dropped Obstacle pUp randomly");
                 effect = new Obstacle();
+                effect.setEverythingFalse();
+                effect.setIsPowerup(true);
+                return effect;
+               
+            case 10:
+                System.out.println("I dropped detonator pUp randomly");
+                effect = new Detonator();
                 effect.setEverythingFalse();
                 effect.setIsPowerup(true);
                 return effect;
