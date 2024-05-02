@@ -38,6 +38,8 @@ public class Game {
     private Player player2;
     private Player winner;
     private String filepath;
+    private String continuePath;
+    private int mapNumber;
     private LocalTime startingTime;
     private ArrayList<Monster> monsters;
     private Cell[][] space = new Cell[MAP_SIZE][MAP_SIZE];
@@ -46,8 +48,10 @@ public class Game {
     public Game() {
     }
 
-    public Game(String filepath, Player player1, Player player2, int roundsToWin) {
-        this.filepath = filepath;
+    public Game(int mapNumber, String continuePath, Player player1, Player player2, int roundsToWin) {
+        this.filepath = "src/blitzstrike/res/map" + mapNumber + ".txt";
+        this.continuePath = continuePath;
+        this.mapNumber = mapNumber;
         this.roundsToWin = roundsToWin;
         this.player1 = player1;
         this.player2 = player2;
@@ -491,7 +495,7 @@ public class Game {
                 }
             }
         } else {
-            for (Bomb b : this.player2.getBombs()){
+            for (Bomb b : this.player2.getBombs()) {
                 b.setStartingTime(LocalTime.now());
             }
         }
@@ -692,9 +696,9 @@ public class Game {
 
     /**
      * Restarts the game by resetting both players, reloading the map, resetting
-     * scores, and updating the starting time and game status.
-     * It throws exception when the game has already been saved, in this case
-     * we use another method to load the game
+     * scores, and updating the starting time and game status. It throws
+     * exception when the game has already been saved, in this case we use
+     * another method to load the game
      */
     public void restartgame() {
 
@@ -838,6 +842,12 @@ public class Game {
                     continue;
                 } else if (line.startsWith("RoundsToWin:")) {
                     continue;
+                } else if (line.startsWith("CurrentBattleRoyaleTime:")) {
+                    continue;
+                } else if (line.startsWith("CurrentBattleRoyaleDuration:")) {
+                    continue;
+                } else if (line.startsWith("CurrentLayerOfBattleRoyale:")) {
+                    continue;
                 } else {
                     // Assuming this line is part of the map
                     // You'll start processing the map after handling all the metadata
@@ -906,14 +916,6 @@ public class Game {
      * @param filepath The path to the file containing the saved game state.
      */
     public void continueGame(String filepath) {
-
-        this.monsters = new ArrayList<>();
-        this.space = new Cell[MAP_SIZE][MAP_SIZE];
-        this.startingTime = LocalTime.now();
-        this.player1.setSpace(this.space);
-        this.player2.setSpace(this.space);
-
-        //this.startingTime = LocalTime.now();
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -927,12 +929,25 @@ public class Game {
                     player2Score = Integer.parseInt(line.substring("Player2Score:".length()));
                 } else if (line.startsWith("RoundsToWin:")) {
                     setRoundsToWin(Integer.parseInt(line.substring("RoundsToWin:".length())));
+                } else if (line.startsWith("CurrentBattleRoyaleTime:")) {
+                    this.currentBattleRoyaleTime = Integer.parseInt(line.substring("CurrentBattleRoyaleTime:".length()));
+                } else if (line.startsWith("CurrentBattleRoyaleDuration:")) {
+                    this.currentBattleRoyaleDuration = Integer.parseInt(line.substring("CurrentBattleRoyaleDuration:".length()));
+                } else if (line.startsWith("CurrentLayerOfBattleRoyale:")) {
+                    this.currentLayerOfBattleRoyale = Integer.parseInt(line.substring("CurrentLayerOfBattleRoyale:".length()));
                 } else {
                     // Assuming this line is part of the map
                     // You'll start processing the map after handling all the metadata
                     break;
                 }
             }
+
+            this.monsters = new ArrayList<>();
+            this.space = new Cell[MAP_SIZE][MAP_SIZE];
+//        this.startingTime = LocalTime.now();
+            this.startingTime = LocalTime.now().minusSeconds(currentBattleRoyaleDuration-currentBattleRoyaleTime);
+            this.player1.setSpace(this.space);
+            this.player2.setSpace(this.space);
 
             //map
             int y = 0;
@@ -1000,7 +1015,7 @@ public class Game {
      * @param player2score The score of the second player.
      * @param roundsToWin The number of rounds required to win the game.
      */
-    public void saveGame(Player player1, Player player2, int player1score, int player2score, int roundsToWin/*, Timer timer*/) {
+    public void saveGame(Player player1, Player player2, int player1score, int player2score, int roundsToWin) {
         StringBuilder mapBuilder = new StringBuilder();
         pauseGame();
         // Save map state
@@ -1042,12 +1057,15 @@ public class Game {
             mapBuilder.append("\n");
         }
 
-        try (FileWriter writer = new FileWriter("src/blitzstrike/files/" + player1.getName() + "_" + player2.getName() + "_" + player1Score + "_" + player2Score + "_" + roundsToWin + ".txt")) {
+        try (FileWriter writer = new FileWriter("src/blitzstrike/files/" + player1.getName() + "_" + player2.getName() + "_" + this.mapNumber + "_" + player1Score + "_" + player2Score + "_" + roundsToWin + ".txt")) {
             writer.write("Player1Name:" + player1.getName() + "\n");
             writer.write("Player2Name:" + player2.getName() + "\n");
             writer.write("Player1Score:" + player1Score + "\n");
             writer.write("Player2Score:" + player2Score + "\n");
             writer.write("RoundsToWin:" + roundsToWin + "\n");
+            writer.write("CurrentBattleRoyaleTime:" + this.currentBattleRoyaleTime + "\n");
+            writer.write("CurrentBattleRoyaleDuration:" + this.currentBattleRoyaleDuration + "\n");
+            writer.write("CurrentLayerOfBattleRoyale:" + this.currentLayerOfBattleRoyale + "\n");
             writer.write("\n");
 
             writer.write(mapBuilder.toString());
@@ -1179,7 +1197,7 @@ public class Game {
      * Delete the files of saved games when they end eventually
      */
     public void deleteSavedGameFile() {
-        File file = new File(filepath);
+        File file = new File(this.continuePath);
         if (file.exists()) {
             if (file.delete()) {
                 System.out.println("Saved game file deleted successfully.");

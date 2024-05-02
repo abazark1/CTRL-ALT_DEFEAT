@@ -23,7 +23,7 @@ public class GameTest {
         this.player2 = new Player("Mileena");
         this.mapPath = "src/blitzstrike/res/map1.txt";
         this.numberOfGames = 3;
-        this.game = new Game(mapPath, player1, player2, numberOfGames);
+        this.game = new Game(1, "", player1, player2, numberOfGames);
     }
 
     @Test

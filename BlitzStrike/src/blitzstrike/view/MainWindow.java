@@ -397,6 +397,7 @@ public class MainWindow extends JFrame {
     private void confirmExitandSave() {
         game.pauseGame();
         monsterMoveTimer.stop();
+        backgroundTimer.stop();
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
 
         if (result == JOptionPane.YES_OPTION) {
@@ -405,6 +406,7 @@ public class MainWindow extends JFrame {
         } else {
             game.resumeGame();
             monsterMoveTimer.restart();
+            backgroundTimer.restart();
         }
 
     }
@@ -479,6 +481,14 @@ public class MainWindow extends JFrame {
 
         mainPanel2.add(Box.createHorizontalStrut(10));
 
+        JLabel mapNumber = new JLabel("Enter the map's number:");
+        mainPanel2.add(mapNumber);
+
+        JTextField mapNumberField = new JTextField(15);
+        mainPanel2.add(mapNumberField);
+
+        mainPanel2.add(Box.createHorizontalStrut(10));
+
         JLabel pl1ScoreLabel = new JLabel("Enter 1st player's score:");
         mainPanel2.add(pl1ScoreLabel);
 
@@ -513,12 +523,19 @@ public class MainWindow extends JFrame {
                 String player1NameCont = player1NameFieldCont.getText().trim();
                 String player2NameCont = player2NameFieldCont.getText().trim();
 
+                Integer mapNumberCont = Integer.valueOf(mapNumberField.getText());
+
                 Integer pl1ScoreCont = Integer.valueOf(pl1ScoreField.getText());
                 Integer pl2ScoreCont = Integer.valueOf(pl2ScoreField.getText());
                 int numGamesCont = Integer.parseInt(numGamesField2.getText());
 
                 if (player1NameCont.isEmpty() || player2NameCont.isEmpty()) {
                     JOptionPane.showMessageDialog(continueDialog, "Enter both players' names!", "Missing Information", JOptionPane.ERROR_MESSAGE);
+                    allFieldsAreGoodCont = false;
+                }
+
+                if (mapNumberCont == null) {
+                    JOptionPane.showMessageDialog(continueDialog, "Enter the map's number!", "Missing Information", JOptionPane.ERROR_MESSAGE);
                     allFieldsAreGoodCont = false;
                 }
 
@@ -541,15 +558,12 @@ public class MainWindow extends JFrame {
 
                 if (allFieldsAreGoodCont) {
 
-                    String filePathCont = "src/blitzstrike/files/" + player1NameCont + "_" + player2NameCont + "_" + pl1ScoreCont + "_" + pl2ScoreCont + "_" + numGamesCont + ".txt";
+                    String filePathCont = "src/blitzstrike/files/" + player1NameCont + "_" + player2NameCont + "_" + mapNumberCont + "_" + pl1ScoreCont + "_" + pl2ScoreCont + "_" + numGamesCont + ".txt";
 
                     player1 = new Player(player1NameCont);
                     player2 = new Player(player2NameCont);
 
-                    game = new Game(filePathCont, player1, player2, numGamesCont);
-
-//                    player1 = new Player(player1NameFieldCont.getText());
-//                    player2 = new Player(player2NameFieldCont.getText());
+                    game = new Game(mapNumberCont, filePathCont, player1, player2, numGamesCont);
                     game.continueGame(filePathCont);
                     game.setRoundsToWin(Integer.parseInt(numGamesField2.getText()));
                     try {
@@ -590,39 +604,6 @@ public class MainWindow extends JFrame {
         frame.repaint();
     }
 
-    /*
-    public void showRoundEndPopup(String message) {
-        JDialog roundEndDialog = new JDialog(this, "Round Ended", true);
-        roundEndDialog.setUndecorated(true);
-        roundEndDialog.getRootPane().setBorder(BorderFactory.createLineBorder(BLACK, 2));
-        roundEndDialog.setLayout(new FlowLayout());
-        roundEndDialog.setSize(400, 200);
-        roundEndDialog.setLocationRelativeTo(this); // Center on screen
-
-        // Message
-        JLabel messageLabel = new JLabel("<html><center>" + message + "<br>Player 1 Score: " + game.getPlayer1Score() + "<br>Player 2 Score: " + game.getPlayer2Score() + "</center></html>");
-        roundEndDialog.add(messageLabel);
-
-        // Next Round Button
-        JButton nextRoundButton = new JButton("Go to Next Round");
-        nextRoundButton.addActionListener(e -> {
-            try {
-                player1ScoreLabel.setText("Score: " + game.getPlayer1Score());
-                player2ScoreLabel.setText("Score: " + game.getPlayer2Score());
-                frame.repaint();
-                roundEndDialog.setVisible(false);
-                roundEndDialog.dispose(); // Close and dispose of the dialog
-                game.loadNextRound();
-            } catch (Exception ex) {
-                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        roundEndDialog.add(nextRoundButton);
-
-        roundEndDialog.setVisible(true);
-
-    }
-     */
     public void showRoundEndPopup(String message) {
         JDialog roundEndDialog = new JDialog(this, "Round Ended", true);
         roundEndDialog.setUndecorated(true);
@@ -748,6 +729,7 @@ public class MainWindow extends JFrame {
         ButtonGroup mapButtonGroup = new ButtonGroup();
 
         JRadioButton map1RadioButton = new JRadioButton("Map 1");
+        map1RadioButton.setSelected(true);
         mapButtonGroup.add(map1RadioButton);
         mainPanel.add(map1RadioButton);
 
@@ -783,7 +765,7 @@ public class MainWindow extends JFrame {
                     allFieldsAreGood = false;
                 }
 
-                if (!map1RadioButton.isSelected() && !map2RadioButton.isSelected() && !(map3RadioButton != null && map3RadioButton.isSelected())) {
+                if (!map1RadioButton.isSelected() && !map2RadioButton.isSelected() && !(map3RadioButton.isSelected())) {
                     JOptionPane.showMessageDialog(gameSetupDialog, "Select a map!", "Missing Information", JOptionPane.ERROR_MESSAGE);
                     allFieldsAreGood = false;
                 }
@@ -801,13 +783,20 @@ public class MainWindow extends JFrame {
                 }
 
                 if (allFieldsAreGood) {
-                    int selectedMap = map1RadioButton.isSelected() ? 1 : (map2RadioButton.isSelected() ? 2 : (map3RadioButton != null && map3RadioButton.isSelected() ? 3 : 0));
-                    String filePath = "src/blitzstrike/res/map" + selectedMap + ".txt";
+
+                    int selectedMap = 1;
+                    if (map1RadioButton.isSelected()) {
+                        selectedMap = 1;
+                    } else if (map1RadioButton.isSelected()) {
+                        selectedMap = 2;
+                    } else if (map3RadioButton.isSelected()) {
+                        selectedMap = 3;
+                    }
 
                     player1 = new Player(player1Name);
                     player2 = new Player(player2Name);
 
-                    game = new Game(filePath, player1, player2, numGames);
+                    game = new Game(selectedMap, "", player1, player2, numGames);
 
                     game.loadMap();
 
