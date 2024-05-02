@@ -564,7 +564,6 @@ public class MainWindow extends JFrame {
                     player2 = new Player(player2NameCont);
 
                     game = new Game(mapNumberCont, filePathCont, player1, player2, numGamesCont);
-
                     game.continueGame(filePathCont);
                     game.setRoundsToWin(Integer.parseInt(numGamesField2.getText()));
                     try {

@@ -916,14 +916,6 @@ public class Game {
      * @param filepath The path to the file containing the saved game state.
      */
     public void continueGame(String filepath) {
-
-        this.monsters = new ArrayList<>();
-        this.space = new Cell[MAP_SIZE][MAP_SIZE];
-        this.startingTime = LocalTime.now();
-        this.player1.setSpace(this.space);
-        this.player2.setSpace(this.space);
-
-        //this.startingTime = LocalTime.now();
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -949,6 +941,13 @@ public class Game {
                     break;
                 }
             }
+
+            this.monsters = new ArrayList<>();
+            this.space = new Cell[MAP_SIZE][MAP_SIZE];
+//        this.startingTime = LocalTime.now();
+            this.startingTime = LocalTime.now().minusSeconds(currentBattleRoyaleDuration-currentBattleRoyaleTime);
+            this.player1.setSpace(this.space);
+            this.player2.setSpace(this.space);
 
             //map
             int y = 0;
