@@ -20,8 +20,8 @@ image: mbasso/disl-ci:openjdk-20
 
 stages:          # List of stages for jobs, and their order of execution
   - build
-  - test
   - deploy
+  - test
 
 # before_script:
 #   - apt-get update -qq
@@ -34,12 +34,6 @@ build-program:
     - ant -buildfile BlitzStrike/build.xml compile
     - ant -buildfile BlitzStrike/build.xml jar
   
-test-program:
-  stage: test
-  script:
-    - apk add junit 4.13.2
-    - ant -buildfile BlitzStrike/build.xml test
-
 deploy-program:
   stage: deploy
   script:
@@ -48,6 +42,14 @@ deploy-program:
     paths:
       - dist/*.jar
     expire_in: 3 days
+
+test-program:
+  stage: test
+  script:
+    - apk add junit
+    - ant -buildfile BlitzStrike/build.xml test
+
+
 
   
 
