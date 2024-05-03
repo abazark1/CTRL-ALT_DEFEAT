@@ -142,7 +142,7 @@ public class View extends JPanel {
                     Bomb bomb = game.getBomb(x, y);
                     if (bomb != null) {
 
-                        System.out.println("if (bomb != null && bomb.getExploding()) {");
+                        //System.out.println("if (bomb != null && bomb.getExploding()) {");
                         drawExplosion(gr, bomb, scaled_size);
                     }
                 }

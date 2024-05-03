@@ -23,7 +23,7 @@ import java.util.Iterator;
 public class Game {
 
     public static final int MAP_SIZE = 15;
-    public static final int INITIAL_BATTLE_ROYALE_DURATION = 60;
+    public static final int INITIAL_BATTLE_ROYALE_DURATION = 20;
 
     private boolean endGame;
     private boolean endRound;
@@ -685,9 +685,11 @@ public class Game {
             this.player1.reset();
             this.player2.reset();
             currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
+            currentLayerOfBattleRoyale = 1;
         } catch (Exception e) {
             loadMapforContinue(filepath);
             currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
+            currentLayerOfBattleRoyale = 1;
             this.player1.reset();
             this.player2.reset();
 
