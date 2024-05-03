@@ -842,6 +842,10 @@ public class Game {
                     continue;
                 } else if (line.startsWith("Player2Score:")) {
                     continue;
+                } else if (line.startsWith("Player1BombNumber:")) {
+                    continue;
+                } else if (line.startsWith("Player2BombNumber:")) {
+                    continue;
                 } else if (line.startsWith("RoundsToWin:")) {
                     continue;
                 } else if (line.startsWith("CurrentBattleRoyaleTime:")) {
@@ -929,6 +933,14 @@ public class Game {
                     player1Score = Integer.parseInt(line.substring("Player1Score:".length()));
                 } else if (line.startsWith("Player2Score:")) {
                     player2Score = Integer.parseInt(line.substring("Player2Score:".length()));
+                } else if (line.startsWith("Player1BombNumber:")) {
+                    this.player1.setBombNumber(Integer.parseInt(line.substring("Player1BombNumber:".length())));
+                } else if (line.startsWith("Player2BombNumber:")) {
+                    this.player2.setBombNumber(Integer.parseInt(line.substring("Player2BombNumber:".length())));
+                } else if (line.startsWith("Player1ObstacleNumber:")) {
+                    this.player1.setMaxNumberOfObstacles(Integer.parseInt(line.substring("Player1ObstacleNumber:".length())));
+                } else if (line.startsWith("Player2ObstacleNumber:")) {
+                    this.player2.setMaxNumberOfObstacles(Integer.parseInt(line.substring("Player2ObstacleNumber:".length())));
                 } else if (line.startsWith("RoundsToWin:")) {
                     setRoundsToWin(Integer.parseInt(line.substring("RoundsToWin:".length())));
                 } else if (line.startsWith("CurrentBattleRoyaleTime:")) {
@@ -947,7 +959,7 @@ public class Game {
             this.monsters = new ArrayList<>();
             this.space = new Cell[MAP_SIZE][MAP_SIZE];
 //        this.startingTime = LocalTime.now();
-            this.startingTime = LocalTime.now().minusSeconds(currentBattleRoyaleDuration-currentBattleRoyaleTime);
+            this.startingTime = LocalTime.now().minusSeconds(currentBattleRoyaleDuration - currentBattleRoyaleTime);
             this.player1.setSpace(this.space);
             this.player2.setSpace(this.space);
 
@@ -1064,6 +1076,10 @@ public class Game {
             writer.write("Player2Name:" + player2.getName() + "\n");
             writer.write("Player1Score:" + player1Score + "\n");
             writer.write("Player2Score:" + player2Score + "\n");
+            writer.write("Player1BombNumber:" + this.player1.getBombNumber() + "\n");
+            writer.write("Player2BombNumber:" + this.player2.getBombNumber() + "\n");
+            writer.write("Player1ObstacleNumber:" + this.player1.getMaxNumberOfObstacles() + "\n");
+            writer.write("Player2ObstacleNumber:" + this.player2.getMaxNumberOfObstacles() + "\n");
             writer.write("RoundsToWin:" + roundsToWin + "\n");
             writer.write("CurrentBattleRoyaleTime:" + this.currentBattleRoyaleTime + "\n");
             writer.write("CurrentBattleRoyaleDuration:" + this.currentBattleRoyaleDuration + "\n");

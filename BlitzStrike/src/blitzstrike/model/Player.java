@@ -507,12 +507,12 @@ public class Player {
         this.bombs = new ArrayList<>();
         this.obstacles = new ArrayList<>();
         this.alive = true;
-        this.bombRange = 4;
-        this.maxBombNumber = 1;
+        this.bombRange = STANDARD_BOMB_RANGE;
+        this.maxBombNumber = STANDARD_BOMB_NUMBER;
         this.isInvincible = false;
         this.isGhost = false;
         this.isDetonatorOn = false;
-        this.maxNumberOfObstacles = 0;
+        this.maxNumberOfObstacles = STANDARD_OBSTACLE_NUMBER;
         this.noBombCurse = false;
         this.placeBombImmediatelyCurse = false;
     }
