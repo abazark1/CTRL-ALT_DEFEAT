@@ -37,6 +37,7 @@ build-program:
 test-program:
   stage: test
   script:
+    - apk add junit 4.13.2
     - ant -buildfile BlitzStrike/build.xml test
 
 deploy-program:
