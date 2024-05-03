@@ -398,6 +398,7 @@ public class MainWindow extends JFrame {
         game.pauseGame();
         monsterMoveTimer.stop();
         backgroundTimer.stop();
+        battleRoyaleTimer.stop();
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
 
         if (result == JOptionPane.YES_OPTION) {
@@ -407,6 +408,7 @@ public class MainWindow extends JFrame {
             game.resumeGame();
             monsterMoveTimer.restart();
             backgroundTimer.restart();
+            battleRoyaleTimer.restart();
         }
 
     }
@@ -577,6 +579,8 @@ public class MainWindow extends JFrame {
                     continueDialog.setVisible(false);
                     game.resumeGame();
                     monsterMoveTimer.restart();
+                    backgroundTimer.restart();
+                    battleRoyaleTimer.restart();
                     continueDialog.dispose();
                 }
             }
