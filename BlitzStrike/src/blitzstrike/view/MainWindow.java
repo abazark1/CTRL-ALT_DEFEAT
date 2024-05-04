@@ -521,15 +521,26 @@ public class MainWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 boolean allFieldsAreGoodCont = true;
+                boolean fileLoaded = false;
 
                 String player1NameCont = player1NameFieldCont.getText().trim();
                 String player2NameCont = player2NameFieldCont.getText().trim();
+                Integer mapNumberCont = null;
+                if (!mapNumberField.getText().equals("")) {
+                    mapNumberCont = Integer.valueOf(mapNumberField.getText());
 
-                Integer mapNumberCont = Integer.valueOf(mapNumberField.getText());
+                }
 
-                Integer pl1ScoreCont = Integer.valueOf(pl1ScoreField.getText());
-                Integer pl2ScoreCont = Integer.valueOf(pl2ScoreField.getText());
-                int numGamesCont = Integer.parseInt(numGamesField2.getText());
+                Integer pl1ScoreCont = null;
+                Integer pl2ScoreCont = null;
+                if (!pl1ScoreField.getText().equals("")) {
+                    pl1ScoreCont = Integer.valueOf(pl1ScoreField.getText());
+
+                }
+                if (!pl2ScoreField.getText().equals("")) {
+                    pl2ScoreCont = Integer.valueOf(pl2ScoreField.getText());
+
+                }
 
                 if (player1NameCont.isEmpty() || player2NameCont.isEmpty()) {
                     JOptionPane.showMessageDialog(continueDialog, "Enter both players' names!", "Missing Information", JOptionPane.ERROR_MESSAGE);
@@ -546,9 +557,12 @@ public class MainWindow extends JFrame {
                     allFieldsAreGoodCont = false;
                 }
 
-                numGamesCont = 0;
+                Integer numGamesCont = 0;
+                if (!numGamesField2.getText().equals("")) {
+                    numGamesCont = Integer.valueOf(numGamesField2.getText());
+                }
+
                 try {
-                    numGamesCont = Integer.parseInt(numGamesField2.getText());
                     if (numGamesCont <= 0) {
                         allFieldsAreGoodCont = false;
                         throw new NumberFormatException();
@@ -564,9 +578,15 @@ public class MainWindow extends JFrame {
 
                     player1 = new Player(player1NameCont);
                     player2 = new Player(player2NameCont);
-
-                    game = new Game(mapNumberCont, filePathCont, player1, player2, numGamesCont);
-                    game.continueGame(filePathCont);
+                    
+                    
+                    try {
+                        game = new Game(mapNumberCont, filePathCont, player1, player2, numGamesCont);
+                        game.continueGame(filePathCont);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(continueDialog, "File not found! Enter the exisiting file", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    }
+                    
                     game.setRoundsToWin(Integer.parseInt(numGamesField2.getText()));
                     try {
                         view = new View(game);

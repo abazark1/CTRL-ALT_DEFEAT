@@ -821,6 +821,7 @@ public class Game {
      * Loads the map for the saved games
      *
      * @param filepath The path to the file containing the saved game state.
+     * @throws java.io.IOException
      */
     public void loadMapforContinue(String filepath) {
 
