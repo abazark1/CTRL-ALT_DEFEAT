@@ -5,10 +5,6 @@
 package model;
 
 import java.util.List;
-import model.Game;
-import model.Player;
-import model.Direction;
-import model.Bomb;
 // import org.junit.Before;
 // import org.junit.Test;
 import static model.common.Constants.*;
