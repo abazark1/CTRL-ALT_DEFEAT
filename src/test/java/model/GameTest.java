@@ -7,7 +7,7 @@ package blitzstrike.model;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
 
@@ -17,7 +17,7 @@ public class GameTest {
     private String mapPath;
     private int numberOfGames;
 
-    @Before
+    @org.junit.jupiter.api.Before
     public void setUp() {
         this.player1 = new Player("Kitana");
         this.player2 = new Player("Mileena");
@@ -26,7 +26,7 @@ public class GameTest {
         this.game = new Game(1, "", player1, player2, numberOfGames);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testConstructor_successfulInitialization() {
         assertEquals(this.game.getPlayer11(), this.player1);
         assertEquals(this.game.getPlayer22(), this.player2);
@@ -34,7 +34,7 @@ public class GameTest {
         assertFalse(this.game.isGameOrRoundEnded());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testLoadNextRound() {
         this.game.loadNextRound();
         assertEquals(this.game.getPlayer11(), this.player1);
@@ -42,7 +42,7 @@ public class GameTest {
         assertFalse(this.game.isGameOrRoundEnded());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testRestartgame() {
         this.game.restartgame();
         assertEquals(this.game.getPlayer11(), this.player1);
@@ -52,7 +52,7 @@ public class GameTest {
         assertFalse(this.game.isGameOrRoundEnded());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testPlayerDiesFromCollisionWithAMonster() {
         this.game.loadMap();
         for (int i = 0; i < 8; i++) {
@@ -62,7 +62,7 @@ public class GameTest {
         assertFalse(this.game.getPlayer11().isAlive());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testPlayerDiesFromBombExplosion() {
         this.game.loadMap();
         for (int i = 0; i < 7; i++) {
@@ -84,7 +84,7 @@ public class GameTest {
         assertFalse(this.game.getPlayer22().isAlive());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testPlayersBombRangeIsDecreasedUnderBombRangeCurse() {
         this.game.loadMap();
         this.game.getPlayer22().setBlastRange(1);
@@ -107,7 +107,7 @@ public class GameTest {
         assertFalse(this.game.getPlayer22().isAlive());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testPlayersCannotPlaceBombsUnderNoBombCurse() {
         this.game.loadMap();
         this.game.getPlayer22().setNoBombCurse(true);
@@ -121,7 +121,7 @@ public class GameTest {
         assertEquals(0, bombs11.size());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testPlayersCanPlaceMoreThanOneBombUnderBombIncreasePowerUp() {
         this.game.loadMap();
         this.game.getPlayer22().setBombNumber(2);
@@ -138,7 +138,7 @@ public class GameTest {
         assertEquals(3, bombs11.size());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testPlayerCanGoThroughWallsAndBoxesUndexGhostPowerUp() {
         this.game.loadMap();
         this.game.getPlayer11().setGhost(true);
@@ -149,7 +149,7 @@ public class GameTest {
         assertEquals(2, this.game.getPlayer11().getPosition().getY());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testPlayerDoesntDieUnderInvinciblePowerUp() {
         this.game.loadMap();
         this.game.getPlayer11().setInvincible(true);
