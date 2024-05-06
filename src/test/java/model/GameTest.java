@@ -2,11 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
  */
-package blitzstrike.model;
+package model;
 
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+import model.Game;
+import model.Player;
+import model.Direction;
+import model.Bomb;
+// import org.junit.Before;
+// import org.junit.Test;
+import static model.common.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
