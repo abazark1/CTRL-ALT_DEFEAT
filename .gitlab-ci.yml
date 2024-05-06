@@ -16,34 +16,33 @@
 # This specific template is located at:
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
 
-#image: mbasso/disl-ci:openjdk-20
-image: imagenarium/maven-jdk:20
+image: mbasso/disl-ci:openjdk-20
+#image: imagenarium/maven-jdk:20
 
 stages:          # List of stages for jobs, and their order of execution
   - build
-  - test
   - deploy
+  - test
+# # Build
+# build-job:
+#   stage: build
+#   script:
+#     - mvn compile
 
-# Build
-build-job:
-  stage: build
-  script:
-    - mvn compile
+# # Test
+# test-job:
+#   stage: test
+#   script:
+#     - mvn test
 
-# Test
-test-job:
-  stage: test
-  script:
-    - mvn test
-
-# deploy
-deploy-job:
-  stage: deploy
-  script:
-    - mvn install
-  artifacts:
-    paths:
-      - target/*.jar
+# # deploy
+# deploy-job:
+#   stage: deploy
+#   script:
+#     - mvn install
+#   artifacts:
+#     paths:
+#       - target/*.jar
 
 
 # before_script:
@@ -51,26 +50,26 @@ deploy-job:
 #   - apt-get install -yqq ant
 #   - java -version
 
-# build-program:
-#   stage: build
-#   script:
-#     - ant -buildfile BlitzStrike/build.xml compile
-#     - ant -buildfile BlitzStrike/build.xml jar
+build-program:
+  stage: build
+  script:
+    - ant -buildfile BlitzStrike/build.xml compile
+    - ant -buildfile BlitzStrike/build.xml jar
   
-# deploy-program:
-#   stage: deploy
-#   script:
-#     - ant -buildfile BlitzStrike/build.xml deploy
-#   artifacts:
-#     paths:
-#       - dist/*.jar
-#     expire_in: 3 days
+deploy-program:
+  stage: deploy
+  script:
+    - ant -buildfile BlitzStrike/build.xml deploy
+  artifacts:
+    paths:
+      - dist/*.jar
+    expire_in: 3 days
 
-# test-program:
-#   stage: test
-#   script:
-#     - apk add junit
-#     - ant -buildfile BlitzStrike/build.xml test
+test-program:
+  stage: test
+  script:
+    - apk add junit
+    - ant -buildfile BlitzStrike/build.xml test
 
 
 
