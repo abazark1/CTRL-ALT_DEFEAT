@@ -1,0 +1,28 @@
+Player1Name:asel1
+Player2Name:asel2
+Player1Score:0
+Player2Score:0
+Player1BombNumber:1
+Player2BombNumber: 1
+Player1BlastRange:4
+Player2BlastRange:4
+RoundsToWin:2
+CurrentBattleRoyaleTime:55
+CurrentBattleRoyaleDuration:60
+CurrentLayerOfBattleRoyale:1
+
+xxxxxxxxxxxxxxx
+x         #  bx
+x#xxxxxxx     x
+x # 1         x
+x  #     x    x
+x   #         x
+x          x  x
+x     x       x
+x 3   #    x  x
+x     x   xx  x
+x  x  x 4     x
+x     x  x2   x
+x     x    x# x
+xa          x#x
+xxxxxxxxxxxxxxx
