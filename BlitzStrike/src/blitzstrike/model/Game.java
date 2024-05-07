@@ -912,7 +912,13 @@ public class Game {
                 y++;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+                        System.out.println("File not found!");
+
+        }
+        
+          catch (Exception ex){
+            System.out.println("File not found!");
+            throw ex;
         }
 
     }
@@ -922,7 +928,7 @@ public class Game {
      *
      * @param filepath The path to the file containing the saved game state.
      */
-    public void continueGame(String filepath) {
+    public void continueGame(String filepath) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -1014,8 +1020,16 @@ public class Game {
                 y++;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("IOException?");
+            throw e;
         }
+        
+        catch (Exception ex){
+            System.out.println("File not found!");
+            throw ex;
+        }
+        
+    
 
     }
 
