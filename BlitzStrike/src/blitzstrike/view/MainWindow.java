@@ -169,7 +169,7 @@ public class MainWindow extends JFrame {
                 readFileNames();
                 showContinueDialog();
                 if (!fileLoaded) {
-                 System.exit(1);
+                    System.exit(1);
                 }
 
             }
@@ -181,7 +181,6 @@ public class MainWindow extends JFrame {
                 confirmExit();
             }
         });
-
 
         startMoveMonsterTimer();
         startBackgroundTimer();
@@ -531,13 +530,33 @@ public class MainWindow extends JFrame {
                 String player1NameCont = player1NameFieldCont.getText().trim();
                 String player2NameCont = player2NameFieldCont.getText().trim();
                 Integer mapNumberCont = null;
-                if (!mapNumberField.getText().equals("")) {
-                    mapNumberCont = Integer.valueOf(mapNumberField.getText());
 
+                if (player1NameCont.isEmpty() || player2NameCont.isEmpty()) {
+                    JOptionPane.showMessageDialog(continueDialog, "Enter both players' names!", "Missing Information", JOptionPane.ERROR_MESSAGE);
+                    allFieldsAreGoodCont = false;
                 }
 
+                ////MAP NUMBER//////////////////////////////
+                try {
+
+                    if (!mapNumberField.getText().equals("")) {
+                        mapNumberCont = Integer.valueOf(mapNumberField.getText());
+
+                    }
+                    if (mapNumberCont == null || mapNumberCont <= 0 || mapNumberCont > 3) {
+                        allFieldsAreGoodCont = false;
+                        throw new NumberFormatException();
+                    }
+
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(continueDialog, "Enter a valid number of the map (positive integer 1-3)!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    allFieldsAreGoodCont = false;
+                }
+
+                ////SCORES////////////////////////////////////
                 Integer pl1ScoreCont = null;
                 Integer pl2ScoreCont = null;
+                try{
                 if (!pl1ScoreField.getText().equals("")) {
                     pl1ScoreCont = Integer.valueOf(pl1ScoreField.getText());
 
@@ -546,22 +565,21 @@ public class MainWindow extends JFrame {
                     pl2ScoreCont = Integer.valueOf(pl2ScoreField.getText());
 
                 }
-
-                if (player1NameCont.isEmpty() || player2NameCont.isEmpty()) {
-                    JOptionPane.showMessageDialog(continueDialog, "Enter both players' names!", "Missing Information", JOptionPane.ERROR_MESSAGE);
+                if (pl1ScoreCont == null || pl2ScoreCont == null || pl1ScoreCont <0 || pl2ScoreCont<0) {
+                    //JOptionPane.showMessageDialog(continueDialog, "Enter both players' scores!", "Missing Information", JOptionPane.ERROR_MESSAGE);
+                    allFieldsAreGoodCont = false;
+                    throw new NumberFormatException();
+                    
+                }
+                }
+                
+                catch (NumberFormatException ex){
+                    JOptionPane.showMessageDialog(continueDialog, "Enter both players' scores (must be > 0)!", "Invalid Information", JOptionPane.ERROR_MESSAGE);
                     allFieldsAreGoodCont = false;
                 }
-
-                if (mapNumberCont == null) {
-                    JOptionPane.showMessageDialog(continueDialog, "Enter the map's number!", "Missing Information", JOptionPane.ERROR_MESSAGE);
-                    allFieldsAreGoodCont = false;
-                }
-
-                if (pl1ScoreCont == null || pl2ScoreCont == null) {
-                    JOptionPane.showMessageDialog(continueDialog, "Enter both players' scores!", "Missing Information", JOptionPane.ERROR_MESSAGE);
-                    allFieldsAreGoodCont = false;
-                }
-
+                
+                /////NUMBER OF GAMES//////////////////////////////////////////
+                
                 Integer numGamesCont = 0;
                 if (!numGamesField2.getText().equals("")) {
                     numGamesCont = Integer.valueOf(numGamesField2.getText());
