@@ -407,6 +407,7 @@ public class MainWindow extends JFrame {
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
 
         if (result == JOptionPane.YES_OPTION) {
+            game.deleteSavedGameFile();
             game.saveGame(player1, player2, game.getPlayer1Score(), game.getPlayer2Score(), game.getRoundsToWin());
             returnToMainMenu();
         } else {
@@ -888,6 +889,13 @@ public class MainWindow extends JFrame {
                     frame.revalidate();
                     frame.repaint();
                     gameSetupDialog.setVisible(false);
+                    
+                    //added to fix the new game, if problem appears, delete
+                    monsterMoveTimer.restart();
+                    backgroundTimer.restart();
+                    battleRoyaleTimer.restart();
+                    //////
+                    
                     gameSetupDialog.dispose();
                 }
             }
