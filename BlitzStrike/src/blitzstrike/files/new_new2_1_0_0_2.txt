@@ -1,0 +1,28 @@
+Player1Name:new
+Player2Name:new2
+Player1Score:0
+Player2Score:0
+Player1BombNumber:1
+Player2BombNumber:1
+Player1ObstacleNumber:0
+Player2ObstacleNumber:0
+RoundsToWin:2
+CurrentBattleRoyaleTime:17
+CurrentBattleRoyaleDuration:20
+CurrentLayerOfBattleRoyale:1
+
+xxxxxxxxxxxxxxx
+x         #  bx
+x#xxxxxxx     x
+x # 1         x
+x  #     x    x
+x   #         x
+x         4x  x
+x     x       x
+x 3   #    x  x
+x     x   xx  x
+x  x  x       x
+x     x  x    x
+x     x    x# x
+xa          x#x
+xxxxxxxxxxxxxxx

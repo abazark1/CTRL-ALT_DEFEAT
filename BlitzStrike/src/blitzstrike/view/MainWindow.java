@@ -72,6 +72,7 @@ public class MainWindow extends JFrame {
     private JLabel player2ScoreLabel;
     private JLabel battleRoyalCountDownTime;
     private JLabel numGamesLabel;
+    boolean fileLoaded = false;
 
     public MainWindow() throws IOException {
         frame = new JFrame("BlitzStrike");
@@ -167,6 +168,10 @@ public class MainWindow extends JFrame {
                 // Handle continue button click
                 readFileNames();
                 showContinueDialog();
+                if (!fileLoaded) {
+                 System.exit(1);
+                }
+
             }
         });
 
@@ -176,6 +181,7 @@ public class MainWindow extends JFrame {
                 confirmExit();
             }
         });
+
 
         startMoveMonsterTimer();
         startBackgroundTimer();
@@ -521,7 +527,6 @@ public class MainWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 boolean allFieldsAreGoodCont = true;
-                boolean fileLoaded = false;
 
                 String player1NameCont = player1NameFieldCont.getText().trim();
                 String player2NameCont = player2NameFieldCont.getText().trim();
@@ -574,34 +579,53 @@ public class MainWindow extends JFrame {
 
                 if (allFieldsAreGoodCont) {
 
+                    String filenameValid = player1NameCont + "_" + player2NameCont + "_" + mapNumberCont + "_" + pl1ScoreCont + "_" + pl2ScoreCont + "_" + numGamesCont + ".txt";
                     String filePathCont = "src/blitzstrike/files/" + player1NameCont + "_" + player2NameCont + "_" + mapNumberCont + "_" + pl1ScoreCont + "_" + pl2ScoreCont + "_" + numGamesCont + ".txt";
 
-                    player1 = new Player(player1NameCont);
-                    player2 = new Player(player2NameCont);
-                    
-                    
-                    try {
-                        game = new Game(mapNumberCont, filePathCont, player1, player2, numGamesCont);
-                        game.continueGame(filePathCont);
-                    } catch (Exception ex) {
+                    for (String filename : fileNamesArray) {
+
+                        if (filenameValid.trim().equals(filename.trim())) {
+                            System.out.println("filenameValid : " + filenameValid);
+                            System.out.println("filenamein the array : " + filename);
+
+                            fileLoaded = true;
+                            break;
+                        }
+
+                    }
+
+                    if (fileLoaded) {
+                        player1 = new Player(player1NameCont);
+                        player2 = new Player(player2NameCont);
+
+                        try {
+                            game = new Game(mapNumberCont, filePathCont, player1, player2, numGamesCont);
+                            game.continueGame(filePathCont);
+                        } catch (Exception ex) {
+                            System.out.println(filePathCont);
+                            System.out.println("fileLoaded is true, but file still does not exist somhow");
+                            JOptionPane.showMessageDialog(continueDialog, "File not found! Enter the exisiting file", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                        }
+
+                        game.setRoundsToWin(Integer.parseInt(numGamesField2.getText()));
+                        try {
+                            view = new View(game);
+                        } catch (IOException ex) {
+                            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        frame.remove(mMenu);
+                        frame.add(view);
+                        updateStatsPanel();
+                        continueDialog.setVisible(false);
+                        game.resumeGame();
+                        monsterMoveTimer.restart();
+                        backgroundTimer.restart();
+                        battleRoyaleTimer.restart();
+                        continueDialog.dispose();
+                    } else {
                         JOptionPane.showMessageDialog(continueDialog, "File not found! Enter the exisiting file", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+
                     }
-                    
-                    game.setRoundsToWin(Integer.parseInt(numGamesField2.getText()));
-                    try {
-                        view = new View(game);
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    frame.remove(mMenu);
-                    frame.add(view);
-                    updateStatsPanel();
-                    continueDialog.setVisible(false);
-                    game.resumeGame();
-                    monsterMoveTimer.restart();
-                    backgroundTimer.restart();
-                    battleRoyaleTimer.restart();
-                    continueDialog.dispose();
                 }
             }
         });
