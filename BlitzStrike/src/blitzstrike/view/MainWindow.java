@@ -854,7 +854,7 @@ public class MainWindow extends JFrame {
                     int selectedMap = 1;
                     if (map1RadioButton.isSelected()) {
                         selectedMap = 1;
-                    } else if (map1RadioButton.isSelected()) {
+                    } else if (map2RadioButton.isSelected()) {
                         selectedMap = 2;
                     } else if (map3RadioButton.isSelected()) {
                         selectedMap = 3;
