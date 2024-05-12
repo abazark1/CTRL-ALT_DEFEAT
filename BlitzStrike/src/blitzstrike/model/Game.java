@@ -24,6 +24,7 @@ public class Game {
 
     public static final int MAP_SIZE = 15;
     public static final int INITIAL_BATTLE_ROYALE_DURATION = 20;
+    public static final int INITIAL_BATTLE_ROYALE_LAYER = 1;
 
     private boolean endGame;
     private boolean endRound;
@@ -58,7 +59,7 @@ public class Game {
         this.monsters = new ArrayList<>();
         this.endGame = false;
         this.endRound = false;
-        this.currentLayerOfBattleRoyale = 1;
+        this.currentLayerOfBattleRoyale = INITIAL_BATTLE_ROYALE_LAYER;
         this.currentBattleRoyaleDuration = INITIAL_BATTLE_ROYALE_DURATION;
         this.currentBattleRoyaleTime = currentBattleRoyaleDuration;
     }
@@ -685,11 +686,13 @@ public class Game {
             this.player1.reset();
             this.player2.reset();
             currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
-            currentLayerOfBattleRoyale = 1;
+            currentLayerOfBattleRoyale = INITIAL_BATTLE_ROYALE_LAYER;
+            currentBattleRoyaleDuration = INITIAL_BATTLE_ROYALE_DURATION;
         } catch (Exception e) {
             loadMapforContinue(filepath);
             currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
-            currentLayerOfBattleRoyale = 1;
+            currentLayerOfBattleRoyale = INITIAL_BATTLE_ROYALE_LAYER;
+            currentBattleRoyaleDuration = INITIAL_BATTLE_ROYALE_DURATION;
             this.player1.reset();
             this.player2.reset();
 
@@ -712,6 +715,8 @@ public class Game {
             player2Score = 0;
             startingTime = LocalTime.now();
             currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
+            currentLayerOfBattleRoyale = INITIAL_BATTLE_ROYALE_LAYER;
+            currentBattleRoyaleDuration = INITIAL_BATTLE_ROYALE_DURATION;
             endGame = false;
         } catch (Exception e) {
 
@@ -722,6 +727,8 @@ public class Game {
             player2Score = 0;
             startingTime = LocalTime.now();
             currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
+            currentLayerOfBattleRoyale = INITIAL_BATTLE_ROYALE_LAYER;
+            currentBattleRoyaleDuration = INITIAL_BATTLE_ROYALE_DURATION;
             endGame = false;
 
         }
