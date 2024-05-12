@@ -847,6 +847,10 @@ public class Game {
                     continue;
                 } else if (line.startsWith("Player2BombNumber:")) {
                     continue;
+                } else if (line.startsWith("Player1ObstacleNumber:")) {
+                    continue;
+                } else if (line.startsWith("Player2ObstacleNumber:")) {
+                    continue;
                 } else if (line.startsWith("RoundsToWin:")) {
                     continue;
                 } else if (line.startsWith("CurrentBattleRoyaleTime:")) {
@@ -904,6 +908,16 @@ public class Game {
                             monsters.add(monster4);
                             space[y][x] = new Empty(position);
                             break;
+                        case '(':
+                            ObstacleBox obstacleBox1 = new ObstacleBox(position, this.player1);
+                            this.player1.addObstacle(obstacleBox1);
+                            space[y][x] = obstacleBox1;
+                            break;
+                        case ')':
+                            ObstacleBox obstacleBox2 = new ObstacleBox(position, this.player2);
+                            this.player2.addObstacle(obstacleBox2);
+                            space[y][x] = obstacleBox2;
+                            break;
                         case ' ':
                             space[y][x] = new Empty(position);
                             break;
@@ -912,11 +926,9 @@ public class Game {
                 y++;
             }
         } catch (IOException e) {
-                        System.out.println("File not found!");
+            System.out.println("File not found!");
 
-        }
-        
-          catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println("File not found!");
             throw ex;
         }
@@ -1012,6 +1024,16 @@ public class Game {
                             monsters.add(monster4);
                             space[y][x] = new Empty(position);
                             break;
+                        case '(':
+                            ObstacleBox obstacleBox1 = new ObstacleBox(position, this.player1);
+                            this.player1.addObstacle(obstacleBox1);
+                            space[y][x] = obstacleBox1;
+                            break;
+                        case ')':
+                            ObstacleBox obstacleBox2 = new ObstacleBox(position, this.player2);
+                            this.player2.addObstacle(obstacleBox2);
+                            space[y][x] = obstacleBox2;
+                            break;
                         case ' ':
                             space[y][x] = new Empty(position);
                             break;
@@ -1022,14 +1044,10 @@ public class Game {
         } catch (IOException e) {
             System.out.println("IOException?");
             throw e;
-        }
-        
-        catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println("File not found!");
             throw ex;
         }
-        
-    
 
     }
 
@@ -1055,6 +1073,10 @@ public class Game {
                     mapBuilder.append('x');
                 } else if (cell instanceof Box) {
                     mapBuilder.append('#');
+                } else if (cell instanceof ObstacleBox && ((ObstacleBox) cell).getOwner().equals(this.player1)) {
+                    mapBuilder.append('(');
+                } else if (cell instanceof ObstacleBox && ((ObstacleBox) cell).getOwner().equals(this.player2)) {
+                    mapBuilder.append(')');
                 } else if (player1.getPosition().equals(new Position(x, y))) {
                     mapBuilder.append('a');
                 } else if (player2.getPosition().equals(new Position(x, y))) {
@@ -1223,6 +1245,9 @@ public class Game {
      * Shrinks the map
      */
     private void turnIntoWalls(int i, int j) {
+        if (this.space[i][j] instanceof ObstacleBox) {
+            ((ObstacleBox) this.space[i][j]).getDestroyed();
+        }
         this.space[i][j] = new Wall(new Position(j, i));
     }
 

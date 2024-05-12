@@ -6,11 +6,18 @@ package blitzstrike.model;
 
 public class ObstacleBox extends Cell {
 
-    public ObstacleBox(Position position) {
+    private Player owner; 
+    
+    public ObstacleBox(Position position, Player owner) {
         super(position);
         this.destroyable = true;
         this.mineable = false;
         this.walkable = false;
+        this.owner = owner;
+    }
+    
+    public Player getOwner(){
+        return this.owner;
     }
 
     /**
@@ -21,6 +28,7 @@ public class ObstacleBox extends Cell {
         this.walkable = true;
         this.destroyable = false;
         this.mineable = true;
+        this.owner.removeObstacle(this);
         System.out.println("I'm destroyed");
     }
 

@@ -165,14 +165,14 @@ public abstract class Effect {
                 effect.setEverythingFalse();
                 effect.setIsPowerup(true);
                 return effect;
-               
+
             case 10:
                 System.out.println("I dropped detonator power up randomly");
                 effect = new Detonator();
                 effect.setEverythingFalse();
                 effect.setIsPowerup(true);
                 return effect;
-
+                
             default:
                 System.out.println("I dropped Empty effect randomly");
                 effect = new EmptyEffect();
