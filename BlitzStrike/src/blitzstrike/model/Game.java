@@ -24,6 +24,7 @@ public class Game {
 
     public static final int MAP_SIZE = 15;
     public static final int INITIAL_BATTLE_ROYALE_DURATION = 20;
+    public static final int INITIAL_BATTLE_ROYALE_LAYER = 1;
 
     private boolean endGame;
     private boolean endRound;
@@ -58,7 +59,7 @@ public class Game {
         this.monsters = new ArrayList<>();
         this.endGame = false;
         this.endRound = false;
-        this.currentLayerOfBattleRoyale = 1;
+        this.currentLayerOfBattleRoyale = INITIAL_BATTLE_ROYALE_LAYER;
         this.currentBattleRoyaleDuration = INITIAL_BATTLE_ROYALE_DURATION;
         this.currentBattleRoyaleTime = currentBattleRoyaleDuration;
     }
@@ -685,11 +686,13 @@ public class Game {
             this.player1.reset();
             this.player2.reset();
             currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
-            currentLayerOfBattleRoyale = 1;
+            currentLayerOfBattleRoyale = INITIAL_BATTLE_ROYALE_LAYER;
+            currentBattleRoyaleDuration = INITIAL_BATTLE_ROYALE_DURATION;
         } catch (Exception e) {
             loadMapforContinue(filepath);
             currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
-            currentLayerOfBattleRoyale = 1;
+            currentLayerOfBattleRoyale = INITIAL_BATTLE_ROYALE_LAYER;
+            currentBattleRoyaleDuration = INITIAL_BATTLE_ROYALE_DURATION;
             this.player1.reset();
             this.player2.reset();
 
@@ -712,6 +715,8 @@ public class Game {
             player2Score = 0;
             startingTime = LocalTime.now();
             currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
+            currentLayerOfBattleRoyale = INITIAL_BATTLE_ROYALE_LAYER;
+            currentBattleRoyaleDuration = INITIAL_BATTLE_ROYALE_DURATION;
             endGame = false;
         } catch (Exception e) {
 
@@ -722,6 +727,8 @@ public class Game {
             player2Score = 0;
             startingTime = LocalTime.now();
             currentBattleRoyaleTime = INITIAL_BATTLE_ROYALE_DURATION;
+            currentLayerOfBattleRoyale = INITIAL_BATTLE_ROYALE_LAYER;
+            currentBattleRoyaleDuration = INITIAL_BATTLE_ROYALE_DURATION;
             endGame = false;
 
         }
@@ -847,6 +854,10 @@ public class Game {
                     continue;
                 } else if (line.startsWith("Player2BombNumber:")) {
                     continue;
+                } else if (line.startsWith("Player1ObstacleNumber:")) {
+                    continue;
+                } else if (line.startsWith("Player2ObstacleNumber:")) {
+                    continue;
                 } else if (line.startsWith("RoundsToWin:")) {
                     continue;
                 } else if (line.startsWith("CurrentBattleRoyaleTime:")) {
@@ -904,6 +915,16 @@ public class Game {
                             monsters.add(monster4);
                             space[y][x] = new Empty(position);
                             break;
+                        case '(':
+                            ObstacleBox obstacleBox1 = new ObstacleBox(position, this.player1);
+                            this.player1.addObstacle(obstacleBox1);
+                            space[y][x] = obstacleBox1;
+                            break;
+                        case ')':
+                            ObstacleBox obstacleBox2 = new ObstacleBox(position, this.player2);
+                            this.player2.addObstacle(obstacleBox2);
+                            space[y][x] = obstacleBox2;
+                            break;
                         case ' ':
                             space[y][x] = new Empty(position);
                             break;
@@ -912,11 +933,9 @@ public class Game {
                 y++;
             }
         } catch (IOException e) {
-                        System.out.println("File not found!");
+            System.out.println("File not found!");
 
-        }
-        
-          catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println("File not found!");
             throw ex;
         }
@@ -1012,6 +1031,16 @@ public class Game {
                             monsters.add(monster4);
                             space[y][x] = new Empty(position);
                             break;
+                        case '(':
+                            ObstacleBox obstacleBox1 = new ObstacleBox(position, this.player1);
+                            this.player1.addObstacle(obstacleBox1);
+                            space[y][x] = obstacleBox1;
+                            break;
+                        case ')':
+                            ObstacleBox obstacleBox2 = new ObstacleBox(position, this.player2);
+                            this.player2.addObstacle(obstacleBox2);
+                            space[y][x] = obstacleBox2;
+                            break;
                         case ' ':
                             space[y][x] = new Empty(position);
                             break;
@@ -1022,14 +1051,10 @@ public class Game {
         } catch (IOException e) {
             System.out.println("IOException?");
             throw e;
-        }
-        
-        catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println("File not found!");
             throw ex;
         }
-        
-    
 
     }
 
@@ -1055,6 +1080,10 @@ public class Game {
                     mapBuilder.append('x');
                 } else if (cell instanceof Box) {
                     mapBuilder.append('#');
+                } else if (cell instanceof ObstacleBox && ((ObstacleBox) cell).getOwner().equals(this.player1)) {
+                    mapBuilder.append('(');
+                } else if (cell instanceof ObstacleBox && ((ObstacleBox) cell).getOwner().equals(this.player2)) {
+                    mapBuilder.append(')');
                 } else if (player1.getPosition().equals(new Position(x, y))) {
                     mapBuilder.append('a');
                 } else if (player2.getPosition().equals(new Position(x, y))) {
@@ -1223,6 +1252,9 @@ public class Game {
      * Shrinks the map
      */
     private void turnIntoWalls(int i, int j) {
+        if (this.space[i][j] instanceof ObstacleBox) {
+            ((ObstacleBox) this.space[i][j]).getDestroyed();
+        }
         this.space[i][j] = new Wall(new Position(j, i));
     }
 

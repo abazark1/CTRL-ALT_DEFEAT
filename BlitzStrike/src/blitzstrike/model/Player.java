@@ -29,7 +29,6 @@ public class Player {
     private boolean followedByMonsters;
     private boolean isGhost;
     private boolean isDetonatorOn;
-    private boolean isObstacleOn;
     private int maxNumberOfObstacles;
     private LocalTime speedCurseStartTime;
     private boolean noBombCurse;
@@ -56,7 +55,6 @@ public class Player {
         this.isInvincible = false;
         this.isGhost = false;
         this.isDetonatorOn = false;
-        this.isObstacleOn = false;
         this.maxNumberOfObstacles = STANDARD_OBSTACLE_NUMBER;
         this.noBombCurse = false;
         this.placeBombImmediatelyCurse = false;
@@ -174,10 +172,6 @@ public class Player {
         this.isGhost = value;
     }
 
-    public void setIsObstacleOn(boolean value) {
-        this.isObstacleOn = value;
-    }
-
     public void setIsDetonatorOn(boolean value) {
         this.isDetonatorOn = value;
     }
@@ -244,10 +238,6 @@ public class Player {
 
     public boolean isGhost() {
         return this.isGhost;
-    }
-
-    public boolean isObstacleOn() {
-        return this.isObstacleOn;
     }
 
     public boolean isDetonatorOn() {
@@ -361,13 +351,17 @@ public class Player {
      */
     public void placeObstacle() {
 
-        if (isAlive() && this.getObstacles().size() < maxNumberOfObstacles && this.isObstacleOn()) {
-            ObstacleBox obstacleBox = new ObstacleBox(this.position);
-            this.obstacles.add(obstacleBox);
+        if (isAlive() && this.getObstacles().size() < maxNumberOfObstacles) {
+            ObstacleBox obstacleBox = new ObstacleBox(this.position, this);
+            addObstacle(obstacleBox);
             obstacleBox.walkable = false;
             this.space[position.getY()][position.getX()] = obstacleBox;     
             System.out.println("I've placed an obstacle");
         }
+    }
+    
+    public void addObstacle(ObstacleBox obstacleBox){
+        this.obstacles.add(obstacleBox);
     }
 
     /*

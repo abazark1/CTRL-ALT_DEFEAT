@@ -20,7 +20,6 @@ public class Obstacle extends PowerUp {
         System.out.println(player.getName() + " has just got obstacle powerUp!");
         increaseObstacles(player);
         player.addPowerup(this);
-        player.setIsObstacleOn(true);
     }
 
     /**
