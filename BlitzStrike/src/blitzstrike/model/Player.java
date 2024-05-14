@@ -125,12 +125,12 @@ public class Player {
     public LocalTime getImmediateBombCurseTimer() {
         return this.immediateBombCurseStartTime;
     }
-    
-    public List<PowerUp> getPowerups(){
+
+    public List<PowerUp> getPowerups() {
         return this.powerups;
     }
-    
-    public List<Curse> getCurses(){
+
+    public List<Curse> getCurses() {
         return this.curses;
     }
 
@@ -262,15 +262,13 @@ public class Player {
      * will process this bomb's explosion when its countdown finishes.
      */
     public void placeBomb() {
-        if (isAlive() && this.getBombs().size() < maxBombNumber && !this.noBombCurse) {
-            Bomb bomb = new Bomb(this.position, this, this.space);
-            this.bombs.add(bomb);
-            System.out.println("I've placed a bomb");
-            if (this.isDetonatorOn){
-                if (this.getBombs().size() >= maxBombNumber){
-                    this.isDetonatorOn = false;
-                }
+        if (this.isDetonatorOn) {
+            if (this.getBombs().size() == maxBombNumber) {
+                this.isDetonatorOn = false;
             }
+            actuallyPlaceBomb();
+        } else {
+            actuallyPlaceBomb();
         }
     }
 
@@ -363,12 +361,12 @@ public class Player {
             ObstacleBox obstacleBox = new ObstacleBox(this.position, this);
             addObstacle(obstacleBox);
             obstacleBox.walkable = false;
-            this.space[position.getY()][position.getX()] = obstacleBox;     
+            this.space[position.getY()][position.getX()] = obstacleBox;
             System.out.println("I've placed an obstacle");
         }
     }
-    
-    public void addObstacle(ObstacleBox obstacleBox){
+
+    public void addObstacle(ObstacleBox obstacleBox) {
         this.obstacles.add(obstacleBox);
     }
 
@@ -529,5 +527,16 @@ public class Player {
         Position playerPosition = this.position;
         space[playerPosition.getY()][playerPosition.getX()] = new Empty(playerPosition);
         this.position = new Position(-10, -10);
+    }
+
+    /**
+     * Actually places a bomb
+     */
+    private void actuallyPlaceBomb() {
+        if (isAlive() && this.getBombs().size() < maxBombNumber && !this.noBombCurse) {
+            Bomb bomb = new Bomb(this.position, this, this.space);
+            this.bombs.add(bomb);
+            System.out.println("I've placed a bomb");
+        }
     }
 }
