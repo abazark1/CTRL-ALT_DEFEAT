@@ -8,6 +8,10 @@ import blitzstrike.model.Player;
 
 public class Obstacle extends PowerUp {
 
+    public Obstacle(boolean hasDuration){
+        super(hasDuration);
+    }
+    
     public static final int NUMBER_OF_OBSTACLES = 3;
 
     /**
@@ -43,5 +47,10 @@ public class Obstacle extends PowerUp {
         maxNum = maxNum + NUMBER_OF_OBSTACLES;
         player.setMaxNumberOfObstacles(maxNum);
         System.out.println(maxNum);
+    }
+    
+    @Override
+    public String toString(){
+        return "Obstacle PowerUp";
     }
 }

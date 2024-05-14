@@ -9,6 +9,10 @@ import java.time.LocalTime;
 
 public class Ghost extends PowerUp {
 
+    public Ghost(boolean hasDuration){
+        super(hasDuration);
+    }
+    
     /**
      * Applies the ghost power up to the given player
      *
@@ -40,6 +44,10 @@ public class Ghost extends PowerUp {
     private void makeGhost(Player player) {
         player.setGhost(true);
         this.startingTime = LocalTime.now();
-
+    }
+    
+    @Override
+    public String toString(){
+        return "Ghost PowerUp";
     }
 }

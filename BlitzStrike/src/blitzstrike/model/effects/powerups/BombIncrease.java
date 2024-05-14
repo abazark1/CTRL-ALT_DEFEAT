@@ -8,6 +8,9 @@ import blitzstrike.model.Player;
 
 public class BombIncrease extends PowerUp {
 
+    public BombIncrease(boolean hasDuration){
+        super(hasDuration);
+    }
     /**
      * Applies the bomb increase power up to the given player
      *
@@ -17,6 +20,7 @@ public class BombIncrease extends PowerUp {
     public void applyEffect(Player player) {
         System.out.println(player.getName() + " has just got bomb increase!");
         increaseBombs(player);
+        player.addPowerup(this);
     }
 
     /**
@@ -38,5 +42,10 @@ public class BombIncrease extends PowerUp {
         int bombs = player.getBombNumber();
         bombs++;
         player.setBombNumber(bombs);
+    }
+    
+    @Override
+    public String toString(){
+        return "Bomb Increase PowerUp";
     }
 }

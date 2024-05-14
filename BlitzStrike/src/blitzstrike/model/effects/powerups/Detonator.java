@@ -8,6 +8,10 @@ import blitzstrike.model.Player;
 
 public class Detonator extends PowerUp {
 
+    public Detonator(boolean hasDuration){
+        super(hasDuration);
+    }
+    
     /**
      * Applies the detonator power up to the given player
      *
@@ -16,6 +20,7 @@ public class Detonator extends PowerUp {
     @Override
     public void applyEffect(Player player) {
         activateDetonator(player);
+        player.addPowerup(this);
     }
 
     /**
@@ -35,7 +40,11 @@ public class Detonator extends PowerUp {
      */
     private void activateDetonator(Player player) {
         System.out.println("Detonator was activated");
-        player.setIsDetonatorOn(true);
-        
+        player.setIsDetonatorOn(true); 
+    }
+    
+    @Override
+    public String toString(){
+        return "Detonator PowerUp";
     }
 }

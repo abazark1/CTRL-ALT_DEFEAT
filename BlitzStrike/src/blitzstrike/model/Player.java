@@ -125,6 +125,14 @@ public class Player {
     public LocalTime getImmediateBombCurseTimer() {
         return this.immediateBombCurseStartTime;
     }
+    
+    public List<PowerUp> getPowerups(){
+        return this.powerups;
+    }
+    
+    public List<Curse> getCurses(){
+        return this.curses;
+    }
 
     /*
      * Getter to check if the players should get followed by monsters

@@ -46,4 +46,9 @@ public class FollowedByMonsters extends Curse {
     protected void resetEffect(Player player) {
         player.setFollowedByMonsters(false);
     }
+    
+    @Override
+    public String toString(){
+        return "Followed by monsters Curse";
+    }
 }

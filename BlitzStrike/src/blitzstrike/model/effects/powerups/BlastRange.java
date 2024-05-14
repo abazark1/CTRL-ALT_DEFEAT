@@ -8,6 +8,9 @@ import blitzstrike.model.Player;
 
 public class BlastRange extends PowerUp {
 
+    public BlastRange(boolean hasDuration){
+        super(hasDuration);
+    }
     /**
      * Applies the blast range power up to the given player
      *
@@ -17,6 +20,7 @@ public class BlastRange extends PowerUp {
     public void applyEffect(Player player) {
         System.out.println(player.getName() + " has just got blast range!");
         increaseRange(player);
+        player.addPowerup(this);
     }
 
     /**
@@ -38,5 +42,10 @@ public class BlastRange extends PowerUp {
         int range = player.getBlastRange();
         range++;
         player.setBlastRange(range);
+    }
+    
+    @Override
+    public String toString(){
+        return "Blast Range PowerUp";
     }
 }

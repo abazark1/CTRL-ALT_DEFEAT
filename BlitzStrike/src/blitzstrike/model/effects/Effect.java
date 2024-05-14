@@ -106,13 +106,13 @@ public abstract class Effect {
         switch (randomNumber) {
             case 0:
                 System.out.println("I dropped Bomb Increase randomly");
-                effect = new BombIncrease();
+                effect = new BombIncrease(false);
                 effect.setEverythingFalse();
                 effect.setIsPowerup(true);
                 return effect;
             case 1:
                 System.out.println("I dropped Blast range randomly");
-                effect = new BlastRange();
+                effect = new BlastRange(false);
                 effect.setEverythingFalse();
                 effect.setIsPowerup(true);
                 return effect;
@@ -142,33 +142,33 @@ public abstract class Effect {
                 return effect;
             case 6:
                 System.out.println("I dropped Roller Skate randomly (Unfollowed by Monsters)");
-                effect = new RollerSkate();
+                effect = new RollerSkate(true);
                 effect.setEverythingFalse();
                 effect.setIsPowerup(true);
                 return effect;
             case 7:
                 System.out.println("I dropped Invincibility randomly");
-                effect = new Invincibility();
+                effect = new Invincibility(true);
                 effect.setEverythingFalse();
                 effect.setIsPowerup(true);
                 return effect;
             case 8:
                 System.out.println("I dropped Ghost randomly");
-                effect = new Ghost();
+                effect = new Ghost(true);
                 effect.setEverythingFalse();
                 effect.setIsPowerup(true);
                 return effect;
 
             case 9:
                 System.out.println("I dropped Obstacle power up randomly");
-                effect = new Obstacle();
+                effect = new Obstacle(false);
                 effect.setEverythingFalse();
                 effect.setIsPowerup(true);
                 return effect;
 
             case 10:
                 System.out.println("I dropped detonator power up randomly");
-                effect = new Detonator();
+                effect = new Detonator(false);
                 effect.setEverythingFalse();
                 effect.setIsPowerup(true);
                 return effect;

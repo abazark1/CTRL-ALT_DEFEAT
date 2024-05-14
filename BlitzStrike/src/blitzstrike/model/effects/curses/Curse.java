@@ -10,6 +10,7 @@ import java.time.LocalTime;
 
 public abstract class Curse extends Effect {
 
+    public int currentCurseTime;
     public static final int CURSE_DURATION = 10;
     private final int duration;
     protected LocalTime startingTime;
@@ -23,6 +24,7 @@ public abstract class Curse extends Effect {
         this.duration = CURSE_DURATION;
         this.isCurse = true;
         this.isTerminated = false;
+        this.currentCurseTime = CURSE_DURATION;
     }
 
     /**
@@ -33,6 +35,19 @@ public abstract class Curse extends Effect {
     public int getDuration() {
         return this.duration;
     }
+    
+    public int getCurrentCurseTime(){
+        if (this.startingTime != null) {
+            long timePassed = LocalTime.now().toSecondOfDay() - this.startingTime.toSecondOfDay();
+            if (timePassed < this.getDuration()) {
+                currentCurseTime = this.getDuration() - (int)timePassed;
+            } else {
+                currentCurseTime = 0;
+            }
+        }
+        return currentCurseTime;
+    }
+
 
     /**
      * Returns true if curse is terminated, false, otherwise
@@ -65,5 +80,7 @@ public abstract class Curse extends Effect {
      * @param player player
      */
     protected abstract void resetEffect(Player player);
-
+    
+    @Override
+    public abstract String toString();
 }

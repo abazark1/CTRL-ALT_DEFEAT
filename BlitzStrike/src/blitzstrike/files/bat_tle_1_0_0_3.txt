@@ -1,0 +1,28 @@
+Player1Name:bat
+Player2Name:tle
+Player1Score:0
+Player2Score:0
+Player1BombNumber:2
+Player2BombNumber:1
+Player1ObstacleNumber:0
+Player2ObstacleNumber:0
+RoundsToWin:3
+CurrentBattleRoyaleTime:10
+CurrentBattleRoyaleDuration:20
+CurrentLayerOfBattleRoyale:2
+
+xxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxx
+xxxxxxxxx    xx
+xx          bxx
+xx a     x   xx
+xx           xx
+xx         x xx
+xx    x      xx
+xx    #    x xx
+xx    x   xx xx
+xx x  x      xx
+xx    x  x   xx
+xx    x    x#xx
+xxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxx

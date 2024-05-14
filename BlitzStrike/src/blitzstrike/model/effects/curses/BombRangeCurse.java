@@ -47,4 +47,9 @@ public class BombRangeCurse extends Curse {
         player.setBombRangeCurse(1);
         this.startingTime = LocalTime.now();
     }
+    
+    @Override
+    public String toString(){
+        return "Bomb Range Curse";
+    }
 }

@@ -46,4 +46,9 @@ public class NoBombCurse extends Curse {
         player.setNoBombCurse(true);
         this.startingTime = LocalTime.now();
     }
+    
+    @Override
+    public String toString(){
+        return "No Bomb Curse";
+    }
 }
