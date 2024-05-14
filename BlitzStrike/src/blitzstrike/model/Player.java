@@ -508,6 +508,8 @@ public class Player {
         //this.position = new Position(0, 0);
         this.bombs = new ArrayList<>();
         this.obstacles = new ArrayList<>();
+        this.curses = new ArrayList<>();
+        this.powerups = new ArrayList<>();
         this.alive = true;
         this.bombRange = STANDARD_BOMB_RANGE;
         this.maxBombNumber = STANDARD_BOMB_NUMBER;
