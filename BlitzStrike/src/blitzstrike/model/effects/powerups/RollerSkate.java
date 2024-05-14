@@ -9,6 +9,10 @@ import java.time.LocalTime;
 
 public class RollerSkate extends PowerUp {
 
+    public RollerSkate(boolean hasDuration){
+        super(hasDuration);
+    }
+    
     /**
      * Applies the rollerskate power up to the given player
      *
@@ -39,5 +43,10 @@ public class RollerSkate extends PowerUp {
     private void activateRollerSkate(Player player) {
         player.setRollerSkate(true);
         this.startingTime = LocalTime.now();
+    }
+    
+    @Override
+    public String toString(){
+        return "Ignored by Monsters PowerUp";
     }
 }

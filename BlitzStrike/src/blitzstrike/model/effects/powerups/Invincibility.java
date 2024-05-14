@@ -9,6 +9,10 @@ import java.time.LocalTime;
 
 public class Invincibility extends PowerUp {
 
+    public Invincibility(boolean hasDuration){
+        super(hasDuration);
+    }
+    
     /**
      * Applies the invincibility power up to the given player
      *
@@ -39,5 +43,10 @@ public class Invincibility extends PowerUp {
     private void makeInvincible(Player player) {
         player.setInvincible(true);
         this.startingTime = LocalTime.now();
+    }
+    
+    @Override
+    public String toString(){
+        return "Invincibility PowerUp";
     }
 }

@@ -11,6 +11,8 @@ import static blitzstrike.model.Direction.LEFT;
 import static blitzstrike.model.Direction.RIGHT;
 import blitzstrike.model.Game;
 import blitzstrike.model.Player;
+import blitzstrike.model.effects.curses.Curse;
+import blitzstrike.model.effects.powerups.PowerUp;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import static java.awt.Color.BLACK;
@@ -54,6 +56,8 @@ public class MainWindow extends JFrame {
 
     private final JPanel mMenu;
     private final JPanel statsPanel;
+    private final JPanel player1effects;
+    private final JPanel player2effects;
     private Game game;
     private View view; ///in the class diagram Board board
     private String[] fileList;
@@ -84,7 +88,16 @@ public class MainWindow extends JFrame {
         statsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         statsPanel.setBackground(Color.LIGHT_GRAY);
         frame.add(statsPanel, BorderLayout.NORTH);
-
+        
+        player1effects = new JPanel();
+        player2effects = new JPanel();
+        player1effects.setBackground(Color.LIGHT_GRAY);
+        player2effects.setBackground(Color.LIGHT_GRAY);
+        frame.add(player1effects, BorderLayout.WEST);
+        frame.add(player2effects, BorderLayout.EAST);
+        player1effects.setPreferredSize(new Dimension(80, frame.getHeight()));
+        player2effects.setPreferredSize(new Dimension(80, frame.getHeight()));
+        
 ////////////////////////////////////////////////////Menu Bar///////////////////////////////////////////
         JMenuItem restart = new JMenuItem("Restart");
         restart.addActionListener(new ActionListener() {
@@ -147,7 +160,7 @@ public class MainWindow extends JFrame {
         mMenu.add(Box.createVerticalGlue());
         mMenu.add(Box.createVerticalGlue());
         frame.add(mMenu);
-        frame.setPreferredSize(new Dimension(660, 800));
+        frame.setPreferredSize(new Dimension(820, 800));
         frame.setResizable(false);
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -208,6 +221,7 @@ public class MainWindow extends JFrame {
 
                 if (view != null) {
                     view.repaint();
+                    //updatePlayerEffects(player1effects, player1);
                 }
             }
         };
@@ -232,6 +246,7 @@ public class MainWindow extends JFrame {
                 }
                 if (view != null) {
                     view.repaint();
+                    //updatePlayerEffects(player2effects, player2);
                 }
             }
         };
@@ -266,6 +281,20 @@ public class MainWindow extends JFrame {
         frame.revalidate();
         frame.repaint();
     }
+    
+    private void togglePlayerEffectsVisibility(boolean visible){
+        player1effects.setVisible(visible);
+        player2effects.setVisible(visible);
+        
+        if(!visible){
+            player1effects.removeAll();
+            player2effects.removeAll();
+        }
+        player1effects.revalidate();
+        player2effects.revalidate();
+        player1effects.repaint();
+        player2effects.repaint();
+    }
 
     /**
      * Starts the timer for continuous movement of monsters.
@@ -297,6 +326,9 @@ public class MainWindow extends JFrame {
                 if (view != null) {
 //                    System.out.println("I am repainting");
                     toggleStatsPanelVisibility(true);
+                    togglePlayerEffectsVisibility(true);
+                    updatePlayerEffects(player1effects, player1);
+                    updatePlayerEffects(player2effects, player2);
                     view.repaint();
                 }
                 if (game != null) {
@@ -318,6 +350,7 @@ public class MainWindow extends JFrame {
                     }
                 } else {
                     toggleStatsPanelVisibility(false);
+                    togglePlayerEffectsVisibility(false);
                 }
             }
         });
@@ -427,6 +460,7 @@ public class MainWindow extends JFrame {
         frame.remove(view);
         //frame.remove(statsPanel);
         toggleStatsPanelVisibility(false);
+        togglePlayerEffectsVisibility(false);
         frame.add(mMenu);
         frame.revalidate();
         frame.repaint();
@@ -567,7 +601,6 @@ public class MainWindow extends JFrame {
 
                 }
                 if (pl1ScoreCont == null || pl2ScoreCont == null || pl1ScoreCont <0 || pl2ScoreCont<0) {
-                    //JOptionPane.showMessageDialog(continueDialog, "Enter both players' scores!", "Missing Information", JOptionPane.ERROR_MESSAGE);
                     allFieldsAreGoodCont = false;
                     throw new NumberFormatException();
                     
@@ -597,12 +630,10 @@ public class MainWindow extends JFrame {
                 }
 
                 if (allFieldsAreGoodCont) {
-
                     String filenameValid = player1NameCont + "_" + player2NameCont + "_" + mapNumberCont + "_" + pl1ScoreCont + "_" + pl2ScoreCont + "_" + numGamesCont + ".txt";
                     String filePathCont = "src/blitzstrike/files/" + player1NameCont + "_" + player2NameCont + "_" + mapNumberCont + "_" + pl1ScoreCont + "_" + pl2ScoreCont + "_" + numGamesCont + ".txt";
 
                     for (String filename : fileNamesArray) {
-
                         if (filenameValid.trim().equals(filename.trim())) {
                             System.out.println("filenameValid : " + filenameValid);
                             System.out.println("filenamein the array : " + filename);
@@ -610,7 +641,6 @@ public class MainWindow extends JFrame {
                             fileLoaded = true;
                             break;
                         }
-
                     }
 
                     if (fileLoaded) {
@@ -670,6 +700,43 @@ public class MainWindow extends JFrame {
         frame.revalidate();
         frame.repaint();
     }
+    
+    public void updatePlayerEffects(JPanel playerEffects, Player player){
+        playerEffects.removeAll();
+        
+        for (Curse c: player.getCurses()){
+            JPanel cursePanel = new JPanel();
+            cursePanel.setLayout(new BoxLayout(cursePanel, BoxLayout.Y_AXIS));
+            System.out.println("Player 1 curse " + c.toString());
+            String curseName = c.toString();
+            curseName = curseName.replace(" ", "<br>");
+            JLabel label = new JLabel("<html>" + curseName + " " + Integer.toString(c.getCurrentCurseTime()) + "</html>");
+            label.setFont(new Font("SansSerif", Font.BOLD, 12));
+            cursePanel.add(label, BorderLayout.CENTER);
+            playerEffects.add(cursePanel);
+        }
+        playerEffects.revalidate();
+        playerEffects.repaint();
+        
+        for (PowerUp p: player.getPowerups()){
+            JPanel powerupPanel = new JPanel();
+            powerupPanel.setLayout(new BoxLayout(powerupPanel, BoxLayout.Y_AXIS));
+            System.out.println("Player 1 powerup " + p.toString());
+            String powerupName = p.toString();
+            powerupName = powerupName.replace(" ", "<br>");
+            JLabel label;
+            if (p.hasDuration()){
+                label = new JLabel("<html>" + powerupName + " " + Integer.toString(p.getCurrentPowerupTime()) + "</html>");
+            } else {
+                label = new JLabel("<html>" + powerupName + "</html>");
+            }
+            label.setFont(new Font("SansSerif", Font.BOLD, 12));
+            powerupPanel.add(label, BorderLayout.CENTER);
+            playerEffects.add(powerupPanel);
+        }
+        playerEffects.revalidate();
+        playerEffects.repaint();
+    }
 
     public void showRoundEndPopup(String message) {
         JDialog roundEndDialog = new JDialog(this, "Round Ended", true);
@@ -684,10 +751,10 @@ public class MainWindow extends JFrame {
 
         // Message Label (HTML centering already in place)
         JLabel messageLabel = new JLabel("<html><center>" + message + "<br>Player 1 Score: " + game.getPlayer1Score() + "<br>Player 2 Score: " + game.getPlayer2Score() + "</center></html>");
-        constraints.fill = GridBagConstraints.BOTH; // Fill both horizontally and vertically
-        constraints.gridy = 0;  // Place in first row
-        constraints.weighty = 1.0;  // Allocate extra vertical space
-        constraints.gridwidth = GridBagConstraints.REMAINDER; // Span all columns
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridy = 0;
+        constraints.weighty = 1.0; 
+        constraints.gridwidth = GridBagConstraints.REMAINDER; 
         contentPanel.add(messageLabel, constraints);
 
         // Next Round Button
@@ -698,7 +765,7 @@ public class MainWindow extends JFrame {
                 player2ScoreLabel.setText("Score: " + game.getPlayer2Score());
                 frame.repaint();
                 roundEndDialog.setVisible(false);
-                roundEndDialog.dispose(); // Close and dispose of the dialog
+                roundEndDialog.dispose();
                 game.loadNextRound();
             } catch (Exception ex) {
                 Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
@@ -874,20 +941,7 @@ public class MainWindow extends JFrame {
                     }
                     frame.remove(mMenu);
                     frame.add(view);
-                    statsPanel.removeAll();
-
-                    player1ScoreLabel = new JLabel("Score: " + game.getPlayer1Score());
-                    player2ScoreLabel = new JLabel("Score: " + game.getPlayer2Score());
-                    statsPanel.add(createPlayerStatsPanel(player1, player1ScoreLabel));
-                    statsPanel.add(createPlayerStatsPanel(player2, player2ScoreLabel));
-                    JLabel roundLabel = new JLabel("Rounds of glorious domination required: " + game.getRoundsToWin());
-                    statsPanel.add(roundLabel);
-
-                    battleRoyalCountDownTime = new JLabel(Integer.toString(game.getCurrentBattleRoyaleTime()));
-                    statsPanel.add(battleRoyalCountDownTime);
-
-                    frame.revalidate();
-                    frame.repaint();
+                    updateStatsPanel();
                     gameSetupDialog.setVisible(false);
                     
                     //added to fix the new game, if problem appears, delete
@@ -905,14 +959,9 @@ public class MainWindow extends JFrame {
 
         mainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         gameSetupDialog.setContentPane(mainPanel);
-
         gameSetupDialog.pack();
-
-        gameSetupDialog.setLocationRelativeTo(
-                this);
-
-        gameSetupDialog.setVisible(
-                true);
+        gameSetupDialog.setLocationRelativeTo(this);
+        gameSetupDialog.setVisible(true);
     }
 
 }

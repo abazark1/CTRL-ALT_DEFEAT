@@ -46,4 +46,8 @@ public class ImmediateBombCurse extends Curse {
         player.setImmediateBombCurse(true);
         this.startingTime = LocalTime.now();
     }
+    @Override
+    public String toString(){
+        return "Immediate Bomb Curse";
+    }
 }

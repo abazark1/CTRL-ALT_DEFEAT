@@ -5,6 +5,7 @@
  */
 package blitzstrike.model;
 
+import blitzstrike.model.effects.curses.Curse;
 import blitzstrike.model.monsters.Monster;
 import blitzstrike.model.monsters.Monster1;
 import blitzstrike.model.monsters.Monster2;
@@ -19,6 +20,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.JLabel;
 
 public class Game {
 
