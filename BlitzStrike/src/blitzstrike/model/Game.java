@@ -5,7 +5,6 @@
  */
 package blitzstrike.model;
 
-import blitzstrike.model.effects.curses.Curse;
 import blitzstrike.model.monsters.Monster;
 import blitzstrike.model.monsters.Monster1;
 import blitzstrike.model.monsters.Monster2;
@@ -20,12 +19,11 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
-import javax.swing.JLabel;
 
 public class Game {
 
     public static final int MAP_SIZE = 15;
-    public static final int INITIAL_BATTLE_ROYALE_DURATION = 20;
+    public static final int INITIAL_BATTLE_ROYALE_DURATION = 30;
     public static final int INITIAL_BATTLE_ROYALE_LAYER = 1;
 
     private boolean endGame;
@@ -426,7 +424,6 @@ public class Game {
      * space accordingly.
      */
     public void handleCollision() {
-        // collision of monsters and players 
         for (Monster monster : monsters) {
             if (monster.getPosition().equals(player1.getPosition())) {
                 if (player1.isInvincible()) {
@@ -447,7 +444,6 @@ public class Game {
             }
         }
 
-        // players and effects
         if (player1.isAlive()) {
             if (this.space[player1.getPosition().getY()][player1.getPosition().getX()].isDestroyed()) {
                 ((Box) this.space[player1.getPosition().getY()][player1.getPosition().getX()]).getEffect().applyEffect(player1);
@@ -468,7 +464,7 @@ public class Game {
      * accordingly.
      */
     public void handleBombExplosion() {
-        //player1 bombs
+
         if (!this.player1.isDetonatorOn()) {
             ArrayList<Bomb> player1BombsCopy = new ArrayList<>(this.player1.getBombs());
             Iterator<Bomb> bombIterator1 = player1BombsCopy.iterator();
@@ -485,7 +481,7 @@ public class Game {
                 b.setStartingTime(LocalTime.now());
             }
         }
-        //player2 bombs
+
         if (!this.player2.isDetonatorOn()) {
             ArrayList<Bomb> player2BombsCopy = new ArrayList<>(this.player2.getBombs());
             Iterator<Bomb> bombIterator2 = player2BombsCopy.iterator();
@@ -516,7 +512,7 @@ public class Game {
         if (x >= 0 && x < MAP_SIZE && y >= 0 && y < MAP_SIZE) {
             return space[y][x] instanceof Wall;
         }
-        return false; // Return false if the coordinates are out of bounds.
+        return false;
     }
 
     /*
@@ -648,7 +644,7 @@ public class Game {
             shrinkMap();
             this.currentLayerOfBattleRoyale++;
             this.startingTime = LocalTime.now();
-            if (this.currentBattleRoyaleDuration > 20) {
+            if (this.currentBattleRoyaleDuration > 10) {
                 this.currentBattleRoyaleDuration -= 10;
             }
             this.currentBattleRoyaleTime = this.currentBattleRoyaleDuration;
@@ -664,15 +660,15 @@ public class Game {
      */
     public boolean canExplode(int x, int y) {
         if (x < 0 || y < 0 || x >= MAP_SIZE || y >= MAP_SIZE) {
-            return false; // Out of bounds
+            return false;
         }
 
         Cell cell = space[y][x];
         if (cell instanceof Wall) {
-            return false; // Walls block explosion
+            return false;
         }
 
-        return true; // Empty cells and undestroyed boxes can explode
+        return true;
     }
 
     /**
@@ -978,22 +974,17 @@ public class Game {
                 } else if (line.startsWith("CurrentLayerOfBattleRoyale:")) {
                     this.currentLayerOfBattleRoyale = Integer.parseInt(line.substring("CurrentLayerOfBattleRoyale:".length()));
                 } else {
-                    // Assuming this line is part of the map
-                    // You'll start processing the map after handling all the metadata
                     break;
                 }
             }
 
             this.monsters = new ArrayList<>();
             this.space = new Cell[MAP_SIZE][MAP_SIZE];
-//        this.startingTime = LocalTime.now();
             this.startingTime = LocalTime.now().minusSeconds(currentBattleRoyaleDuration - currentBattleRoyaleTime);
             this.player1.setSpace(this.space);
             this.player2.setSpace(this.space);
 
-            //map
             int y = 0;
-            //this.startingTime = LocalTime.now();
             while ((line = reader.readLine()) != null && y < MAP_SIZE) {
                 for (int x = 0; x < line.length() && x < MAP_SIZE; x++) {
                     char symbol = line.charAt(x);
@@ -1074,7 +1065,6 @@ public class Game {
     public void saveGame(Player player1, Player player2, int player1score, int player2score, int roundsToWin) {
         StringBuilder mapBuilder = new StringBuilder();
         pauseGame();
-        // Save map state
         for (int y = 0; y < MAP_SIZE; y++) {
             for (int x = 0; x < MAP_SIZE; x++) {
                 Cell cell = space[y][x];
@@ -1092,7 +1082,6 @@ public class Game {
                     mapBuilder.append('b');
                 } else if (isMonsterAtPosition(x, y)) {
                     Monster m = getMonster(x, y);
-                    //Char monsterString = '';
                     if (m != null) {
                         switch (m.monsterType) {
                             case BASIC:
@@ -1109,7 +1098,6 @@ public class Game {
                                 break;
                         }
                     }
-                    //mapBuilder.append('1');
                 } else {
                     mapBuilder.append(' ');
                 }
@@ -1257,12 +1245,12 @@ public class Game {
         if (this.space[i][j] instanceof ObstacleBox) {
             ((ObstacleBox) this.space[i][j]).getDestroyed();
         }
-        if (player1.hasBombAtPosition(i, j)){
+        if (player1.hasBombAtPosition(i, j)) {
             System.out.println("Yes! Bomb");
             player1.removeBomb(player1.getBomb(i, j));
         }
-        if (player2.hasBombAtPosition(i, j)){
-             System.out.println("Yes! Bomb2");
+        if (player2.hasBombAtPosition(i, j)) {
+            System.out.println("Yes! Bomb2");
             player2.removeBomb(player2.getBomb(i, j));
         }
         this.space[i][j] = new Wall(new Position(j, i));
