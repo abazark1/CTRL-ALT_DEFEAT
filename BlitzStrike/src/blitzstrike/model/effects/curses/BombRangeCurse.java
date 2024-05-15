@@ -44,7 +44,7 @@ public class BombRangeCurse extends Curse {
      */
     private void activateBombRangeCurse(Player player) {
         System.out.println("Activated bomb range curse");
-        player.setBombRangeCurse(1);
+        player.setBombRangeCurse(2);
         this.startingTime = LocalTime.now();
     }
     
