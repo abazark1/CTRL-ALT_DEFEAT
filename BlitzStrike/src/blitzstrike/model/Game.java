@@ -1257,6 +1257,14 @@ public class Game {
         if (this.space[i][j] instanceof ObstacleBox) {
             ((ObstacleBox) this.space[i][j]).getDestroyed();
         }
+        if (player1.hasBombAtPosition(i, j)){
+            System.out.println("Yes! Bomb");
+            player1.removeBomb(player1.getBomb(i, j));
+        }
+        if (player2.hasBombAtPosition(i, j)){
+             System.out.println("Yes! Bomb2");
+            player2.removeBomb(player2.getBomb(i, j));
+        }
         this.space[i][j] = new Wall(new Position(j, i));
     }
 
