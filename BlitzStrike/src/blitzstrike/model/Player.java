@@ -4,6 +4,7 @@
  */
 package blitzstrike.model;
 
+import static blitzstrike.model.Game.MAP_SIZE;
 import blitzstrike.model.effects.Effect;
 import blitzstrike.model.effects.curses.Curse;
 import blitzstrike.model.effects.powerups.PowerUp;
@@ -38,7 +39,6 @@ public class Player {
     private LocalTime deathTime;
     private List<Curse> curses;
     private List<PowerUp> powerups;
-    private boolean detonatorWorked;
 
     private Cell[][] space;
     private boolean rollerSkateWorking;
@@ -457,6 +457,10 @@ public class Player {
     public boolean isValidPosition(Direction direction, Player player2) {
         Position newPosition = this.position.translate(direction);
 
+        if (newPosition.getX() == 0 || newPosition.getY() == 0 || newPosition.getX() == MAP_SIZE - 1 || newPosition.getY() == MAP_SIZE - 1) {
+            return false;
+        }
+        
         if (this.isGhost()) {
             if (player2.getPosition().equals(newPosition)) {
                 return false;
