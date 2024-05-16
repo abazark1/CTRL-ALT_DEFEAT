@@ -4,6 +4,9 @@
  */
 package blitzstrike.model;
 
+import blitzstrike.model.effects.powerups.Obstacle;
+import blitzstrike.model.monsters.Monster;
+import java.io.IOException;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,6 +53,21 @@ public class GameTest {
         assertEquals(0, this.game.getPlayer1Score());
         assertEquals(0, this.game.getPlayer2Score());
         assertFalse(this.game.isGameOrRoundEnded());
+    }
+    
+    @Test
+    public void testContinueGame() {
+        this.mapPath = "src/blitzstrike/files/Kitana_Mileena_1_0_0_3.txt";
+        try {
+            game.continueGame(this.mapPath);
+            assertEquals(game.getPlayer11().getName(), "Kitana");
+            assertEquals(game.getPlayer22().getName(), "Mileena");
+            assertEquals(game.getPlayer1Score(), 0);
+            assertEquals(game.getPlayer2Score(), 0);
+            assertEquals(game.getRoundsToWin(), 3);
+        } catch (IOException e) {
+            fail("IOException occurred: " + e.getMessage());
+        }
     }
 
     @Test
@@ -167,5 +185,43 @@ public class GameTest {
         assertTrue(this.game.getPlayer11().isAlive());
         assertTrue(this.game.getPlayer22().isAlive());
     }
-
+    
+    @Test
+    public void testFollowedByMonsters(){
+        this.game.loadMap();
+        this.game.getPlayer11().setFollowedByMonsters(true);
+        for(Monster m : this.game.getMonsters()){
+            m.targetPlayer();
+            m.updateTarget();
+            Player pl = m.getTargetPlayer();
+            assertEquals(pl, this.game.getPlayer11());
+        }
+    }
+    
+    @Test
+    public void testIgnoredByMonsters(){
+        this.game.loadMap();
+        this.game.getPlayer11().setRollerSkate(true);
+        for(Monster m : this.game.getMonsters()){
+            m.ignorePlayer();
+            m.updateIgnoredPlayer();
+            Player pl = m.getIgnoredPlayer();
+            assertEquals(pl, this.game.getPlayer11());
+        }
+    }
+    
+    @Test
+    public void testPlayerCanPlaceObstaclesUntilMax(){
+        this.game.loadMap();
+        Obstacle obstacle = new Obstacle(false);
+        obstacle.applyEffect(game.getPlayer11());
+        this.game.getPlayer11().placeObstacle();
+        this.game.getPlayer11().placeObstacle();
+        List<ObstacleBox> obst11 = this.game.getPlayer11().getObstacles();
+        assertEquals(2, obst11.size());
+        
+        this.game.getPlayer11().placeObstacle();
+        this.game.getPlayer11().placeObstacle();
+        assertTrue(this.game.getPlayer11().getObstacles().size() == this.game.getPlayer11().getMaxNumOfObstacles());
+    }
 }
