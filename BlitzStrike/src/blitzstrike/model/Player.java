@@ -61,6 +61,10 @@ public class Player {
         this.followedByMonsters = false;
         this.rollerSkateWorking = false;
     }
+    
+    public int getMaxNumOfObstacles(){
+        return this.maxNumberOfObstacles;
+    }
 
     public List<Bomb> getBombs() {
         return this.bombs;
