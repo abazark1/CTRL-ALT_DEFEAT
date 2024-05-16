@@ -14,6 +14,7 @@ import blitzstrike.model.Player;
 import blitzstrike.model.effects.curses.Curse;
 import blitzstrike.model.effects.powerups.BlastRange;
 import blitzstrike.model.effects.powerups.BombIncrease;
+import blitzstrike.model.effects.powerups.Detonator;
 import blitzstrike.model.effects.powerups.Obstacle;
 import blitzstrike.model.effects.powerups.PowerUp;
 import java.awt.BorderLayout;
@@ -90,7 +91,6 @@ public class MainWindow extends JFrame {
         JMenu menu = new JMenu("Menu");
 
         statsPanel = new JPanel();
-        //statsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         statsPanel.setLayout(new BorderLayout());
         statsPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         statsPanel.setBackground(Color.LIGHT_GRAY);
@@ -747,7 +747,9 @@ public class MainWindow extends JFrame {
                     label = new JLabel("<html>" + powerupName + " " + Integer.toString(player.getBombNumber())+"</html>");
                 }else if(p instanceof Obstacle){
                     label = new JLabel("<html>" + powerupName + " " + Integer.toString(player.getMaxNumberOfObstacles())+"</html>");
-                } 
+                }else if(p instanceof Detonator){
+                    label = new JLabel("<html>" + powerupName + " " + Integer.toString(player.getBombNumber())+"</html>");
+                }
             }
             label.setFont(new Font("SansSerif", Font.BOLD, 12));
             Color forestGreen = new Color(34, 139, 34);
