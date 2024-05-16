@@ -105,11 +105,11 @@ public abstract class Monster {
      *
      * @return the cursed player - targetPlayer
      */
-    protected Player getTargetPlayer() {
+    public Player getTargetPlayer() {
         return this.targetPlayer;
     }
     
-    protected Player getIgnoredPlayer() {
+    public Player getIgnoredPlayer() {
         return this.ignoredPlayer;
     }
 
@@ -118,7 +118,7 @@ public abstract class Monster {
      *
      * @return the index of the player
      */
-    protected int targetPlayer() {
+    public int targetPlayer() {
         for (int i = 0; i < this.players.size(); i++) {
             if (players.get(i).getFollowedByMonsters()) {
                 return i;
@@ -127,7 +127,7 @@ public abstract class Monster {
         return -1;
     }
     
-    protected int ignorePlayer() {
+    public int ignorePlayer() {
         for (int i = 0; i < this.players.size(); i++) {
             if (players.get(i).getRollerSkate()) {
                 return i;
@@ -278,7 +278,7 @@ public abstract class Monster {
      * Updates the targetPlayer value if any of the players got cursed
      *
      */
-    protected void updateTarget() {
+    public void updateTarget() {
         int index = targetPlayer();
         if (index != -1) {
             this.targetPlayer = players.get(index);
@@ -287,7 +287,7 @@ public abstract class Monster {
         }
     }
     
-    protected void updateIgnoredPlayer() {
+    public void updateIgnoredPlayer() {
         int index = ignorePlayer();
         if (index != -1) {
             this.ignoredPlayer = players.get(index);

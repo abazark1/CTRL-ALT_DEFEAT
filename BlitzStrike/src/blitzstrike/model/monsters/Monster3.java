@@ -65,7 +65,7 @@ public class Monster3 extends Monster {
                     }
                 }
             } else {
-                System.out.println("Walking randomly");
+                //System.out.println("Walking randomly");
                 settleCurrentDirectionRandomly();
                 moveWithCurrentDirection();
             }
