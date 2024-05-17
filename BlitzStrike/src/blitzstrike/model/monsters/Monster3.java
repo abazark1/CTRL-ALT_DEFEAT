@@ -34,9 +34,18 @@ public class Monster3 extends Monster {
         updateIgnoredPlayer();
         if (this.getIgnoredPlayer() != null) {
             //System.out.println("Monster 3 i ignoring player");
-
-            settleCurrentDirectionRandomly();
-            moveWithCurrentDirection();
+            Player targetPlayer = null;
+            for (Player player : this.getPlayers()) {
+                if (!player.equals(this.getIgnoredPlayer())) {
+                    targetPlayer = player;
+                    break;
+                }
+            } if (targetPlayer != null) {
+                moveToTarget(targetPlayer.getPosition());
+            } else {
+                settleCurrentDirectionRandomly();
+                moveWithCurrentDirection();
+            }
         }
         else if (this.getTargetPlayer() != null) {
             moveToTarget(getTargetPlayer().getPosition());
