@@ -35,9 +35,20 @@ public class Monster4 extends Monster {
         updateTarget();
         updateIgnoredPlayer();
         if (this.getIgnoredPlayer() != null) {
-            //System.out.println("Monster 4 i ignoring player");
-            settleCurrentDirectionRandomly();
-            moveWithCurrentDirection();
+            Player targetPlayer = null;
+            for (Player player : getPlayers()) {
+                if (!player.equals(this.getIgnoredPlayer())) {
+                    targetPlayer = player;
+                    break;
+                }
+            }
+
+            if (targetPlayer != null) {
+                moveTowardsWithChanceOfWrongDecision(targetPlayer.getPosition());
+            } else {
+                settleCurrentDirectionRandomly();
+                moveWithCurrentDirection();
+            }
         }
         else if (this.getTargetPlayer() != null) {
             moveToTarget(getTargetPlayer().getPosition());
@@ -115,5 +126,22 @@ public class Monster4 extends Monster {
             }
         }
         setPlayers(alivePlayers);
+    }
+    
+    private void moveTowardsWithChanceOfWrongDecision(Position targetPosition) {
+        Direction directionTowardsPlayer = determineDirectionTowardsPosition(targetPosition);
+
+        if (rand.nextDouble() < WRONG_DECISION_PROBABILITY) {
+            Direction newDirection;
+            do {
+                newDirection = makeWrongDecision(directionTowardsPlayer);
+            } while (!isValidPosition(this.position.translate(newDirection)));
+
+            directionTowardsPlayer = newDirection;
+        }
+
+        if (isValidPosition(this.position.translate(directionTowardsPlayer))) {
+            this.position = this.position.translate(directionTowardsPlayer);
+        }
     }
 }
