@@ -350,6 +350,7 @@ public class MainWindow extends JFrame {
                         game.handlePowerupTermination();
                         game.removeTerminatedPowerups();
                         game.handleImmediateBombCurseForBothPlayers();
+                        game.handleGhostCondition();
                     } else if (game.getEndRound()) {
                         showRoundEndPopup("Round is over!");
                     } else if (game.getEndGame()) {
