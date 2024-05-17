@@ -823,6 +823,70 @@ public class Game {
     }
 
     /**
+     * Processes the line reading the map from the file
+     *
+     * @param line the line from the file
+     * @param y one of the iterators
+     * @throws java.io.IOException
+     */
+
+    public void processLine(String line, int y) {
+        for (int x = 0; x < line.length() && x < MAP_SIZE; x++) {
+            char symbol = line.charAt(x);
+            Position position = new Position(x, y);
+            switch (symbol) {
+                case 'x':
+                    space[y][x] = new Wall(position);
+                    break;
+                case '#':
+                    space[y][x] = new Box(position);
+                    break;
+                case 'a':
+                    player1.setPosition(new Position(1, 13));
+                    space[y][x] = new Empty(position);
+                    break;
+                case 'b':
+                    player2.setPosition(new Position(13, 1));
+                    space[y][x] = new Empty(position);
+                    break;
+                case '1':
+                    Monster monster = new Monster1(position, space, this, player1, player2);
+                    monsters.add(monster);
+                    space[y][x] = new Empty(position);
+                    break;
+                case '2':
+                    Monster monster2 = new Monster2(position, space, this, player1, player2);
+                    monsters.add(monster2);
+                    space[y][x] = new Empty(position);
+                    break;
+                case '3':
+                    Monster monster3 = new Monster3(position, space, this, player1, player2);
+                    monsters.add(monster3);
+                    space[y][x] = new Empty(position);
+                    break;
+                case '4':
+                    Monster monster4 = new Monster4(position, space, this, player1, player2);
+                    monsters.add(monster4);
+                    space[y][x] = new Empty(position);
+                    break;
+                case '(':
+                    ObstacleBox obstacleBox1 = new ObstacleBox(position, this.player1);
+                    this.player1.addObstacle(obstacleBox1);
+                    space[y][x] = obstacleBox1;
+                    break;
+                case ')':
+                    ObstacleBox obstacleBox2 = new ObstacleBox(position, this.player2);
+                    this.player2.addObstacle(obstacleBox2);
+                    space[y][x] = obstacleBox2;
+                    break;
+                case ' ':
+                    space[y][x] = new Empty(position);
+                    break;
+            }
+        }
+    }
+
+    /**
      * Loads the map for the saved games
      *
      * @param filepath The path to the file containing the saved game state.
@@ -865,69 +929,13 @@ public class Game {
                 } else if (line.startsWith("CurrentLayerOfBattleRoyale:")) {
                     continue;
                 } else {
-                    // Assuming this line is part of the map
-                    // You'll start processing the map after handling all the metadata
                     break;
                 }
             }
 
-            //map
             int y = 0;
-            //this.startingTime = LocalTime.now();
             while ((line = reader.readLine()) != null && y < MAP_SIZE) {
-                for (int x = 0; x < line.length() && x < MAP_SIZE; x++) {
-                    char symbol = line.charAt(x);
-                    Position position = new Position(x, y);
-                    switch (symbol) {
-                        case 'x':
-                            space[y][x] = new Wall(position);
-                            break;
-                        case '#':
-                            space[y][x] = new Box(position);
-                            break;
-                        case 'a':
-                            player1.setPosition(new Position(1, 13));
-                            space[y][x] = new Empty(position);
-                            break;
-                        case 'b':
-                            player2.setPosition(new Position(13, 1));
-                            space[y][x] = new Empty(position);
-                            break;
-                        case '1':
-                            Monster monster = new Monster1(position, space, this, player1, player2);
-                            monsters.add(monster);
-                            space[y][x] = new Empty(position);
-                            break;
-                        case '2':
-                            Monster monster2 = new Monster2(position, space, this, player1, player2);
-                            monsters.add(monster2);
-                            space[y][x] = new Empty(position);
-                            break;
-                        case '3':
-                            Monster monster3 = new Monster3(position, space, this, player1, player2);
-                            monsters.add(monster3);
-                            space[y][x] = new Empty(position);
-                            break;
-                        case '4':
-                            Monster monster4 = new Monster4(position, space, this, player1, player2);
-                            monsters.add(monster4);
-                            space[y][x] = new Empty(position);
-                            break;
-                        case '(':
-                            ObstacleBox obstacleBox1 = new ObstacleBox(position, this.player1);
-                            this.player1.addObstacle(obstacleBox1);
-                            space[y][x] = obstacleBox1;
-                            break;
-                        case ')':
-                            ObstacleBox obstacleBox2 = new ObstacleBox(position, this.player2);
-                            this.player2.addObstacle(obstacleBox2);
-                            space[y][x] = obstacleBox2;
-                            break;
-                        case ' ':
-                            space[y][x] = new Empty(position);
-                            break;
-                    }
-                }
+                processLine(line, y);
                 y++;
             }
         } catch (IOException e) {
@@ -986,59 +994,7 @@ public class Game {
 
             int y = 0;
             while ((line = reader.readLine()) != null && y < MAP_SIZE) {
-                for (int x = 0; x < line.length() && x < MAP_SIZE; x++) {
-                    char symbol = line.charAt(x);
-                    Position position = new Position(x, y);
-                    switch (symbol) {
-                        case 'x':
-                            space[y][x] = new Wall(position);
-                            break;
-                        case '#':
-                            space[y][x] = new Box(position);
-                            break;
-                        case 'a':
-                            player1.setPosition(position);
-                            space[y][x] = new Empty(position);
-                            break;
-                        case 'b':
-                            player2.setPosition(position);
-                            space[y][x] = new Empty(position);
-                            break;
-                        case '1':
-                            Monster monster = new Monster1(position, space, this, player1, player2);
-                            monsters.add(monster);
-                            space[y][x] = new Empty(position);
-                            break;
-                        case '2':
-                            Monster monster2 = new Monster2(position, space, this, player1, player2);
-                            monsters.add(monster2);
-                            space[y][x] = new Empty(position);
-                            break;
-                        case '3':
-                            Monster monster3 = new Monster3(position, space, this, player1, player2);
-                            monsters.add(monster3);
-                            space[y][x] = new Empty(position);
-                            break;
-                        case '4':
-                            Monster monster4 = new Monster4(position, space, this, player1, player2);
-                            monsters.add(monster4);
-                            space[y][x] = new Empty(position);
-                            break;
-                        case '(':
-                            ObstacleBox obstacleBox1 = new ObstacleBox(position, this.player1);
-                            this.player1.addObstacle(obstacleBox1);
-                            space[y][x] = obstacleBox1;
-                            break;
-                        case ')':
-                            ObstacleBox obstacleBox2 = new ObstacleBox(position, this.player2);
-                            this.player2.addObstacle(obstacleBox2);
-                            space[y][x] = obstacleBox2;
-                            break;
-                        case ' ':
-                            space[y][x] = new Empty(position);
-                            break;
-                    }
-                }
+                processLine(line, y);
                 y++;
             }
         } catch (IOException e) {
