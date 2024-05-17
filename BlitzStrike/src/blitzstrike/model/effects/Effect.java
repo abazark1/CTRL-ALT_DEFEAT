@@ -104,7 +104,6 @@ public abstract class Effect {
         int randomNumber = rand.nextInt(12);
         Effect effect;
         switch (randomNumber) {
-            /*
             case 0:
                 System.out.println("I dropped Bomb Increase randomly");
                 effect = new BombIncrease(false);
@@ -177,13 +176,6 @@ public abstract class Effect {
                 effect.setEverythingFalse();
                 effect.setIsEmpty(true);
                 return effect;
-            */
-            default:
-                System.out.println("I dropped detonator power up randomly");
-                effect = new Detonator(false);
-                effect.setEverythingFalse();
-                effect.setIsPowerup(true);
-                return effect; 
         }
     }
 
