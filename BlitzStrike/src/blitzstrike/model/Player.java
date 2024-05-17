@@ -61,8 +61,8 @@ public class Player {
         this.followedByMonsters = false;
         this.rollerSkateWorking = false;
     }
-    
-    public int getMaxNumOfObstacles(){
+
+    public int getMaxNumOfObstacles() {
         return this.maxNumberOfObstacles;
     }
 
@@ -269,8 +269,9 @@ public class Player {
         if (this.isDetonatorOn) {
             if (this.getBombs().size() == maxBombNumber) {
                 this.isDetonatorOn = false;
+            } else {
+                actuallyPlaceBomb();
             }
-            actuallyPlaceBomb();
         } else {
             actuallyPlaceBomb();
         }
@@ -464,7 +465,7 @@ public class Player {
         if (newPosition.getX() == 0 || newPosition.getY() == 0 || newPosition.getX() == MAP_SIZE - 1 || newPosition.getY() == MAP_SIZE - 1) {
             return false;
         }
-        
+
         if (this.isGhost()) {
             if (player2.getPosition().equals(newPosition)) {
                 return false;
