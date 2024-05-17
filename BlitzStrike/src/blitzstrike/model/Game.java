@@ -794,24 +794,24 @@ public class Game {
                         Monster monster = new Monster1(position, this.space, this, player1, player2);
                         this.monsters.add(monster);
                         break;
-//                    case '2':
-//                        cell = new Empty(position);
-//                        space[row][column] = cell;
-//                        Monster monster2 = new Monster2(position, this.space, this, player1, player2);
-//                        this.monsters.add(monster2);
-//                        break;
-//                    case '3':
-//                        cell = new Empty(position);
-//                        space[row][column] = cell;
-//                        Monster monster3 = new Monster3(position, this.space, this, player1, player2);
-//                        this.monsters.add(monster3);
-//                        break;
-//                    case '4':
-//                        cell = new Empty(position);
-//                        space[row][column] = cell;
-//                        Monster monster4 = new Monster4(position, this.space, this, player1, player2);
-//                        this.monsters.add(monster4);
-//                        break;
+                    case '2':
+                        cell = new Empty(position);
+                        space[row][column] = cell;
+                        Monster monster2 = new Monster2(position, this.space, this, player1, player2);
+                        this.monsters.add(monster2);
+                        break;
+                    case '3':
+                        cell = new Empty(position);
+                        space[row][column] = cell;
+                        Monster monster3 = new Monster3(position, this.space, this, player1, player2);
+                        this.monsters.add(monster3);
+                        break;
+                    case '4':
+                        cell = new Empty(position);
+                        space[row][column] = cell;
+                        Monster monster4 = new Monster4(position, this.space, this, player1, player2);
+                        this.monsters.add(monster4);
+                        break;
                     default:
                         cell = new Empty(position);
                         space[row][column] = cell;
